@@ -1,1078 +1,369 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-
-  "width": 940,
-  "height": 530,
-
-  "padding": {
-    "top": 85,
-    "left": 25,
-    "right": 65,
-    "bottom": 40
-  },
-
+  "width": 920,
+  "height": 580,
+  "padding": {"top": 75, "left": 20, "right": 25, "bottom": 35},
   "autosize": "none",
 
   "title": {
-    "text": "More Tonnes Don’t Always Mean More Value",
-    "subtitle": "Similar export volumes can produce very different economic value across Australia’s dairy markets (2024–25).",
+    "text": "Where Does Australia’s Dairy Go?",
+    "subtitle": "Australia’s top 10 dairy export markets are concentrated across Asia, led by Greater China and Japan (2024–25).",
     "anchor": "start",
     "frame": "group",
-    "font": "Arial",
     "fontSize": 20,
     "fontWeight": "bold",
     "color": "#222222",
-    "subtitleFont": "Arial",
     "subtitleFontSize": 13,
-    "subtitleFontWeight": "normal",
     "subtitleColor": "#666666",
     "offset": 22
   },
 
+  "signals": [
+    {
+      "name": "metric",
+      "value": "Value",
+      "bind": {
+        "input": "select",
+        "options": ["Value", "Volume"],
+        "labels": ["Export value (A$m)", "Export volume (tonnes)"],
+        "name": "Select Metric: "
+      }
+    }
+  ],
+
   "data": [
     {
-      "name": "markets",
-
-      "url": "vis10_export_market_ranks.csv",
-
+      "name": "world",
+      "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    },
+    {
+      "name": "destinations",
+      "url": "vis09_export_destinations.csv",
       "format": {
         "type": "csv",
-
         "parse": {
+          "latitude": "number",
+          "longitude": "number",
           "volume_tonnes": "number",
           "volume_rank": "number",
-          "value_per_tonne": "number",
-          "price_rank": "number",
           "value_aud_m": "number",
           "value_rank": "number"
         }
       },
-
       "transform": [
         {
           "type": "formula",
-          "as": "lineWidth",
-          "expr": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 4 : 2"
+          "as": "displayValue",
+          "expr": "metric === 'Value' ? 'A$' + format(datum.value_aud_m, ',') + 'm' : format(datum.volume_tonnes, ',') + ' t'"
         },
-
         {
           "type": "formula",
-          "as": "lineOpacity",
-          "expr": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 1 : 0.65"
-        }
-      ]
-    },
-
-    {
-      "name": "japan",
-
-      "source": "markets",
-
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum.country === 'Japan'"
-        }
-      ]
-    },
-
-    {
-      "name": "singapore",
-
-      "source": "markets",
-
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum.country === 'Singapore'"
-        }
-      ]
-    },
-
-    {
-      "name": "indonesia",
-
-      "source": "markets",
-
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum.country === 'Indonesia'"
-        }
-      ]
-    },
-
-    {
-      "name": "stages",
-
-      "values": [
-        {
-          "stage": "VOLUME RANK",
-          "x": 150,
-          "subtitle": "Export tonnes"
+          "as": "tooltipText",
+          "expr": "datum.country + '\\nExport value: A$' + format(datum.value_aud_m, ',') + 'm (Rank #' + datum.value_rank + ')\\nExport volume: ' + format(datum.volume_tonnes, ',') + ' tonnes (Rank #' + datum.volume_rank + ')'"
         },
-
         {
-          "stage": "VALUE PER TONNE RANK",
-          "x": 450,
-          "subtitle": "A$ per tonne"
+          "type": "formula",
+          "as": "lblAlign",
+          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? 'right' : 'left'"
         },
-
         {
-          "stage": "TOTAL VALUE RANK",
-          "x": 750,
-          "subtitle": "Export value (A$m)"
+          "type": "formula",
+          "as": "lblDx",
+          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? -11 : 11"
+        },
+        {
+          "type": "formula",
+          "as": "lblDy",
+          "expr": "datum.country === 'Singapore' ? 12 : datum.country === 'Malaysia' ? -10 : datum.country === 'Indonesia' ? 8 : datum.country === 'Vietnam' ? -12 : -5"
         }
       ]
     },
-
     {
-      "name": "ranks",
-
+      "name": "australia",
       "values": [
-        {"rank": 1},
-        {"rank": 2},
-        {"rank": 3},
-        {"rank": 4},
-        {"rank": 5},
-        {"rank": 6},
-        {"rank": 7},
-        {"rank": 8},
-        {"rank": 9},
-        {"rank": 10}
+        {"country": "Australia", "longitude": 134.0, "latitude": -24.5}
       ]
+    },
+    {
+      "name": "flows",
+      "source": "destinations",
+      "transform": [
+        {"type": "formula", "as": "originLon", "expr": "134.0"},
+        {"type": "formula", "as": "originLat", "expr": "-24.5"},
+        {
+          "type": "formula",
+          "as": "midLon",
+          "expr": "(datum.originLon + datum.longitude) / 2 + (datum.longitude < 125 ? -5 : 4)"
+        },
+        {
+          "type": "formula",
+          "as": "midLat",
+          "expr": "(datum.originLat + datum.latitude) / 2 + 5"
+        }
+      ]
+    }
+  ],
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "mercator",
+      "center": [142, -5],
+      "scale": 310,
+      "translate": [460, 290],
+      "clipExtent": [[0, 0], [920, 580]]
     }
   ],
 
   "scales": [
     {
-      "name": "rankY",
-      "type": "linear",
-      "domain": [1, 10],
-      "range": [55, 455],
-      "zero": false,
-      "nice": false
+      "name": "flowWidth",
+      "type": "sqrt",
+      "domain": [0, 1100],
+      "range": [1.5, 11]
     },
-
     {
-      "name": "marketColor",
-
-      "type": "ordinal",
-
-      "domain": [
-        "Greater China",
-        "Japan",
-        "Malaysia",
-        "Singapore",
-        "Indonesia",
-        "Thailand",
-        "Vietnam",
-        "Philippines",
-        "South Korea",
-        "New Zealand"
-      ],
-
-      "range": [
-        "#1B4D3E",
-        "#2A9D8F",
-        "#457B9D",
-        "#75658A",
-        "#D95F02",
-        "#E9C46A",
-        "#52B788",
-        "#F4A261",
-        "#3D5A80",
-        "#8D99AE"
-      ]
+      "name": "flowWidthVol",
+      "type": "sqrt",
+      "domain": [0, 160000],
+      "range": [1.5, 11]
+    },
+    {
+      "name": "pointSize",
+      "type": "sqrt",
+      "domain": [0, 1100],
+      "range": [40, 250]
+    },
+    {
+      "name": "pointSizeVol",
+      "type": "sqrt",
+      "domain": [0, 160000],
+      "range": [40, 250]
     }
   ],
 
   "marks": [
     {
-      "type": "rule",
-
-      "from": {
-        "data": "ranks"
-      },
-
+      "type": "shape",
+      "clip": true,
+      "from": {"data": "world"},
       "encode": {
         "enter": {
-          "x": {
-            "value": 56
-          },
-
-          "x2": {
-            "value": 765
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "rank"
-          },
-
-          "stroke": {
-            "value": "#F0F0EC"
-          },
-
-          "strokeWidth": {
-            "value": 1
-          }
+          "fill": {"value": "#ECECE8"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 0.8}
         }
-      }
-    },
-
-    {
-      "type": "rule",
-
-      "from": {
-        "data": "stages"
       },
-
-      "encode": {
-        "enter": {
-          "x": {
-            "field": "x"
-          },
-
-          "y": {
-            "value": 45
-          },
-
-          "y2": {
-            "value": 465
-          },
-
-          "stroke": {
-            "value": "#D7D7D2"
-          },
-
-          "strokeWidth": {
-            "value": 1
-          }
-        }
-      }
+      "transform": [{"type": "geoshape", "projection": "projection"}]
     },
-
-    {
-      "type": "text",
-
-      "from": {
-        "data": "stages"
-      },
-
-      "encode": {
-        "enter": {
-          "x": {
-            "field": "x"
-          },
-
-          "y": {
-            "value": 5
-          },
-
-          "text": {
-            "field": "stage"
-          },
-
-          "align": {
-            "value": "center"
-          },
-
-          "baseline": {
-            "value": "bottom"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 12
-          },
-
-          "fontWeight": {
-            "value": "bold"
-          },
-
-          "fill": {
-            "value": "#333333"
-          }
-        }
-      }
-    },
-
-    {
-      "type": "text",
-
-      "from": {
-        "data": "stages"
-      },
-
-      "encode": {
-        "enter": {
-          "x": {
-            "field": "x"
-          },
-
-          "y": {
-            "value": 22
-          },
-
-          "text": {
-            "field": "subtitle"
-          },
-
-          "align": {
-            "value": "center"
-          },
-
-          "baseline": {
-            "value": "bottom"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fill": {
-            "value": "#777777"
-          }
-        }
-      }
-    },
-
-    {
-      "type": "text",
-
-      "from": {
-        "data": "ranks"
-      },
-
-      "encode": {
-        "enter": {
-          "x": {
-            "value": 48
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "rank"
-          },
-
-          "text": {
-            "signal": "'#' + datum.rank"
-          },
-
-          "align": {
-            "value": "right"
-          },
-
-          "baseline": {
-            "value": "middle"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fill": {
-            "value": "#888888"
-          }
-        }
-      }
-    },
-
     {
       "type": "path",
-
-      "from": {
-        "data": "markets"
-      },
-
+      "clip": true,
+      "from": {"data": "flows"},
       "encode": {
         "enter": {
-          "fill": {
-            "value": null
-          },
-
-          "strokeCap": {
-            "value": "round"
-          },
-
-          "strokeJoin": {
-            "value": "round"
-          },
-
-          "tooltip": {
-            "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
-          }
+          "stroke": {"value": "#2F6B4F"},
+          "strokeCap": {"value": "round"},
+          "fill": {"value": null}
         },
-
         "update": {
           "path": {
-            "signal": "'M150,' + scale('rankY', datum.volume_rank) + ' C250,' + scale('rankY', datum.volume_rank) + ' 350,' + scale('rankY', datum.price_rank) + ' 450,' + scale('rankY', datum.price_rank) + ' C550,' + scale('rankY', datum.price_rank) + ' 650,' + scale('rankY', datum.value_rank) + ' 750,' + scale('rankY', datum.value_rank)"
+            "signal": "'M' + scale('projection', [datum.originLon, datum.originLat])[0] + ',' + scale('projection', [datum.originLon, datum.originLat])[1] + ' Q' + scale('projection', [datum.midLon, datum.midLat])[0] + ',' + scale('projection', [datum.midLon, datum.midLat])[1] + ' ' + scale('projection', [datum.longitude, datum.latitude])[0] + ',' + scale('projection', [datum.longitude, datum.latitude])[1]"
           },
-
-          "stroke": {
-            "scale": "marketColor",
-            "field": "country"
-          },
-
           "strokeWidth": {
-            "field": "lineWidth"
+            "signal": "metric === 'Value' ? scale('flowWidth', datum.value_aud_m) : scale('flowWidthVol', datum.volume_tonnes)"
           },
-
-          "strokeOpacity": {
-            "field": "lineOpacity"
-          }
+          "strokeOpacity": {"value": 0.38},
+          "tooltip": {"field": "tooltipText"}
         },
-
         "hover": {
-          "strokeOpacity": {
-            "value": 1
-          },
-
-          "strokeWidth": {
-            "value": 5
-          }
+          "strokeOpacity": {"value": 0.95}
         }
       }
     },
-
     {
       "type": "symbol",
-
-      "from": {
-        "data": "markets"
-      },
-
+      "from": {"data": "destinations"},
       "encode": {
         "enter": {
-          "shape": {
-            "value": "circle"
-          },
-
-          "stroke": {
-            "value": "#FFFFFF"
-          },
-
-          "strokeWidth": {
-            "value": 1.5
-          },
-
-          "tooltip": {
-            "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
-          }
+          "shape": {"value": "circle"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 1.5},
+          "tooltip": {"field": "tooltipText"}
         },
-
         "update": {
-          "x": {
-            "value": 150
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "volume_rank"
-          },
-
-          "size": {
-            "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 105 : 75"
-          },
-
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
           "fill": {
-            "scale": "marketColor",
-            "field": "country"
+            "signal": "datum.country === 'Greater China' ? '#C46A2D' : '#2F6B4F'"
           },
-
-          "opacity": {
-            "value": 1
-          }
+          "size": {
+            "signal": "metric === 'Value' ? scale('pointSize', datum.value_aud_m) : scale('pointSizeVol', datum.volume_tonnes)"
+          },
+          "opacity": {"value": 0.95}
+        },
+        "hover": {
+          "stroke": {"value": "#111111"},
+          "strokeWidth": {"value": 2.5}
         }
       }
     },
-
     {
       "type": "symbol",
-
-      "from": {
-        "data": "markets"
-      },
-
+      "from": {"data": "australia"},
       "encode": {
         "enter": {
-          "shape": {
-            "value": "circle"
-          },
-
-          "stroke": {
-            "value": "#FFFFFF"
-          },
-
-          "strokeWidth": {
-            "value": 1.5
-          },
-
-          "tooltip": {
-            "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
-          }
+          "shape": {"value": "circle"},
+          "fill": {"value": "#1D3557"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 2.5},
+          "size": {"value": 180}
         },
-
         "update": {
-          "x": {
-            "value": 450
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "price_rank"
-          },
-
-          "size": {
-            "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 105 : 75"
-          },
-
-          "fill": {
-            "scale": "marketColor",
-            "field": "country"
-          },
-
-          "opacity": {
-            "value": 1
-          }
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
         }
       }
     },
-
     {
-      "type": "symbol",
-
-      "from": {
-        "data": "markets"
-      },
-
+      "type": "text",
+      "from": {"data": "australia"},
       "encode": {
         "enter": {
-          "shape": {
-            "value": "circle"
-          },
-
-          "stroke": {
-            "value": "#FFFFFF"
-          },
-
-          "strokeWidth": {
-            "value": 1.5
-          },
-
-          "tooltip": {
-            "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
-          }
+          "text": {"value": "AUSTRALIA (Origin)"},
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 11},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#1D3557"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 3.5},
+          "strokeLinejoin": {"value": "round"},
+          "dx": {"value": 12},
+          "dy": {"value": 4}
         },
-
         "update": {
-          "x": {
-            "value": 750
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "value_rank"
-          },
-
-          "size": {
-            "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 105 : 75"
-          },
-
-          "fill": {
-            "scale": "marketColor",
-            "field": "country"
-          },
-
-          "opacity": {
-            "value": 1
-          }
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
         }
       }
     },
-
     {
       "type": "text",
-
-      "from": {
-        "data": "markets"
-      },
-
+      "from": {"data": "australia"},
       "encode": {
         "enter": {
-          "x": {
-            "value": 136
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "volume_rank"
-          },
-
-          "text": {
-            "field": "country"
-          },
-
-          "align": {
-            "value": "right"
-          },
-
-          "baseline": {
-            "value": "middle"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10.5
-          }
+          "text": {"value": "AUSTRALIA (Origin)"},
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 11},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#1D3557"},
+          "dx": {"value": 12},
+          "dy": {"value": 4}
         },
-
         "update": {
-          "fill": {
-            "scale": "marketColor",
-            "field": "country"
-          },
-
-          "fontWeight": {
-            "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' || datum.country === 'Greater China' || datum.country === 'Japan' ? 'bold' : 'normal'"
-          }
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
         }
       }
     },
-
     {
       "type": "text",
-
-      "from": {
-        "data": "markets"
-      },
-
+      "from": {"data": "destinations"},
       "encode": {
         "enter": {
-          "x": {
-            "value": 764
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "value_rank"
-          },
-
-          "text": {
-            "field": "country"
-          },
-
-          "align": {
-            "value": "left"
-          },
-
-          "baseline": {
-            "value": "middle"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10.5
-          }
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 10.5},
+          "fontWeight": {"value": "bold"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 3.5},
+          "strokeLinejoin": {"value": "round"},
+          "fill": {"value": "#FFFFFF"}
         },
-
         "update": {
-          "fill": {
-            "scale": "marketColor",
-            "field": "country"
-          },
-
-          "fontWeight": {
-            "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' || datum.country === 'Greater China' || datum.country === 'Japan' ? 'bold' : 'normal'"
-          }
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy - 6"},
+          "text": {"field": "country"}
         }
       }
     },
-
     {
       "type": "text",
-
-      "from": {
-        "data": "japan"
-      },
-
+      "from": {"data": "destinations"},
       "encode": {
         "enter": {
-          "x": {
-            "value": 462
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "price_rank"
-          },
-
-          "dy": {
-            "value": -14
-          },
-
-          "text": {
-            "signal": "'Japan: #1 by value/tonne (A$' + format(datum.value_per_tonne, ',') + '/t)'"
-          },
-
-          "align": {
-            "value": "left"
-          },
-
-          "baseline": {
-            "value": "middle"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fontWeight": {
-            "value": "bold"
-          },
-
-          "fill": {
-            "value": "#2A9D8F"
-          },
-
-          "stroke": {
-            "value": "#FFFFFF"
-          },
-
-          "strokeWidth": {
-            "value": 3.5
-          },
-
-          "strokeLinejoin": {
-            "value": "round"
-          }
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 10.5},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#1A1A1A"},
+          "tooltip": {"field": "tooltipText"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy - 6"},
+          "text": {"field": "country"}
         }
       }
     },
-
     {
       "type": "text",
-
-      "from": {
-        "data": "japan"
-      },
-
+      "from": {"data": "destinations"},
       "encode": {
         "enter": {
-          "x": {
-            "value": 462
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "price_rank"
-          },
-
-          "dy": {
-            "value": -14
-          },
-
-          "text": {
-            "signal": "'Japan: #1 by value/tonne (A$' + format(datum.value_per_tonne, ',') + '/t)'"
-          },
-
-          "align": {
-            "value": "left"
-          },
-
-          "baseline": {
-            "value": "middle"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fontWeight": {
-            "value": "bold"
-          },
-
-          "fill": {
-            "value": "#2A9D8F"
-          }
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 9.5},
+          "fontWeight": {"value": "bold"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 3.5},
+          "strokeLinejoin": {"value": "round"},
+          "fill": {"value": "#FFFFFF"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy + 8"},
+          "text": {"field": "displayValue"}
         }
       }
     },
-
     {
       "type": "text",
-
-      "from": {
-        "data": "singapore"
-      },
-
+      "from": {"data": "destinations"},
       "encode": {
         "enter": {
-          "x": {
-            "value": 450
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "price_rank"
-          },
-
-          "dy": {
-            "value": 17
-          },
-
-          "text": {
-            "signal": "'Singapore: Lowest value/tonne (#10, A$' + format(datum.value_per_tonne, ',') + '/t)'"
-          },
-
-          "align": {
-            "value": "center"
-          },
-
-          "baseline": {
-            "value": "top"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fontWeight": {
-            "value": "bold"
-          },
-
-          "fill": {
-            "value": "#75658A"
-          },
-
-          "stroke": {
-            "value": "#FFFFFF"
-          },
-
-          "strokeWidth": {
-            "value": 3.5
-          },
-
-          "strokeLinejoin": {
-            "value": "round"
-          }
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 9.5},
+          "fill": {"value": "#555555"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy + 8"},
+          "text": {"field": "displayValue"}
         }
       }
     },
-
     {
       "type": "text",
-
-      "from": {
-        "data": "singapore"
-      },
-
       "encode": {
         "enter": {
-          "x": {
-            "value": 450
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "price_rank"
-          },
-
-          "dy": {
-            "value": 17
-          },
-
-          "text": {
-            "signal": "'Singapore: Lowest value/tonne (#10, A$' + format(datum.value_per_tonne, ',') + '/t)'"
-          },
-
-          "align": {
-            "value": "center"
-          },
-
-          "baseline": {
-            "value": "top"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fontWeight": {
-            "value": "bold"
-          },
-
-          "fill": {
-            "value": "#75658A"
-          }
-        }
-      }
-    },
-
-    {
-      "type": "text",
-
-      "from": {
-        "data": "indonesia"
-      },
-
-      "encode": {
-        "enter": {
-          "x": {
-            "value": 825
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "value_rank"
-          },
-
-          "text": {
-            "value": "↑ Rises 2 ranks (A$302m)"
-          },
-
-          "align": {
-            "value": "left"
-          },
-
-          "baseline": {
-            "value": "middle"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fontWeight": {
-            "value": "bold"
-          },
-
-          "fill": {
-            "value": "#D95F02"
-          }
-        }
-      }
-    },
-
-    {
-      "type": "text",
-
-      "from": {
-        "data": "singapore"
-      },
-
-      "encode": {
-        "enter": {
-          "x": {
-            "value": 825
-          },
-
-          "y": {
-            "scale": "rankY",
-            "field": "value_rank"
-          },
-
-          "text": {
-            "value": "↓ Drops 2 ranks (A$206m)"
-          },
-
-          "align": {
-            "value": "left"
-          },
-
-          "baseline": {
-            "value": "middle"
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fontWeight": {
-            "value": "bold"
-          },
-
-          "fill": {
-            "value": "#75658A"
-          }
-        }
-      }
-    },
-
-    {
-      "type": "text",
-
-      "encode": {
-        "enter": {
-          "x": {
-            "value": 150
-          },
-
-          "y": {
-            "value": 505
-          },
-
-          "text": {
-            "value": "Value per tonne = total export value ÷ export volume."
-          },
-
-          "font": {
-            "value": "Arial"
-          },
-
-          "fontSize": {
-            "value": 10
-          },
-
-          "fontStyle": {
-            "value": "italic"
-          },
-
-          "fill": {
-            "value": "#777777"
-          }
+          "x": {"value": 80},
+          "y": {"value": 545},
+          "text": {"value": "Flow width and bubble size represent the selected export metric."},
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 10},
+          "fontStyle": {"value": "italic"},
+          "fill": {"value": "#777777"}
         }
       }
     }

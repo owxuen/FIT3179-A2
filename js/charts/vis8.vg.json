@@ -1,730 +1,415 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "width": 880,
-  "height": 550,
-  "padding": {
-    "top": 7,
-    "left": -50,
-    "right": 20,
-    "bottom": 30
-  },
-  "autosize": "pad",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 920,
+  "height": 280,
 
   "title": {
-    "text": "What Does Australia Export — and Who Buys It?",
-    "subtitle": "Australia exported A$3.8 billion of dairy products in 2024–25, with Asian markets dominating demand.",
+    "text": "Australia’s Taste for Dairy Is Changing",
+    "subtitle": "Drinking milk consumption has steadily declined since 2010–11, while yoghurt consumption has generally moved upward.",
     "anchor": "start",
-    "frame": "group",
     "fontSize": 20,
     "fontWeight": "bold",
-    "color": "#222222",
     "subtitleFontSize": 13,
+    "subtitleFontWeight": "normal",
     "subtitleColor": "#666666",
-    "offset": 15
+    "offset": 22
   },
 
-  "signals": [
+  "data": {
+    "url": "vis07_dairy_consumption.csv"
+  },
+
+  "transform": [
     {
-      "name": "nodeWidth",
-      "value": 16
+      "calculate": "format(datum.consumption, '.1f') + ' ' + datum.unit",
+      "as": "consumption_display"
     },
     {
-      "name": "leftX",
-      "value": 110
-    },
-    {
-      "name": "rightX",
-      "value": 710
+      "calculate": "datum.change_pct > 0 ? '+' + format(datum.change_pct, '.1f') + '%' : datum.change_pct < 0 ? format(datum.change_pct, '.1f') + '%' : '0%'",
+      "as": "change_display"
     }
   ],
 
-  "data": [
+  "layer": [
     {
-      "name": "flows",
-      "values": [
-        {
-          "product": "Butter/AMF",
-          "region": "SE Asia",
-          "value": 85,
-          "sy": 24,
-          "ty": 25
-        },
-        {
-          "product": "Butter/AMF",
-          "region": "Other Asia",
-          "value": 74,
-          "sy": 33,
-          "ty": 175
-        },
-        {
-          "product": "Butter/AMF",
-          "region": "Europe",
-          "value": 16,
-          "sy": 39,
-          "ty": 345
-        },
-        {
-          "product": "Butter/AMF",
-          "region": "Middle East",
-          "value": 5,
-          "sy": 41,
-          "ty": 375
-        },
-        {
-          "product": "Butter/AMF",
-          "region": "Africa",
-          "value": 4,
-          "sy": 42,
-          "ty": 410
-        },
-        {
-          "product": "Butter/AMF",
-          "region": "Americas",
-          "value": 24,
-          "sy": 44,
-          "ty": 430
-        },
-        {
-          "product": "Butter/AMF",
-          "region": "Other",
-          "value": 7,
-          "sy": 47,
-          "ty": 465
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 2,
+        "stroke": "#FFFFFF",
+        "strokeWidth": 2
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "sort": [
+            "2010-11",
+            "2011-12",
+            "2012-13",
+            "2013-14",
+            "2014-15",
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23",
+            "2023-24",
+            "2024-25"
+          ],
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelAngle": -45,
+            "labelAlign": "right",
+            "labelFontSize": 10,
+            "labelColor": "#555555",
+            "labelPadding": 12,
+            "ticks": false,
+            "domain": false
+          }
         },
 
-        {
-          "product": "Cheese",
-          "region": "SE Asia",
-          "value": 344,
-          "sy": 115,
-          "ty": 55
-        },
-        {
-          "product": "Cheese",
-          "region": "Other Asia",
-          "value": 763,
-          "sy": 165,
-          "ty": 225
-        },
-        {
-          "product": "Cheese",
-          "region": "Europe",
-          "value": 1,
-          "sy": 184,
-          "ty": 347
-        },
-        {
-          "product": "Cheese",
-          "region": "Middle East",
-          "value": 41,
-          "sy": 187,
-          "ty": 380
-        },
-        {
-          "product": "Cheese",
-          "region": "Africa",
-          "value": 20,
-          "sy": 190,
-          "ty": 413
-        },
-        {
-          "product": "Cheese",
-          "region": "Americas",
-          "value": 42,
-          "sy": 193,
-          "ty": 433
-        },
-        {
-          "product": "Cheese",
-          "region": "Other",
-          "value": 45,
-          "sy": 197,
-          "ty": 470
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ],
+          "axis": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": "bold",
+            "labelColor": "#555555",
+            "labelPadding": 14,
+            "ticks": false,
+            "domain": false
+          }
         },
 
-        {
-          "product": "Milk",
-          "region": "SE Asia",
-          "value": 124,
-          "sy": 235,
-          "ty": 82
-        },
-        {
-          "product": "Milk",
-          "region": "Other Asia",
-          "value": 166,
-          "sy": 250,
-          "ty": 285
-        },
-        {
-          "product": "Milk",
-          "region": "Middle East",
-          "value": 3,
-          "sy": 255,
-          "ty": 385
-        },
-        {
-          "product": "Milk",
-          "region": "Africa",
-          "value": 1,
-          "sy": 256,
-          "ty": 416
-        },
-        {
-          "product": "Milk",
-          "region": "Other",
-          "value": 29,
-          "sy": 258,
-          "ty": 475
-        },
-
-        {
-          "product": "SMP",
-          "region": "SE Asia",
-          "value": 478,
-          "sy": 305,
-          "ty": 115
-        },
-        {
-          "product": "SMP",
-          "region": "Other Asia",
-          "value": 197,
-          "sy": 340,
-          "ty": 305
-        },
-        {
-          "product": "SMP",
-          "region": "Middle East",
-          "value": 71,
-          "sy": 355,
-          "ty": 390
-        },
-        {
-          "product": "SMP",
-          "region": "Africa",
-          "value": 2,
-          "sy": 360,
-          "ty": 418
-        },
-        {
-          "product": "SMP",
-          "region": "Other",
-          "value": 22,
-          "sy": 362,
-          "ty": 480
+        "color": {
+          "field": "change_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -20,
+              -10,
+              0,
+              10,
+              20,
+              30,
+              45
+            ],
+            "range": [
+              "#75658A",
+              "#AA8FA3",
+              "#F4F4F2",
+              "#B9C9B9",
+              "#7FA087",
+              "#557E63",
+              "#2F6B4F"
+            ],
+            "clamp": true
+          },
+          "legend": {
+            "title": "Change from 2010–11",
+            "orient": "right",
+            "offset": 170,
+            "gradientLength": 200,
+            "gradientThickness": 13,
+            "titleFontSize": 11,
+            "titleFontWeight": "bold",
+            "titleColor": "#444444",
+            "labelFontSize": 10,
+            "labelColor": "#666666",
+            "values": [
+              -20,
+              -10,
+              0,
+              10,
+              20,
+              30,
+              40
+            ],
+            "labelExpr": "datum.value > 0 ? '+' + datum.value + '%' : datum.value + '%'"
+          }
         },
 
-        {
-          "product": "WMP",
-          "region": "SE Asia",
-          "value": 181,
-          "sy": 405,
-          "ty": 145
-        },
-        {
-          "product": "WMP",
-          "region": "Other Asia",
-          "value": 399,
-          "sy": 435,
-          "ty": 335
-        },
-        {
-          "product": "WMP",
-          "region": "Middle East",
-          "value": 39,
-          "sy": 445,
-          "ty": 395
-        },
-        {
-          "product": "WMP",
-          "region": "Africa",
-          "value": 2,
-          "sy": 447,
-          "ty": 420
-        },
-        {
-          "product": "WMP",
-          "region": "Americas",
-          "value": 24,
-          "sy": 449,
-          "ty": 437
-        },
-        {
-          "product": "WMP",
-          "region": "Other",
-          "value": 5,
-          "sy": 452,
-          "ty": 485
+        "tooltip": [
+          {
+            "field": "product",
+            "type": "nominal",
+            "title": "Dairy product"
+          },
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "consumption_display",
+            "type": "nominal",
+            "title": "Per-capita consumption"
+          },
+          {
+            "field": "change_display",
+            "type": "nominal",
+            "title": "Change from 2010–11"
+          }
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 9,
+        "fontWeight": "bold"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
         },
 
-        {
-          "product": "Other",
-          "region": "SE Asia",
-          "value": 174,
-          "sy": 485,
-          "ty": 160
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
         },
-        {
-          "product": "Other",
-          "region": "Other Asia",
-          "value": 257,
-          "sy": 505,
-          "ty": 360
+
+        "text": {
+          "field": "change_display",
+          "type": "nominal"
         },
-        {
-          "product": "Other",
-          "region": "Europe",
-          "value": 38,
-          "sy": 515,
-          "ty": 352
-        },
-        {
-          "product": "Other",
-          "region": "Middle East",
-          "value": 27,
-          "sy": 520,
-          "ty": 402
-        },
-        {
-          "product": "Other",
-          "region": "Americas",
-          "value": 20,
-          "sy": 523,
-          "ty": 440
-        },
-        {
-          "product": "Other",
-          "region": "Other",
-          "value": 78,
-          "sy": 527,
-          "ty": 500
+
+        "color": {
+          "condition": [
+            {
+              "test": "datum.change_pct >= 20 || datum.change_pct <= -15",
+              "value": "#FFFFFF"
+            }
+          ],
+          "value": "#3A3A3A"
         }
-      ],
+      }
+    },
 
+    {
       "transform": [
         {
-          "type": "formula",
-          "as": "strokeWidth",
-          "expr": "max(1.5, datum.value * 0.12)"
-        },
-        {
-          "type": "formula",
-          "as": "tooltipText",
-          "expr": "datum.product + ' → ' + datum.region + ': A$' + format(datum.value, ',') + 'm'"
+          "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
         }
-      ]
-    },
-
-    {
-      "name": "products",
-      "values": [
-        {
-          "name": "Butter/AMF",
-          "value": 215,
-          "y": 20,
-          "h": 26
-        },
-        {
-          "name": "Cheese",
-          "value": 1256,
-          "y": 68,
-          "h": 135
-        },
-        {
-          "name": "Milk",
-          "value": 323,
-          "y": 224,
-          "h": 36
-        },
-        {
-          "name": "SMP",
-          "value": 770,
-          "y": 280,
-          "h": 85
-        },
-        {
-          "name": "WMP",
-          "value": 650,
-          "y": 385,
-          "h": 72
-        },
-        {
-          "name": "Other",
-          "value": 594,
-          "y": 476,
-          "h": 60
-        }
-      ]
-    },
-
-    {
-      "name": "regions",
-      "values": [
-        {
-          "name": "SE Asia",
-          "value": 1386,
-          "y": 20,
-          "h": 150
-        },
-        {
-          "name": "Other Asia",
-          "value": 1856,
-          "y": 185,
-          "h": 190
-        },
-        {
-          "name": "Europe",
-          "value": 55,
-          "y": 390,
-          "h": 15
-        },
-        {
-          "name": "Middle East",
-          "value": 186,
-          "y": 415,
-          "h": 26
-        },
-        {
-          "name": "Africa",
-          "value": 29,
-          "y": 450,
-          "h": 10
-        },
-        {
-          "name": "Americas",
-          "value": 110,
-          "y": 470,
-          "h": 20
-        },
-        {
-          "name": "Other",
-          "value": 186,
-          "y": 500,
-          "h": 26
-        }
-      ]
-    }
-  ],
-
-  "scales": [
-    {
-      "name": "productColor",
-      "type": "ordinal",
-      "domain": [
-        "Butter/AMF",
-        "Cheese",
-        "Milk",
-        "SMP",
-        "WMP",
-        "Other"
       ],
-      "range": [
-        "#E9C46A",
-        "#264653",
-        "#457B9D",
-        "#2A9D8F",
-        "#8AB17D",
-        "#9E9E9E"
-      ]
-    }
-  ],
 
-  "marks": [
-    {
-      "type": "text",
-      "encode": {
-        "enter": {
-          "x": {
-            "value": 0
-          },
-          "y": {
-            "value": -12
-          },
-          "text": {
-            "value": "DAIRY PRODUCT"
-          },
-          "align": {
-            "value": "left"
-          },
-          "fontSize": {
-            "value": 11
-          },
-          "fontWeight": {
-            "value": "bold"
-          },
-          "fill": {
-            "value": "#666666"
-          }
-        }
-      }
-    },
-
-    {
-      "type": "text",
-      "encode": {
-        "enter": {
-          "x": {
-            "signal": "rightX"
-          },
-          "y": {
-            "value": -12
-          },
-          "text": {
-            "value": "EXPORT REGION"
-          },
-          "align": {
-            "value": "left"
-          },
-          "fontSize": {
-            "value": 11
-          },
-          "fontWeight": {
-            "value": "bold"
-          },
-          "fill": {
-            "value": "#666666"
-          }
-        }
-      }
-    },
-
-    {
-      "type": "path",
-      "from": {
-        "data": "flows"
+      "mark": {
+        "type": "rect",
+        "filled": false,
+        "stroke": "#C46A2D",
+        "strokeWidth": 2.5,
+        "strokeDash": [
+          5,
+          4
+        ]
       },
-      "encode": {
-        "enter": {
-          "stroke": {
-            "scale": "productColor",
-            "field": "product"
-          },
-          "strokeOpacity": {
-            "value": 0.42
-          },
-          "strokeWidth": {
-            "field": "strokeWidth"
-          },
-          "tooltip": {
-            "field": "tooltipText"
-          }
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
         },
 
-        "update": {
-          "path": {
-            "signal": "'M' + (leftX + nodeWidth) + ',' + datum.sy + ' C' + ((leftX + rightX) / 2) + ',' + datum.sy + ' ' + ((leftX + rightX) / 2) + ',' + datum.ty + ' ' + rightX + ',' + datum.ty"
-          }
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": -70,
+        "dy": 40,
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#C46A2D"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
         },
 
-        "hover": {
-          "strokeOpacity": {
-            "value": 0.95
-          }
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        },
+
+        "text": {
+          "value": "Yoghurt category expanded*"
         }
       }
     },
 
     {
-      "type": "rect",
-      "from": {
-        "data": "products"
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25' && (datum.product === 'Milk' || datum.product === 'Yoghurt')"
+        }
+      ],
+
+      "mark": {
+        "type": "rect",
+        "filled": false,
+        "stroke": "#C46A2D",
+        "strokeWidth": 2.5
       },
-      "encode": {
-        "enter": {
-          "x": {
-            "signal": "leftX"
-          },
-          "x2": {
-            "signal": "leftX + nodeWidth"
-          },
-          "y": {
-            "field": "y"
-          },
-          "height": {
-            "field": "h"
-          },
-          "fill": {
-            "scale": "productColor",
-            "field": "name"
-          },
-          "cornerRadius": {
-            "value": 2
-          },
-          "tooltip": {
-            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
-          }
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
         }
       }
     },
 
     {
-      "type": "text",
-      "from": {
-        "data": "products"
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25' && datum.product === 'Milk'"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 46,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#C46A2D"
       },
-      "encode": {
-        "enter": {
-          "x": {
-            "value": 0
-          },
-          "y": {
-            "field": "y"
-          },
-          "dy": {
-            "signal": "datum.h / 2 - 6"
-          },
-          "text": {
-            "field": "name"
-          },
-          "align": {
-            "value": "left"
-          },
-          "fontSize": {
-            "value": 11
-          },
-          "fontWeight": {
-            "value": "bold"
-          },
-          "fill": {
-            "value": "#333333"
-          }
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        },
+
+        "text": {
+          "value": "−18.2% since 2010–11"
         }
       }
     },
 
     {
-      "type": "text",
-      "from": {
-        "data": "products"
-      },
-      "encode": {
-        "enter": {
-          "x": {
-            "value": 0
-          },
-          "y": {
-            "field": "y"
-          },
-          "dy": {
-            "signal": "datum.h / 2 + 8"
-          },
-          "text": {
-            "signal": "'A$' + format(datum.value, ',') + 'm'"
-          },
-          "align": {
-            "value": "left"
-          },
-          "fontSize": {
-            "value": 10
-          },
-          "fill": {
-            "value": "#777777"
-          }
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25' && datum.product === 'Yoghurt'"
         }
-      }
-    },
+      ],
 
-    {
-      "type": "rect",
-      "from": {
-        "data": "regions"
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 46,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#C46A2D"
       },
-      "encode": {
-        "enter": {
-          "x": {
-            "signal": "rightX"
-          },
-          "x2": {
-            "signal": "rightX + nodeWidth"
-          },
-          "y": {
-            "field": "y"
-          },
-          "height": {
-            "field": "h"
-          },
-          "fill": {
-            "value": "#4A4E51"
-          },
-          "cornerRadius": {
-            "value": 2
-          },
-          "tooltip": {
-            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
-          }
-        }
-      }
-    },
 
-    {
-      "type": "text",
-      "from": {
-        "data": "regions"
-      },
-      "encode": {
-        "enter": {
-          "x": {
-            "signal": "rightX + nodeWidth + 8"
-          },
-          "y": {
-            "field": "y"
-          },
-          "dy": {
-            "signal": "datum.h / 2 - 6"
-          },
-          "text": {
-            "field": "name"
-          },
-          "align": {
-            "value": "left"
-          },
-          "fontSize": {
-            "value": 11
-          },
-          "fontWeight": {
-            "value": "bold"
-          },
-          "fill": {
-            "value": "#333333"
-          }
-        }
-      }
-    },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
 
-    {
-      "type": "text",
-      "from": {
-        "data": "regions"
-      },
-      "encode": {
-        "enter": {
-          "x": {
-            "signal": "rightX + nodeWidth + 8"
-          },
-          "y": {
-            "field": "y"
-          },
-          "dy": {
-            "signal": "datum.h / 2 + 8"
-          },
-          "text": {
-            "signal": "'A$' + format(datum.value, ',') + 'm'"
-          },
-          "align": {
-            "value": "left"
-          },
-          "fontSize": {
-            "value": 10
-          },
-          "fill": {
-            "value": "#777777"
-          }
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        },
+
+        "text": {
+          "value": "+45.2%* since 2010–11"
         }
       }
     }
   ],
 
   "config": {
-    "background": "white"
+    "background": "white",
+
+    "view": {
+      "stroke": null
+    },
+
+    "axis": {
+      "grid": false
+    },
+
+    "font": "Arial"
   }
 }

@@ -2,159 +2,210 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 
   "title": {
-    "text": "Milk Production Follows a Seasonal Rhythm",
-    "subtitle": "Across five seasons, milk production consistently rises through spring before declining toward winter.",
+    "text": "Where Has Milk Production Grown — and Declined?",
+    "subtitle": "Tasmania was the only state to grow, while Victoria recorded the largest absolute decline in milk production.",
     "anchor": "start",
     "fontSize": 20,
-    "fontWeight": "bold",
     "subtitleFontSize": 13,
-    "subtitleFontWeight": "normal",
     "subtitleColor": "#666666",
-    "offset": 18
+    "offset": 16
   },
 
-  "width": 650,
-  "height": 650,
+  "width": 700,
+  "height": 520,
 
-  "data": {
-    "url": "vis06_monthly_seasonality.csv"
+  "projection": {
+    "type": "mercator"
   },
-
-  "transform": [
-    {
-      "calculate": "datum.season === '2020-21' ? 0 : datum.season === '2021-22' ? 1 : datum.season === '2022-23' ? 2 : datum.season === '2023-24' ? 3 : 4",
-      "as": "season_order"
-    },
-    {
-      "calculate": "(datum.month_order - 1) / 12 * 6.28318530718",
-      "as": "start_angle"
-    },
-    {
-      "calculate": "datum.month_order / 12 * 6.28318530718",
-      "as": "end_angle"
-    },
-    {
-      "calculate": "85 + datum.season_order * 38",
-      "as": "inner_radius"
-    },
-    {
-      "calculate": "85 + (datum.season_order + 1) * 38 - 2",
-      "as": "outer_radius"
-    }
-  ],
 
   "layer": [
     {
+      "data": {
+        "url": "australia_states.json",
+        "format": {
+          "type": "topojson",
+          "feature": "australia_states"
+        }
+      },
+
       "mark": {
-        "type": "arc",
+        "type": "geoshape",
+        "fill": "#F2F2F2",
+        "stroke": "#FFFFFF",
+        "strokeWidth": 1.5
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "production_2006_07": 349,
+            "production_2024_25": 331,
+            "change_pct": -5.2
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "production_2006_07": 655,
+            "production_2024_25": 471,
+            "change_pct": -28.1
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "production_2006_07": 537,
+            "production_2024_25": 275,
+            "change_pct": -48.8
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "production_2006_07": 1104,
+            "production_2024_25": 1071,
+            "change_pct": -3.0
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "production_2006_07": 6297,
+            "production_2024_25": 5266,
+            "change_pct": -16.4
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "production_2006_07": 641,
+            "production_2024_25": 901,
+            "change_pct": 40.6
+          }
+        ]
+      },
+
+      "transform": [
+        {
+          "calculate": "datum.production_2024_25 - datum.production_2006_07",
+          "as": "change_ml"
+        },
+        {
+          "calculate": "abs(datum.change_ml)",
+          "as": "change_magnitude"
+        },
+        {
+          "calculate": "datum.change_ml > 0 ? 'Growth' : 'Decline'",
+          "as": "direction"
+        }
+      ],
+
+      "mark": {
+        "type": "circle",
+        "opacity": 0.85,
         "stroke": "#FFFFFF",
         "strokeWidth": 2
       },
 
       "encoding": {
-        "theta": {
-          "field": "start_angle",
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+
+        "size": {
+          "field": "change_magnitude",
           "type": "quantitative",
-          "scale": null
-        },
+          "title": "Absolute change (ML)",
 
-        "theta2": {
-          "field": "end_angle"
-        },
+          "scale": {
+            "domain": [0, 1050],
+            "range": [80, 3000]
+          },
 
-        "radius": {
-          "field": "outer_radius",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "radius2": {
-          "field": "inner_radius"
+          "legend": {
+            "orient": "right",
+            "title": "Absolute change (ML)",
+            "titleFontSize": 12,
+            "titleFontWeight": "bold",
+            "labelFontSize": 11,
+            "format": ",.0f",
+            "values": [250, 500, 1000]
+          }
         },
 
         "color": {
-          "field": "milk_production_ml",
-          "type": "quantitative",
+          "field": "direction",
+          "type": "nominal",
+          "title": "Direction",
 
           "scale": {
-            "domain": [550, 1000],
+            "domain": [
+              "Growth",
+              "Decline"
+            ],
             "range": [
-              "#EDF4EF",
-              "#C7DDCE",
-              "#91B79F",
-              "#5C8F70",
-              "#2F6B4F"
+              "#2F6B4F",
+              "#6F6F6F"
             ]
           },
 
           "legend": {
-            "title": "Milk production (ML)",
             "orient": "right",
-            "gradientLength": 150,
-            "gradientThickness": 12,
             "titleFontSize": 12,
             "titleFontWeight": "bold",
             "labelFontSize": 11,
-            "titleColor": "#444444",
-            "labelColor": "#666666"
+            "symbolSize": 120
           }
         },
 
         "tooltip": [
           {
-            "field": "season",
+            "field": "state",
             "type": "nominal",
-            "title": "Season"
+            "title": "State"
           },
           {
-            "field": "month",
-            "type": "ordinal",
-            "title": "Month"
-          },
-          {
-            "field": "milk_production_ml",
+            "field": "production_2006_07",
             "type": "quantitative",
-            "title": "Milk production (ML)",
+            "title": "2006–07 production (ML)",
             "format": ",.0f"
+          },
+          {
+            "field": "production_2024_25",
+            "type": "quantitative",
+            "title": "2024–25 production (ML)",
+            "format": ",.0f"
+          },
+          {
+            "field": "change_ml",
+            "type": "quantitative",
+            "title": "Production change (ML)",
+            "format": "+,.0f"
+          },
+          {
+            "field": "change_pct",
+            "type": "quantitative",
+            "title": "Percentage change",
+            "format": "+.1f"
           }
         ]
-      }
-    },
-
-    {
-      "transform": [
-        {
-          "filter": "datum.season === '2024-25' && datum.month === 'Oct'"
-        }
-      ],
-
-      "mark": {
-        "type": "arc",
-        "fillOpacity": 0,
-        "stroke": "#C46A2D",
-        "strokeWidth": 4
-      },
-
-      "encoding": {
-        "theta": {
-          "field": "start_angle",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "theta2": {
-          "field": "end_angle"
-        },
-
-        "radius": {
-          "field": "outer_radius",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "radius2": {
-          "field": "inner_radius"
-        }
       }
     },
 
@@ -162,209 +213,33 @@
       "data": {
         "values": [
           {
-            "month": "Jul",
-            "month_order": 1
-          },
-          {
-            "month": "Aug",
-            "month_order": 2
-          },
-          {
-            "month": "Sep",
-            "month_order": 3
-          },
-          {
-            "month": "Oct",
-            "month_order": 4
-          },
-          {
-            "month": "Nov",
-            "month_order": 5
-          },
-          {
-            "month": "Dec",
-            "month_order": 6
-          },
-          {
-            "month": "Jan",
-            "month_order": 7
-          },
-          {
-            "month": "Feb",
-            "month_order": 8
-          },
-          {
-            "month": "Mar",
-            "month_order": 9
-          },
-          {
-            "month": "Apr",
-            "month_order": 10
-          },
-          {
-            "month": "May",
-            "month_order": 11
-          },
-          {
-            "month": "Jun",
-            "month_order": 12
-          }
-        ]
-      },
-
-      "transform": [
-        {
-          "calculate": "(datum.month_order - 0.5) / 12 * 6.28318530718",
-          "as": "label_angle"
-        }
-      ],
-
-      "mark": {
-        "type": "text",
-        "radius": 295,
-        "fontSize": 13,
-        "fontWeight": "bold",
-        "color": "#555555"
-      },
-
-      "encoding": {
-        "theta": {
-          "field": "label_angle",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "text": {
-          "field": "month"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
-          {
-            "label": "2020–21",
-            "angle": 0.08,
-            "radius_value": 103
-          },
-          {
-            "label": "2021–22",
-            "angle": 0.08,
-            "radius_value": 141
-          },
-          {
-            "label": "2022–23",
-            "angle": 0.08,
-            "radius_value": 179
-          },
-          {
-            "label": "2023–24",
-            "angle": 0.08,
-            "radius_value": 217
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "label": "-1,031 ML"
           }
         ]
       },
 
       "mark": {
         "type": "text",
-        "fontSize": 10,
-        "fontWeight": "normal",
-        "color": "#666666",
-        "align": "left"
-      },
-
-      "encoding": {
-        "theta": {
-          "field": "angle",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "radius": {
-          "field": "radius_value",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
-          {
-            "label": "2024–25",
-            "angle": 0.08,
-            "radius_value": 255
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "fontSize": 10,
-        "fontWeight": "bold",
-        "color": "#2F6B4F",
-        "align": "left"
-      },
-
-      "encoding": {
-        "theta": {
-          "field": "angle",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "radius": {
-          "field": "radius_value",
-          "type": "quantitative",
-          "scale": null
-        },
-
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
-          {
-            "label": "945 ML — 2024–25 peak",
-            "angle": 1.8326,
-            "radius_value": 315
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
+        "dx": -40,
+        "dy": -10,
+        "align": "right",
+        "baseline": "middle",
         "fontSize": 12,
         "fontWeight": "bold",
-        "color": "#C46A2D",
-        "align": "left",
-        "baseline": "middle",
-        "dx": 8
+        "color": "#6F6F6F"
       },
 
       "encoding": {
-        "theta": {
-          "field": "angle",
-          "type": "quantitative",
-          "scale": null
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
         },
-
-        "radius": {
-          "field": "radius_value",
-          "type": "quantitative",
-          "scale": null
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
         },
-
         "text": {
           "field": "label"
         }
@@ -375,37 +250,178 @@
       "data": {
         "values": [
           {
-            "label": "October 2024",
-            "angle": 1.8326,
-            "radius_value": 315
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "label": "largest absolute decline"
           }
         ]
       },
 
       "mark": {
         "type": "text",
-        "fontSize": 10,
-        "fontWeight": "normal",
-        "color": "#C46A2D",
-        "align": "left",
+        "dx": -40,
+        "dy": 8,
+        "align": "right",
         "baseline": "middle",
-        "dx": 8,
-        "dy": 17
+        "fontSize": 10,
+        "color": "#6F6F6F"
       },
 
       "encoding": {
-        "theta": {
-          "field": "angle",
-          "type": "quantitative",
-          "scale": null
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
         },
-
-        "radius": {
-          "field": "radius_value",
-          "type": "quantitative",
-          "scale": null
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
         },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
 
+    {
+      "data": {
+        "values": [
+          {
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "label": "-48.8%"
+          }
+        ]
+      },
+
+      "mark": {
+        "type": "text",
+        "dx": 32,
+        "dy": -10,
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#6F6F6F"
+      },
+
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "label": "largest percentage decline"
+          }
+        ]
+      },
+
+      "mark": {
+        "type": "text",
+        "dx": 32,
+        "dy": 8,
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 10,
+        "color": "#6F6F6F"
+      },
+
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "label": "+260 ML"
+          }
+        ]
+      },
+
+      "mark": {
+        "type": "text",
+        "dx": 32,
+        "dy": -4,
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#2F6B4F"
+      },
+
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "label": "only state to grow"
+          }
+        ]
+      },
+
+      "mark": {
+        "type": "text",
+        "dx": 32,
+        "dy": 14,
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 10,
+        "color": "#2F6B4F"
+      },
+
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
         "text": {
           "field": "label"
         }
@@ -420,6 +436,10 @@
       "stroke": null
     },
 
-    "font": "Arial"
+    "legend": {
+      "labelColor": "#555555",
+      "titleColor": "#333333",
+      "padding": 10
+    }
   }
 }

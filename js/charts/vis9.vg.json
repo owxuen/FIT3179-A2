@@ -1,13 +1,18 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "width": 920,
-  "height": 580,
-  "padding": {"top": 75, "left": 20, "right": 25, "bottom": 35},
-  "autosize": "none",
+  "width": 880,
+  "height": 550,
+  "padding": {
+    "top": 7,
+    "left": -50,
+    "right": 20,
+    "bottom": 30
+  },
+  "autosize": "pad",
 
   "title": {
-    "text": "Where Does Australia’s Dairy Go?",
-    "subtitle": "Australia’s top 10 dairy export markets are concentrated across Asia, led by Greater China and Japan (2024–25).",
+    "text": "What Does Australia Export — and Who Buys It?",
+    "subtitle": "Australia exported A$3.8 billion of dairy products in 2024–25, with Asian markets dominating demand.",
     "anchor": "start",
     "frame": "group",
     "fontSize": 20,
@@ -15,355 +20,705 @@
     "color": "#222222",
     "subtitleFontSize": 13,
     "subtitleColor": "#666666",
-    "offset": 22
+    "offset": 15
   },
 
   "signals": [
     {
-      "name": "metric",
-      "value": "Value",
-      "bind": {
-        "input": "select",
-        "options": ["Value", "Volume"],
-        "labels": ["Export value (A$m)", "Export volume (tonnes)"],
-        "name": "Select Metric: "
-      }
+      "name": "nodeWidth",
+      "value": 16
+    },
+    {
+      "name": "leftX",
+      "value": 110
+    },
+    {
+      "name": "rightX",
+      "value": 710
     }
   ],
 
   "data": [
     {
-      "name": "world",
-      "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
-      "format": {"type": "topojson", "feature": "countries"}
-    },
-    {
-      "name": "destinations",
-      "url": "vis09_export_destinations.csv",
-      "format": {
-        "type": "csv",
-        "parse": {
-          "latitude": "number",
-          "longitude": "number",
-          "volume_tonnes": "number",
-          "volume_rank": "number",
-          "value_aud_m": "number",
-          "value_rank": "number"
+      "name": "flows",
+      "values": [
+        {
+          "product": "Butter/AMF",
+          "region": "SE Asia",
+          "value": 85,
+          "sy": 24,
+          "ty": 25
+        },
+        {
+          "product": "Butter/AMF",
+          "region": "Other Asia",
+          "value": 74,
+          "sy": 33,
+          "ty": 175
+        },
+        {
+          "product": "Butter/AMF",
+          "region": "Europe",
+          "value": 16,
+          "sy": 39,
+          "ty": 345
+        },
+        {
+          "product": "Butter/AMF",
+          "region": "Middle East",
+          "value": 5,
+          "sy": 41,
+          "ty": 375
+        },
+        {
+          "product": "Butter/AMF",
+          "region": "Africa",
+          "value": 4,
+          "sy": 42,
+          "ty": 410
+        },
+        {
+          "product": "Butter/AMF",
+          "region": "Americas",
+          "value": 24,
+          "sy": 44,
+          "ty": 430
+        },
+        {
+          "product": "Butter/AMF",
+          "region": "Other",
+          "value": 7,
+          "sy": 47,
+          "ty": 465
+        },
+
+        {
+          "product": "Cheese",
+          "region": "SE Asia",
+          "value": 344,
+          "sy": 115,
+          "ty": 55
+        },
+        {
+          "product": "Cheese",
+          "region": "Other Asia",
+          "value": 763,
+          "sy": 165,
+          "ty": 225
+        },
+        {
+          "product": "Cheese",
+          "region": "Europe",
+          "value": 1,
+          "sy": 184,
+          "ty": 347
+        },
+        {
+          "product": "Cheese",
+          "region": "Middle East",
+          "value": 41,
+          "sy": 187,
+          "ty": 380
+        },
+        {
+          "product": "Cheese",
+          "region": "Africa",
+          "value": 20,
+          "sy": 190,
+          "ty": 413
+        },
+        {
+          "product": "Cheese",
+          "region": "Americas",
+          "value": 42,
+          "sy": 193,
+          "ty": 433
+        },
+        {
+          "product": "Cheese",
+          "region": "Other",
+          "value": 45,
+          "sy": 197,
+          "ty": 470
+        },
+
+        {
+          "product": "Milk",
+          "region": "SE Asia",
+          "value": 124,
+          "sy": 235,
+          "ty": 82
+        },
+        {
+          "product": "Milk",
+          "region": "Other Asia",
+          "value": 166,
+          "sy": 250,
+          "ty": 285
+        },
+        {
+          "product": "Milk",
+          "region": "Middle East",
+          "value": 3,
+          "sy": 255,
+          "ty": 385
+        },
+        {
+          "product": "Milk",
+          "region": "Africa",
+          "value": 1,
+          "sy": 256,
+          "ty": 416
+        },
+        {
+          "product": "Milk",
+          "region": "Other",
+          "value": 29,
+          "sy": 258,
+          "ty": 475
+        },
+
+        {
+          "product": "SMP",
+          "region": "SE Asia",
+          "value": 478,
+          "sy": 305,
+          "ty": 115
+        },
+        {
+          "product": "SMP",
+          "region": "Other Asia",
+          "value": 197,
+          "sy": 340,
+          "ty": 305
+        },
+        {
+          "product": "SMP",
+          "region": "Middle East",
+          "value": 71,
+          "sy": 355,
+          "ty": 390
+        },
+        {
+          "product": "SMP",
+          "region": "Africa",
+          "value": 2,
+          "sy": 360,
+          "ty": 418
+        },
+        {
+          "product": "SMP",
+          "region": "Other",
+          "value": 22,
+          "sy": 362,
+          "ty": 480
+        },
+
+        {
+          "product": "WMP",
+          "region": "SE Asia",
+          "value": 181,
+          "sy": 405,
+          "ty": 145
+        },
+        {
+          "product": "WMP",
+          "region": "Other Asia",
+          "value": 399,
+          "sy": 435,
+          "ty": 335
+        },
+        {
+          "product": "WMP",
+          "region": "Middle East",
+          "value": 39,
+          "sy": 445,
+          "ty": 395
+        },
+        {
+          "product": "WMP",
+          "region": "Africa",
+          "value": 2,
+          "sy": 447,
+          "ty": 420
+        },
+        {
+          "product": "WMP",
+          "region": "Americas",
+          "value": 24,
+          "sy": 449,
+          "ty": 437
+        },
+        {
+          "product": "WMP",
+          "region": "Other",
+          "value": 5,
+          "sy": 452,
+          "ty": 485
+        },
+
+        {
+          "product": "Other",
+          "region": "SE Asia",
+          "value": 174,
+          "sy": 485,
+          "ty": 160
+        },
+        {
+          "product": "Other",
+          "region": "Other Asia",
+          "value": 257,
+          "sy": 505,
+          "ty": 360
+        },
+        {
+          "product": "Other",
+          "region": "Europe",
+          "value": 38,
+          "sy": 515,
+          "ty": 352
+        },
+        {
+          "product": "Other",
+          "region": "Middle East",
+          "value": 27,
+          "sy": 520,
+          "ty": 402
+        },
+        {
+          "product": "Other",
+          "region": "Americas",
+          "value": 20,
+          "sy": 523,
+          "ty": 440
+        },
+        {
+          "product": "Other",
+          "region": "Other",
+          "value": 78,
+          "sy": 527,
+          "ty": 500
         }
-      },
+      ],
+
       "transform": [
         {
           "type": "formula",
-          "as": "displayValue",
-          "expr": "metric === 'Value' ? 'A$' + format(datum.value_aud_m, ',') + 'm' : format(datum.volume_tonnes, ',') + ' t'"
+          "as": "strokeWidth",
+          "expr": "max(1.5, datum.value * 0.12)"
         },
         {
           "type": "formula",
           "as": "tooltipText",
-          "expr": "datum.country + '\\nExport value: A$' + format(datum.value_aud_m, ',') + 'm (Rank #' + datum.value_rank + ')\\nExport volume: ' + format(datum.volume_tonnes, ',') + ' tonnes (Rank #' + datum.volume_rank + ')'"
-        },
-        {
-          "type": "formula",
-          "as": "lblAlign",
-          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? 'right' : 'left'"
-        },
-        {
-          "type": "formula",
-          "as": "lblDx",
-          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? -11 : 11"
-        },
-        {
-          "type": "formula",
-          "as": "lblDy",
-          "expr": "datum.country === 'Singapore' ? 12 : datum.country === 'Malaysia' ? -10 : datum.country === 'Indonesia' ? 8 : datum.country === 'Vietnam' ? -12 : -5"
+          "expr": "datum.product + ' → ' + datum.region + ': A$' + format(datum.value, ',') + 'm'"
         }
       ]
     },
-    {
-      "name": "australia",
-      "values": [
-        {"country": "Australia", "longitude": 134.0, "latitude": -24.5}
-      ]
-    },
-    {
-      "name": "flows",
-      "source": "destinations",
-      "transform": [
-        {"type": "formula", "as": "originLon", "expr": "134.0"},
-        {"type": "formula", "as": "originLat", "expr": "-24.5"},
-        {
-          "type": "formula",
-          "as": "midLon",
-          "expr": "(datum.originLon + datum.longitude) / 2 + (datum.longitude < 125 ? -5 : 4)"
-        },
-        {
-          "type": "formula",
-          "as": "midLat",
-          "expr": "(datum.originLat + datum.latitude) / 2 + 5"
-        }
-      ]
-    }
-  ],
 
-  "projections": [
     {
-      "name": "projection",
-      "type": "mercator",
-      "center": [142, -5],
-      "scale": 310,
-      "translate": [460, 290],
-      "clipExtent": [[0, 0], [920, 580]]
+      "name": "products",
+      "values": [
+        {
+          "name": "Butter/AMF",
+          "value": 215,
+          "y": 20,
+          "h": 26
+        },
+        {
+          "name": "Cheese",
+          "value": 1256,
+          "y": 68,
+          "h": 135
+        },
+        {
+          "name": "Milk",
+          "value": 323,
+          "y": 224,
+          "h": 36
+        },
+        {
+          "name": "SMP",
+          "value": 770,
+          "y": 280,
+          "h": 85
+        },
+        {
+          "name": "WMP",
+          "value": 650,
+          "y": 385,
+          "h": 72
+        },
+        {
+          "name": "Other",
+          "value": 594,
+          "y": 476,
+          "h": 60
+        }
+      ]
+    },
+
+    {
+      "name": "regions",
+      "values": [
+        {
+          "name": "SE Asia",
+          "value": 1386,
+          "y": 20,
+          "h": 150
+        },
+        {
+          "name": "Other Asia",
+          "value": 1856,
+          "y": 185,
+          "h": 190
+        },
+        {
+          "name": "Europe",
+          "value": 55,
+          "y": 390,
+          "h": 15
+        },
+        {
+          "name": "Middle East",
+          "value": 186,
+          "y": 415,
+          "h": 26
+        },
+        {
+          "name": "Africa",
+          "value": 29,
+          "y": 450,
+          "h": 10
+        },
+        {
+          "name": "Americas",
+          "value": 110,
+          "y": 470,
+          "h": 20
+        },
+        {
+          "name": "Other",
+          "value": 186,
+          "y": 500,
+          "h": 26
+        }
+      ]
     }
   ],
 
   "scales": [
     {
-      "name": "flowWidth",
-      "type": "sqrt",
-      "domain": [0, 1100],
-      "range": [1.5, 11]
-    },
-    {
-      "name": "flowWidthVol",
-      "type": "sqrt",
-      "domain": [0, 160000],
-      "range": [1.5, 11]
-    },
-    {
-      "name": "pointSize",
-      "type": "sqrt",
-      "domain": [0, 1100],
-      "range": [40, 250]
-    },
-    {
-      "name": "pointSizeVol",
-      "type": "sqrt",
-      "domain": [0, 160000],
-      "range": [40, 250]
+      "name": "productColor",
+      "type": "ordinal",
+      "domain": [
+        "Butter/AMF",
+        "Cheese",
+        "Milk",
+        "SMP",
+        "WMP",
+        "Other"
+      ],
+      "range": [
+        "#E9C46A",
+        "#264653",
+        "#457B9D",
+        "#2A9D8F",
+        "#8AB17D",
+        "#9E9E9E"
+      ]
     }
   ],
 
   "marks": [
     {
-      "type": "shape",
-      "clip": true,
-      "from": {"data": "world"},
+      "type": "text",
       "encode": {
         "enter": {
-          "fill": {"value": "#ECECE8"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 0.8}
+          "x": {
+            "value": 0
+          },
+          "y": {
+            "value": -12
+          },
+          "text": {
+            "value": "DAIRY PRODUCT"
+          },
+          "align": {
+            "value": "left"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#666666"
+          }
         }
-      },
-      "transform": [{"type": "geoshape", "projection": "projection"}]
+      }
     },
+
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "rightX"
+          },
+          "y": {
+            "value": -12
+          },
+          "text": {
+            "value": "EXPORT REGION"
+          },
+          "align": {
+            "value": "left"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#666666"
+          }
+        }
+      }
+    },
+
     {
       "type": "path",
-      "clip": true,
-      "from": {"data": "flows"},
+      "from": {
+        "data": "flows"
+      },
       "encode": {
         "enter": {
-          "stroke": {"value": "#2F6B4F"},
-          "strokeCap": {"value": "round"},
-          "fill": {"value": null}
-        },
-        "update": {
-          "path": {
-            "signal": "'M' + scale('projection', [datum.originLon, datum.originLat])[0] + ',' + scale('projection', [datum.originLon, datum.originLat])[1] + ' Q' + scale('projection', [datum.midLon, datum.midLat])[0] + ',' + scale('projection', [datum.midLon, datum.midLat])[1] + ' ' + scale('projection', [datum.longitude, datum.latitude])[0] + ',' + scale('projection', [datum.longitude, datum.latitude])[1]"
+          "stroke": {
+            "scale": "productColor",
+            "field": "product"
+          },
+          "strokeOpacity": {
+            "value": 0.42
           },
           "strokeWidth": {
-            "signal": "metric === 'Value' ? scale('flowWidth', datum.value_aud_m) : scale('flowWidthVol', datum.volume_tonnes)"
+            "field": "strokeWidth"
           },
-          "strokeOpacity": {"value": 0.38},
-          "tooltip": {"field": "tooltipText"}
+          "tooltip": {
+            "field": "tooltipText"
+          }
         },
+
+        "update": {
+          "path": {
+            "signal": "'M' + (leftX + nodeWidth) + ',' + datum.sy + ' C' + ((leftX + rightX) / 2) + ',' + datum.sy + ' ' + ((leftX + rightX) / 2) + ',' + datum.ty + ' ' + rightX + ',' + datum.ty"
+          }
+        },
+
         "hover": {
-          "strokeOpacity": {"value": 0.95}
+          "strokeOpacity": {
+            "value": 0.95
+          }
         }
       }
     },
+
     {
-      "type": "symbol",
-      "from": {"data": "destinations"},
+      "type": "rect",
+      "from": {
+        "data": "products"
+      },
       "encode": {
         "enter": {
-          "shape": {"value": "circle"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 1.5},
-          "tooltip": {"field": "tooltipText"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "x": {
+            "signal": "leftX"
+          },
+          "x2": {
+            "signal": "leftX + nodeWidth"
+          },
+          "y": {
+            "field": "y"
+          },
+          "height": {
+            "field": "h"
+          },
           "fill": {
-            "signal": "datum.country === 'Greater China' ? '#C46A2D' : '#2F6B4F'"
+            "scale": "productColor",
+            "field": "name"
           },
-          "size": {
-            "signal": "metric === 'Value' ? scale('pointSize', datum.value_aud_m) : scale('pointSizeVol', datum.volume_tonnes)"
+          "cornerRadius": {
+            "value": 2
           },
-          "opacity": {"value": 0.95}
-        },
-        "hover": {
-          "stroke": {"value": "#111111"},
-          "strokeWidth": {"value": 2.5}
+          "tooltip": {
+            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
+          }
         }
       }
     },
-    {
-      "type": "symbol",
-      "from": {"data": "australia"},
-      "encode": {
-        "enter": {
-          "shape": {"value": "circle"},
-          "fill": {"value": "#1D3557"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 2.5},
-          "size": {"value": 180}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
-        }
-      }
-    },
+
     {
       "type": "text",
-      "from": {"data": "australia"},
+      "from": {
+        "data": "products"
+      },
       "encode": {
         "enter": {
-          "text": {"value": "AUSTRALIA (Origin)"},
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 11},
-          "fontWeight": {"value": "bold"},
-          "fill": {"value": "#1D3557"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 3.5},
-          "strokeLinejoin": {"value": "round"},
-          "dx": {"value": 12},
-          "dy": {"value": 4}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+          "x": {
+            "value": 0
+          },
+          "y": {
+            "field": "y"
+          },
+          "dy": {
+            "signal": "datum.h / 2 - 6"
+          },
+          "text": {
+            "field": "name"
+          },
+          "align": {
+            "value": "left"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#333333"
+          }
         }
       }
     },
+
     {
       "type": "text",
-      "from": {"data": "australia"},
+      "from": {
+        "data": "products"
+      },
       "encode": {
         "enter": {
-          "text": {"value": "AUSTRALIA (Origin)"},
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 11},
-          "fontWeight": {"value": "bold"},
-          "fill": {"value": "#1D3557"},
-          "dx": {"value": 12},
-          "dy": {"value": 4}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+          "x": {
+            "value": 0
+          },
+          "y": {
+            "field": "y"
+          },
+          "dy": {
+            "signal": "datum.h / 2 + 8"
+          },
+          "text": {
+            "signal": "'A$' + format(datum.value, ',') + 'm'"
+          },
+          "align": {
+            "value": "left"
+          },
+          "fontSize": {
+            "value": 10
+          },
+          "fill": {
+            "value": "#777777"
+          }
         }
       }
     },
+
     {
-      "type": "text",
-      "from": {"data": "destinations"},
+      "type": "rect",
+      "from": {
+        "data": "regions"
+      },
       "encode": {
         "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 10.5},
-          "fontWeight": {"value": "bold"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 3.5},
-          "strokeLinejoin": {"value": "round"},
-          "fill": {"value": "#FFFFFF"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy - 6"},
-          "text": {"field": "country"}
+          "x": {
+            "signal": "rightX"
+          },
+          "x2": {
+            "signal": "rightX + nodeWidth"
+          },
+          "y": {
+            "field": "y"
+          },
+          "height": {
+            "field": "h"
+          },
+          "fill": {
+            "value": "#4A4E51"
+          },
+          "cornerRadius": {
+            "value": 2
+          },
+          "tooltip": {
+            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
+          }
         }
       }
     },
+
     {
       "type": "text",
-      "from": {"data": "destinations"},
+      "from": {
+        "data": "regions"
+      },
       "encode": {
         "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 10.5},
-          "fontWeight": {"value": "bold"},
-          "fill": {"value": "#1A1A1A"},
-          "tooltip": {"field": "tooltipText"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy - 6"},
-          "text": {"field": "country"}
+          "x": {
+            "signal": "rightX + nodeWidth + 8"
+          },
+          "y": {
+            "field": "y"
+          },
+          "dy": {
+            "signal": "datum.h / 2 - 6"
+          },
+          "text": {
+            "field": "name"
+          },
+          "align": {
+            "value": "left"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#333333"
+          }
         }
       }
     },
+
     {
       "type": "text",
-      "from": {"data": "destinations"},
+      "from": {
+        "data": "regions"
+      },
       "encode": {
         "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 9.5},
-          "fontWeight": {"value": "bold"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 3.5},
-          "strokeLinejoin": {"value": "round"},
-          "fill": {"value": "#FFFFFF"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy + 8"},
-          "text": {"field": "displayValue"}
-        }
-      }
-    },
-    {
-      "type": "text",
-      "from": {"data": "destinations"},
-      "encode": {
-        "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 9.5},
-          "fill": {"value": "#555555"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy + 8"},
-          "text": {"field": "displayValue"}
-        }
-      }
-    },
-    {
-      "type": "text",
-      "encode": {
-        "enter": {
-          "x": {"value": 80},
-          "y": {"value": 545},
-          "text": {"value": "Flow width and bubble size represent the selected export metric."},
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 10},
-          "fontStyle": {"value": "italic"},
-          "fill": {"value": "#777777"}
+          "x": {
+            "signal": "rightX + nodeWidth + 8"
+          },
+          "y": {
+            "field": "y"
+          },
+          "dy": {
+            "signal": "datum.h / 2 + 8"
+          },
+          "text": {
+            "signal": "'A$' + format(datum.value, ',') + 'm'"
+          },
+          "align": {
+            "value": "left"
+          },
+          "fontSize": {
+            "value": 10
+          },
+          "fill": {
+            "value": "#777777"
+          }
         }
       }
     }
