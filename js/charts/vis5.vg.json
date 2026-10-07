@@ -1,0 +1,542 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+
+  "width": 920,
+  "height": 430,
+
+  "padding": {
+    "top": 85,
+    "left": 35,
+    "right": 40,
+    "bottom": 30
+  },
+
+  "autosize": "none",
+
+  "title": {
+    "text": "Victoria Dominates Australia’s Milk Pool",
+    "subtitle": "Almost two-thirds of Australia’s milk was produced in Victoria in 2024–25.",
+    "anchor": "start",
+    "frame": "group",
+    "font": "Arial",
+    "fontSize": 20,
+    "fontWeight": "bold",
+    "color": "#222222",
+    "subtitleFont": "Arial",
+    "subtitleFontSize": 13,
+    "subtitleFontWeight": "normal",
+    "subtitleColor": "#666666",
+    "offset": 22
+  },
+
+  "data": [
+    {
+      "name": "states",
+      "url": "vis05_state_production_share.csv",
+
+      "format": {
+        "type": "csv",
+        "parse": {
+          "milk_ml": "number",
+          "share_percent": "number"
+        }
+      },
+
+      "transform": [
+        {
+          "type": "formula",
+          "as": "waffle_units",
+          "expr": "datum.state === 'Victoria' ? 63 : datum.state === 'New South Wales' ? 13 : datum.state === 'Tasmania' ? 11 : datum.state === 'South Australia' ? 6 : datum.state === 'Western Australia' ? 4 : 3"
+        },
+        {
+          "type": "formula",
+          "as": "state_order",
+          "expr": "datum.state === 'Victoria' ? 1 : datum.state === 'New South Wales' ? 2 : datum.state === 'Tasmania' ? 3 : datum.state === 'South Australia' ? 4 : datum.state === 'Western Australia' ? 5 : 6"
+        }
+      ]
+    },
+
+    {
+      "name": "waffle",
+
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 1,
+          "stop": 101,
+          "as": "unit"
+        },
+        {
+          "type": "formula",
+          "as": "column",
+          "expr": "(datum.unit - 1) % 10"
+        },
+        {
+          "type": "formula",
+          "as": "row",
+          "expr": "floor((datum.unit - 1) / 10)"
+        },
+        {
+          "type": "formula",
+          "as": "state",
+          "expr": "datum.unit <= 63 ? 'Victoria' : datum.unit <= 76 ? 'New South Wales' : datum.unit <= 87 ? 'Tasmania' : datum.unit <= 93 ? 'South Australia' : datum.unit <= 97 ? 'Western Australia' : 'Queensland'"
+        },
+        {
+          "type": "formula",
+          "as": "share_percent",
+          "expr": "datum.state === 'Victoria' ? 63.3 : datum.state === 'New South Wales' ? 12.9 : datum.state === 'Tasmania' ? 10.8 : datum.state === 'South Australia' ? 5.7 : datum.state === 'Western Australia' ? 4.0 : 3.3"
+        },
+        {
+          "type": "formula",
+          "as": "milk_ml",
+          "expr": "datum.state === 'Victoria' ? 5266 : datum.state === 'New South Wales' ? 1071 : datum.state === 'Tasmania' ? 901 : datum.state === 'South Australia' ? 471 : datum.state === 'Western Australia' ? 331 : 275"
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "stateColor",
+      "type": "ordinal",
+
+      "domain": [
+        "Victoria",
+        "New South Wales",
+        "Tasmania",
+        "South Australia",
+        "Western Australia",
+        "Queensland"
+      ],
+
+      "range": [
+        "#1B4D3E",
+        "#3B7A57",
+        "#5E9B77",
+        "#86B899",
+        "#AECDB9",
+        "#CCDED2"
+      ]
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "rect",
+
+      "from": {
+        "data": "waffle"
+      },
+
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "datum.column * 32"
+          },
+
+          "y": {
+            "signal": "15 + datum.row * 32"
+          },
+
+          "width": {
+            "value": 27
+          },
+
+          "height": {
+            "value": 27
+          },
+
+          "cornerRadius": {
+            "value": 3.5
+          },
+
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+
+          "strokeWidth": {
+            "value": 1.5
+          },
+
+          "tooltip": {
+            "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"
+          }
+        },
+
+        "update": {
+          "fill": {
+            "scale": "stateColor",
+            "field": "state"
+          },
+
+          "opacity": {
+            "value": 1
+          }
+        },
+
+        "hover": {
+          "stroke": {
+            "value": "#222222"
+          },
+
+          "strokeWidth": {
+            "value": 2
+          }
+        }
+      }
+    },
+
+    {
+      "type": "text",
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 0
+          },
+
+          "y": {
+            "value": 350
+          },
+
+          "text": {
+            "value": "Each square ≈ 1% of national milk production"
+          },
+
+          "font": {
+            "value": "Arial"
+          },
+
+          "fontSize": {
+            "value": 10
+          },
+
+          "fontStyle": {
+            "value": "italic"
+          },
+
+          "fill": {
+            "value": "#777777"
+          }
+        }
+      }
+    },
+
+    {
+      "type": "text",
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 390
+          },
+
+          "y": {
+            "value": 30
+          },
+
+          "text": {
+            "value": "VICTORIA"
+          },
+
+          "font": {
+            "value": "Arial"
+          },
+
+          "fontSize": {
+            "value": 12
+          },
+
+          "fontWeight": {
+            "value": "bold"
+          },
+
+          "fill": {
+            "value": "#1B4D3E"
+          }
+        }
+      }
+    },
+
+    {
+      "type": "text",
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 390
+          },
+
+          "y": {
+            "value": 70
+          },
+
+          "text": {
+            "value": "63.3%"
+          },
+
+          "font": {
+            "value": "Arial"
+          },
+
+          "fontSize": {
+            "value": 36
+          },
+
+          "fontWeight": {
+            "value": "bold"
+          },
+
+          "fill": {
+            "value": "#1B4D3E"
+          }
+        }
+      }
+    },
+
+    {
+      "type": "text",
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 390
+          },
+
+          "y": {
+            "value": 98
+          },
+
+          "text": {
+            "value": "5,266 million litres produced in 2024–25"
+          },
+
+          "font": {
+            "value": "Arial"
+          },
+
+          "fontSize": {
+            "value": 11
+          },
+
+          "fill": {
+            "value": "#555555"
+          }
+        }
+      }
+    },
+
+    {
+      "type": "rule",
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 390
+          },
+
+          "x2": {
+            "value": 790
+          },
+
+          "y": {
+            "value": 122
+          },
+
+          "stroke": {
+            "value": "#E1E1DD"
+          },
+
+          "strokeWidth": {
+            "value": 1
+          }
+        }
+      }
+    },
+
+    {
+      "type": "symbol",
+
+      "from": {
+        "data": "states"
+      },
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 398
+          },
+
+          "y": {
+            "signal": "150 + (datum.state_order - 1) * 38"
+          },
+
+          "shape": {
+            "value": "square"
+          },
+
+          "size": {
+            "value": 125
+          },
+
+          "fill": {
+            "scale": "stateColor",
+            "field": "state"
+          },
+
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+
+          "strokeWidth": {
+            "value": 1
+          }
+        }
+      }
+    },
+
+    {
+      "type": "text",
+
+      "from": {
+        "data": "states"
+      },
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 418
+          },
+
+          "y": {
+            "signal": "150 + (datum.state_order - 1) * 38"
+          },
+
+          "text": {
+            "field": "state"
+          },
+
+          "align": {
+            "value": "left"
+          },
+
+          "baseline": {
+            "value": "middle"
+          },
+
+          "font": {
+            "value": "Arial"
+          },
+
+          "fontSize": {
+            "value": 11.5
+          },
+
+          "fontWeight": {
+            "signal": "datum.state === 'Victoria' ? 'bold' : 'normal'"
+          },
+
+          "fill": {
+            "signal": "datum.state === 'Victoria' ? '#1B4D3E' : '#333333'"
+          }
+        }
+      }
+    },
+
+    {
+      "type": "text",
+
+      "from": {
+        "data": "states"
+      },
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 700
+          },
+
+          "y": {
+            "signal": "150 + (datum.state_order - 1) * 38"
+          },
+
+          "text": {
+            "signal": "format(datum.share_percent, '.1f') + '%'"
+          },
+
+          "align": {
+            "value": "right"
+          },
+
+          "baseline": {
+            "value": "middle"
+          },
+
+          "font": {
+            "value": "Arial"
+          },
+
+          "fontSize": {
+            "value": 11
+          },
+
+          "fontWeight": {
+            "signal": "datum.state === 'Victoria' ? 'bold' : 'normal'"
+          },
+
+          "fill": {
+            "signal": "datum.state === 'Victoria' ? '#1B4D3E' : '#444444'"
+          }
+        }
+      }
+    },
+
+    {
+      "type": "text",
+
+      "from": {
+        "data": "states"
+      },
+
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 790
+          },
+
+          "y": {
+            "signal": "150 + (datum.state_order - 1) * 38"
+          },
+
+          "text": {
+            "signal": "format(datum.milk_ml, ',') + ' ML'"
+          },
+
+          "align": {
+            "value": "right"
+          },
+
+          "baseline": {
+            "value": "middle"
+          },
+
+          "font": {
+            "value": "Arial"
+          },
+
+          "fontSize": {
+            "value": 10.5
+          },
+
+          "fill": {
+            "value": "#666666"
+          }
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "background": "white"
+  }
+}
