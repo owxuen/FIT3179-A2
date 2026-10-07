@@ -1,0 +1,189 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": {
+    "text": "Australia's Milk Boom Didn't Last",
+    "subtitle": "Australian milk production peaked in 2014–15 before falling to 8,315 million litres in 2024–25.",
+    "anchor": "start",
+    "fontSize": 22,
+    "subtitleFontSize": 14,
+    "subtitleColor": "#666666",
+    "offset": 18
+  },
+
+  "width": 800,
+  "height": 400,
+
+  "data": {
+    "url": "vis01_australia_milk_production_2006_2025.csv"
+  },
+
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": "Financial year",
+      "sort": null,
+      "axis": {
+        "labelAngle": -45,
+        "labelPadding": 7,
+        "tickSize": 0,
+        "domain": false
+      }
+    },
+
+    "y": {
+      "field": "milk_production_ml",
+      "type": "quantitative",
+      "title": "Milk production (million litres)",
+      "scale": {
+        "zero": false,
+        "domain": [7900, 10050]
+      },
+      "axis": {
+        "domain": false,
+        "tickSize": 0,
+        "gridOpacity": 0.25,
+        "format": ",.0f"
+      }
+    }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 3,
+        "color": "#2F6B4F"
+      }
+    },
+
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 55,
+        "color": "#2F6B4F"
+      },
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Financial year"
+          },
+          {
+            "field": "milk_production_ml",
+            "type": "quantitative",
+            "title": "Milk production (ML)",
+            "format": ",.0f"
+          }
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2014-15' || datum.year === '2024-25'"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 150,
+        "color": "#C46A2D",
+        "stroke": "white",
+        "strokeWidth": 2
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2014-15'"
+        },
+        {
+          "calculate": "'Peak: ' + format(datum.milk_production_ml, ',.0f') + ' ML'",
+          "as": "annotation"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -13,
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "color": "#333333"
+      },
+      "encoding": {
+        "text": {
+          "field": "annotation"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dx": -30,
+        "dy": -32,
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "color": "#333333"
+      },
+      "encoding": {
+        "text": {
+          "value": "8,315 ML"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": -100,
+        "dy": -17,
+        "fontSize": 11,
+        "fontWeight": "normal",
+        "color": "#666666"
+      },
+      "encoding": {
+        "text": {
+          "value": "15% below the 2014–15 peak"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "background": "white",
+
+    "view": {
+      "stroke": null
+    },
+
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 13,
+      "titlePadding": 12,
+      "labelColor": "#555555",
+      "titleColor": "#333333"
+    }
+  }
+}

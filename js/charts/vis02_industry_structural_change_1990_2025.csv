@@ -1,0 +1,7 @@
+metric,year,index,actual_value,unit,change_pct
+Milk production,1990,100.0,6262,ML,32.8
+Milk production,2025,132.8,8315,ML,32.8
+Dairy cows,1990,100.0,1654,thousand cows,-21.4
+Dairy cows,2025,78.6,1300,thousand cows,-21.4
+Dairy farms,1990,100.0,15396,farms,-75.5
+Dairy farms,2025,24.5,3772,farms,-75.5

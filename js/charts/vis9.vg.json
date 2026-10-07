@@ -1,0 +1,375 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 920,
+  "height": 580,
+  "padding": {"top": 75, "left": 20, "right": 25, "bottom": 35},
+  "autosize": "none",
+
+  "title": {
+    "text": "Where Does Australia’s Dairy Go?",
+    "subtitle": "Australia’s top 10 dairy export markets are concentrated across Asia, led by Greater China and Japan (2024–25).",
+    "anchor": "start",
+    "frame": "group",
+    "fontSize": 20,
+    "fontWeight": "bold",
+    "color": "#222222",
+    "subtitleFontSize": 13,
+    "subtitleColor": "#666666",
+    "offset": 22
+  },
+
+  "signals": [
+    {
+      "name": "metric",
+      "value": "Value",
+      "bind": {
+        "input": "select",
+        "options": ["Value", "Volume"],
+        "labels": ["Export value (A$m)", "Export volume (tonnes)"],
+        "name": "Select Metric: "
+      }
+    }
+  ],
+
+  "data": [
+    {
+      "name": "world",
+      "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    },
+    {
+      "name": "destinations",
+      "url": "vis09_export_destinations.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "latitude": "number",
+          "longitude": "number",
+          "volume_tonnes": "number",
+          "volume_rank": "number",
+          "value_aud_m": "number",
+          "value_rank": "number"
+        }
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "as": "displayValue",
+          "expr": "metric === 'Value' ? 'A$' + format(datum.value_aud_m, ',') + 'm' : format(datum.volume_tonnes, ',') + ' t'"
+        },
+        {
+          "type": "formula",
+          "as": "tooltipText",
+          "expr": "datum.country + '\\nExport value: A$' + format(datum.value_aud_m, ',') + 'm (Rank #' + datum.value_rank + ')\\nExport volume: ' + format(datum.volume_tonnes, ',') + ' tonnes (Rank #' + datum.volume_rank + ')'"
+        },
+        {
+          "type": "formula",
+          "as": "lblAlign",
+          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? 'right' : 'left'"
+        },
+        {
+          "type": "formula",
+          "as": "lblDx",
+          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? -11 : 11"
+        },
+        {
+          "type": "formula",
+          "as": "lblDy",
+          "expr": "datum.country === 'Singapore' ? 12 : datum.country === 'Malaysia' ? -10 : datum.country === 'Indonesia' ? 8 : datum.country === 'Vietnam' ? -12 : -5"
+        }
+      ]
+    },
+    {
+      "name": "australia",
+      "values": [
+        {"country": "Australia", "longitude": 134.0, "latitude": -24.5}
+      ]
+    },
+    {
+      "name": "flows",
+      "source": "destinations",
+      "transform": [
+        {"type": "formula", "as": "originLon", "expr": "134.0"},
+        {"type": "formula", "as": "originLat", "expr": "-24.5"},
+        {
+          "type": "formula",
+          "as": "midLon",
+          "expr": "(datum.originLon + datum.longitude) / 2 + (datum.longitude < 125 ? -5 : 4)"
+        },
+        {
+          "type": "formula",
+          "as": "midLat",
+          "expr": "(datum.originLat + datum.latitude) / 2 + 5"
+        }
+      ]
+    }
+  ],
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "mercator",
+      "center": [142, -5],
+      "scale": 310,
+      "translate": [460, 290],
+      "clipExtent": [[0, 0], [920, 580]]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "flowWidth",
+      "type": "sqrt",
+      "domain": [0, 1100],
+      "range": [1.5, 11]
+    },
+    {
+      "name": "flowWidthVol",
+      "type": "sqrt",
+      "domain": [0, 160000],
+      "range": [1.5, 11]
+    },
+    {
+      "name": "pointSize",
+      "type": "sqrt",
+      "domain": [0, 1100],
+      "range": [40, 250]
+    },
+    {
+      "name": "pointSizeVol",
+      "type": "sqrt",
+      "domain": [0, 160000],
+      "range": [40, 250]
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "shape",
+      "clip": true,
+      "from": {"data": "world"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "#ECECE8"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 0.8}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "type": "path",
+      "clip": true,
+      "from": {"data": "flows"},
+      "encode": {
+        "enter": {
+          "stroke": {"value": "#2F6B4F"},
+          "strokeCap": {"value": "round"},
+          "fill": {"value": null}
+        },
+        "update": {
+          "path": {
+            "signal": "'M' + scale('projection', [datum.originLon, datum.originLat])[0] + ',' + scale('projection', [datum.originLon, datum.originLat])[1] + ' Q' + scale('projection', [datum.midLon, datum.midLat])[0] + ',' + scale('projection', [datum.midLon, datum.midLat])[1] + ' ' + scale('projection', [datum.longitude, datum.latitude])[0] + ',' + scale('projection', [datum.longitude, datum.latitude])[1]"
+          },
+          "strokeWidth": {
+            "signal": "metric === 'Value' ? scale('flowWidth', datum.value_aud_m) : scale('flowWidthVol', datum.volume_tonnes)"
+          },
+          "strokeOpacity": {"value": 0.38},
+          "tooltip": {"field": "tooltipText"}
+        },
+        "hover": {
+          "strokeOpacity": {"value": 0.95}
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "destinations"},
+      "encode": {
+        "enter": {
+          "shape": {"value": "circle"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 1.5},
+          "tooltip": {"field": "tooltipText"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "fill": {
+            "signal": "datum.country === 'Greater China' ? '#C46A2D' : '#2F6B4F'"
+          },
+          "size": {
+            "signal": "metric === 'Value' ? scale('pointSize', datum.value_aud_m) : scale('pointSizeVol', datum.volume_tonnes)"
+          },
+          "opacity": {"value": 0.95}
+        },
+        "hover": {
+          "stroke": {"value": "#111111"},
+          "strokeWidth": {"value": 2.5}
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "australia"},
+      "encode": {
+        "enter": {
+          "shape": {"value": "circle"},
+          "fill": {"value": "#1D3557"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 2.5},
+          "size": {"value": 180}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "australia"},
+      "encode": {
+        "enter": {
+          "text": {"value": "AUSTRALIA (Origin)"},
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 11},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#1D3557"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 3.5},
+          "strokeLinejoin": {"value": "round"},
+          "dx": {"value": 12},
+          "dy": {"value": 4}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "australia"},
+      "encode": {
+        "enter": {
+          "text": {"value": "AUSTRALIA (Origin)"},
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 11},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#1D3557"},
+          "dx": {"value": 12},
+          "dy": {"value": 4}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "destinations"},
+      "encode": {
+        "enter": {
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 10.5},
+          "fontWeight": {"value": "bold"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 3.5},
+          "strokeLinejoin": {"value": "round"},
+          "fill": {"value": "#FFFFFF"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy - 6"},
+          "text": {"field": "country"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "destinations"},
+      "encode": {
+        "enter": {
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 10.5},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#1A1A1A"},
+          "tooltip": {"field": "tooltipText"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy - 6"},
+          "text": {"field": "country"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "destinations"},
+      "encode": {
+        "enter": {
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 9.5},
+          "fontWeight": {"value": "bold"},
+          "stroke": {"value": "#FFFFFF"},
+          "strokeWidth": {"value": 3.5},
+          "strokeLinejoin": {"value": "round"},
+          "fill": {"value": "#FFFFFF"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy + 8"},
+          "text": {"field": "displayValue"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "destinations"},
+      "encode": {
+        "enter": {
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 9.5},
+          "fill": {"value": "#555555"}
+        },
+        "update": {
+          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
+          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "align": {"field": "lblAlign"},
+          "dx": {"field": "lblDx"},
+          "dy": {"signal": "datum.lblDy + 8"},
+          "text": {"field": "displayValue"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "x": {"value": 80},
+          "y": {"value": 545},
+          "text": {"value": "Flow width and bubble size represent the selected export metric."},
+          "font": {"value": "Arial"},
+          "fontSize": {"value": 10},
+          "fontStyle": {"value": "italic"},
+          "fill": {"value": "#777777"}
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "background": "white"
+  }
+}

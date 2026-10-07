@@ -1,0 +1,415 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 920,
+  "height": 280,
+
+  "title": {
+    "text": "Australia’s Taste for Dairy Is Changing",
+    "subtitle": "Drinking milk consumption has steadily declined since 2010–11, while yoghurt consumption has generally moved upward.",
+    "anchor": "start",
+    "fontSize": 20,
+    "fontWeight": "bold",
+    "subtitleFontSize": 13,
+    "subtitleFontWeight": "normal",
+    "subtitleColor": "#666666",
+    "offset": 22
+  },
+
+  "data": {
+    "url": "vis07_dairy_consumption.csv"
+  },
+
+  "transform": [
+    {
+      "calculate": "format(datum.consumption, '.1f') + ' ' + datum.unit",
+      "as": "consumption_display"
+    },
+    {
+      "calculate": "datum.change_pct > 0 ? '+' + format(datum.change_pct, '.1f') + '%' : datum.change_pct < 0 ? format(datum.change_pct, '.1f') + '%' : '0%'",
+      "as": "change_display"
+    }
+  ],
+
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 2,
+        "stroke": "#FFFFFF",
+        "strokeWidth": 2
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "sort": [
+            "2010-11",
+            "2011-12",
+            "2012-13",
+            "2013-14",
+            "2014-15",
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23",
+            "2023-24",
+            "2024-25"
+          ],
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelAngle": -45,
+            "labelAlign": "right",
+            "labelFontSize": 10,
+            "labelColor": "#555555",
+            "labelPadding": 12,
+            "ticks": false,
+            "domain": false
+          }
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ],
+          "axis": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": "bold",
+            "labelColor": "#555555",
+            "labelPadding": 14,
+            "ticks": false,
+            "domain": false
+          }
+        },
+
+        "color": {
+          "field": "change_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -20,
+              -10,
+              0,
+              10,
+              20,
+              30,
+              45
+            ],
+            "range": [
+              "#75658A",
+              "#AA8FA3",
+              "#F4F4F2",
+              "#B9C9B9",
+              "#7FA087",
+              "#557E63",
+              "#2F6B4F"
+            ],
+            "clamp": true
+          },
+          "legend": {
+            "title": "Change from 2010–11",
+            "orient": "right",
+            "offset": 170,
+            "gradientLength": 200,
+            "gradientThickness": 13,
+            "titleFontSize": 11,
+            "titleFontWeight": "bold",
+            "titleColor": "#444444",
+            "labelFontSize": 10,
+            "labelColor": "#666666",
+            "values": [
+              -20,
+              -10,
+              0,
+              10,
+              20,
+              30,
+              40
+            ],
+            "labelExpr": "datum.value > 0 ? '+' + datum.value + '%' : datum.value + '%'"
+          }
+        },
+
+        "tooltip": [
+          {
+            "field": "product",
+            "type": "nominal",
+            "title": "Dairy product"
+          },
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "consumption_display",
+            "type": "nominal",
+            "title": "Per-capita consumption"
+          },
+          {
+            "field": "change_display",
+            "type": "nominal",
+            "title": "Change from 2010–11"
+          }
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 9,
+        "fontWeight": "bold"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        },
+
+        "text": {
+          "field": "change_display",
+          "type": "nominal"
+        },
+
+        "color": {
+          "condition": [
+            {
+              "test": "datum.change_pct >= 20 || datum.change_pct <= -15",
+              "value": "#FFFFFF"
+            }
+          ],
+          "value": "#3A3A3A"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
+        }
+      ],
+
+      "mark": {
+        "type": "rect",
+        "filled": false,
+        "stroke": "#C46A2D",
+        "strokeWidth": 2.5,
+        "strokeDash": [
+          5,
+          4
+        ]
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": -70,
+        "dy": 40,
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#C46A2D"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        },
+
+        "text": {
+          "value": "Yoghurt category expanded*"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25' && (datum.product === 'Milk' || datum.product === 'Yoghurt')"
+        }
+      ],
+
+      "mark": {
+        "type": "rect",
+        "filled": false,
+        "stroke": "#C46A2D",
+        "strokeWidth": 2.5
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25' && datum.product === 'Milk'"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 46,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#C46A2D"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        },
+
+        "text": {
+          "value": "−18.2% since 2010–11"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2024-25' && datum.product === 'Yoghurt'"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 46,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#C46A2D"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ]
+        },
+
+        "text": {
+          "value": "+45.2%* since 2010–11"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "background": "white",
+
+    "view": {
+      "stroke": null
+    },
+
+    "axis": {
+      "grid": false
+    },
+
+    "font": "Arial"
+  }
+}

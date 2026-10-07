@@ -1,0 +1,43 @@
+product,region,value_million
+Butter/AMF,SE Asia,85
+Butter/AMF,Other Asia,74
+Butter/AMF,Europe,16
+Butter/AMF,Middle East,5
+Butter/AMF,Africa,4
+Butter/AMF,Americas,24
+Butter/AMF,Other,7
+Cheese,SE Asia,344
+Cheese,Other Asia,763
+Cheese,Europe,1
+Cheese,Middle East,41
+Cheese,Africa,20
+Cheese,Americas,42
+Cheese,Other,45
+Milk,SE Asia,124
+Milk,Other Asia,166
+Milk,Europe,0
+Milk,Middle East,3
+Milk,Africa,1
+Milk,Americas,0
+Milk,Other,29
+SMP,SE Asia,478
+SMP,Other Asia,197
+SMP,Europe,0
+SMP,Middle East,71
+SMP,Africa,2
+SMP,Americas,0
+SMP,Other,22
+WMP,SE Asia,181
+WMP,Other Asia,399
+WMP,Europe,0
+WMP,Middle East,39
+WMP,Africa,2
+WMP,Americas,24
+WMP,Other,5
+Other,SE Asia,174
+Other,Other Asia,257
+Other,Europe,38
+Other,Middle East,27
+Other,Africa,0
+Other,Americas,20
+Other,Other,78

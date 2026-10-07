@@ -1,0 +1,61 @@
+product,year,consumption,unit,change_pct
+Milk,2010-11,104.5,L/person,0.0
+Milk,2011-12,106.0,L/person,1.4
+Milk,2012-13,106.7,L/person,2.1
+Milk,2013-14,105.8,L/person,1.2
+Milk,2014-15,105.0,L/person,0.5
+Milk,2015-16,104.9,L/person,0.4
+Milk,2016-17,102.8,L/person,-1.6
+Milk,2017-18,100.7,L/person,-3.6
+Milk,2018-19,98.6,L/person,-5.6
+Milk,2019-20,97.0,L/person,-7.2
+Milk,2020-21,94.4,L/person,-9.7
+Milk,2021-22,93.0,L/person,-11.0
+Milk,2022-23,90.3,L/person,-13.6
+Milk,2023-24,88.4,L/person,-15.4
+Milk,2024-25,85.5,L/person,-18.2
+Cheese,2010-11,13.6,kg/person,0.0
+Cheese,2011-12,13.4,kg/person,-1.5
+Cheese,2012-13,13.5,kg/person,-0.7
+Cheese,2013-14,13.5,kg/person,-0.7
+Cheese,2014-15,13.6,kg/person,0.0
+Cheese,2015-16,13.6,kg/person,0.0
+Cheese,2016-17,13.4,kg/person,-1.5
+Cheese,2017-18,13.6,kg/person,0.0
+Cheese,2018-19,13.5,kg/person,-0.7
+Cheese,2019-20,13.6,kg/person,0.0
+Cheese,2020-21,12.8,kg/person,-5.9
+Cheese,2021-22,14.0,kg/person,2.9
+Cheese,2022-23,15.4,kg/person,13.2
+Cheese,2023-24,14.8,kg/person,8.8
+Cheese,2024-25,13.4,kg/person,-1.5
+Butter & blends,2010-11,3.9,kg/person,0.0
+Butter & blends,2011-12,3.9,kg/person,0.0
+Butter & blends,2012-13,3.7,kg/person,-5.1
+Butter & blends,2013-14,3.9,kg/person,0.0
+Butter & blends,2014-15,4.0,kg/person,2.6
+Butter & blends,2015-16,4.9,kg/person,25.6
+Butter & blends,2016-17,4.8,kg/person,23.1
+Butter & blends,2017-18,4.7,kg/person,20.5
+Butter & blends,2018-19,4.0,kg/person,2.6
+Butter & blends,2019-20,4.1,kg/person,5.1
+Butter & blends,2020-21,3.6,kg/person,-7.7
+Butter & blends,2021-22,3.3,kg/person,-15.4
+Butter & blends,2022-23,4.1,kg/person,5.1
+Butter & blends,2023-24,3.4,kg/person,-12.8
+Butter & blends,2024-25,3.3,kg/person,-15.4
+Yoghurt,2010-11,7.3,kg/person,0.0
+Yoghurt,2011-12,7.4,kg/person,1.4
+Yoghurt,2012-13,7.4,kg/person,1.4
+Yoghurt,2013-14,7.4,kg/person,1.4
+Yoghurt,2014-15,7.2,kg/person,-1.4
+Yoghurt,2015-16,9.2,kg/person,26.0
+Yoghurt,2016-17,9.1,kg/person,24.7
+Yoghurt,2017-18,9.0,kg/person,23.3
+Yoghurt,2018-19,9.5,kg/person,30.1
+Yoghurt,2019-20,9.4,kg/person,28.8
+Yoghurt,2020-21,9.5,kg/person,30.1
+Yoghurt,2021-22,9.6,kg/person,31.5
+Yoghurt,2022-23,9.7,kg/person,32.9
+Yoghurt,2023-24,10.0,kg/person,37.0
+Yoghurt,2024-25,10.6,kg/person,45.2
