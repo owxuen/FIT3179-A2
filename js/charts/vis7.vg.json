@@ -17,7 +17,7 @@
   "height": 650,
 
   "data": {
-    "url": "vis06_monthly_seasonality.csv"
+    "url": "vis07_monthly_seasonality.csv"
   },
 
   "transform": [
