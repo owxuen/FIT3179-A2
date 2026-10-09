@@ -1,21 +1,20 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-
   "width": 940,
   "height": 530,
-
   "padding": {
     "top": 85,
     "left": 25,
     "right": 65,
-    "bottom": 40
+    "bottom": 110
   },
-
   "autosize": "none",
-
   "title": {
     "text": "More Tonnes Don’t Always Mean More Value",
-    "subtitle": "Similar export volumes can produce very different economic value across Australia’s dairy markets (2024–25).",
+    "subtitle": [
+      "Similar export volumes can produce very different economic value across Australia’s dairy markets (2024–25).",
+      "Hover over a market line, dot, or label to trace its rankings across all three measures."
+    ],
     "anchor": "start",
     "frame": "group",
     "font": "Arial",
@@ -28,16 +27,12 @@
     "subtitleColor": "#666666",
     "offset": 22
   },
-
   "data": [
     {
       "name": "markets",
-
       "url": "vis11_export_market_ranks.csv",
-
       "format": {
         "type": "csv",
-
         "parse": {
           "volume_tonnes": "number",
           "volume_rank": "number",
@@ -47,14 +42,12 @@
           "value_rank": "number"
         }
       },
-
       "transform": [
         {
           "type": "formula",
           "as": "lineWidth",
           "expr": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 4 : 2"
         },
-
         {
           "type": "formula",
           "as": "lineOpacity",
@@ -62,12 +55,9 @@
         }
       ]
     },
-
     {
       "name": "japan",
-
       "source": "markets",
-
       "transform": [
         {
           "type": "filter",
@@ -75,12 +65,9 @@
         }
       ]
     },
-
     {
       "name": "singapore",
-
       "source": "markets",
-
       "transform": [
         {
           "type": "filter",
@@ -88,12 +75,9 @@
         }
       ]
     },
-
     {
       "name": "indonesia",
-
       "source": "markets",
-
       "transform": [
         {
           "type": "filter",
@@ -101,23 +85,19 @@
         }
       ]
     },
-
     {
       "name": "stages",
-
       "values": [
         {
           "stage": "VOLUME RANK",
           "x": 150,
           "subtitle": "Export tonnes"
         },
-
         {
           "stage": "VALUE PER TONNE RANK",
           "x": 450,
           "subtitle": "A$ per tonne"
         },
-
         {
           "stage": "TOTAL VALUE RANK",
           "x": 750,
@@ -125,40 +105,60 @@
         }
       ]
     },
-
     {
       "name": "ranks",
-
       "values": [
-        {"rank": 1},
-        {"rank": 2},
-        {"rank": 3},
-        {"rank": 4},
-        {"rank": 5},
-        {"rank": 6},
-        {"rank": 7},
-        {"rank": 8},
-        {"rank": 9},
-        {"rank": 10}
+        {
+          "rank": 1
+        },
+        {
+          "rank": 2
+        },
+        {
+          "rank": 3
+        },
+        {
+          "rank": 4
+        },
+        {
+          "rank": 5
+        },
+        {
+          "rank": 6
+        },
+        {
+          "rank": 7
+        },
+        {
+          "rank": 8
+        },
+        {
+          "rank": 9
+        },
+        {
+          "rank": 10
+        }
       ]
     }
   ],
-
   "scales": [
     {
       "name": "rankY",
       "type": "linear",
-      "domain": [1, 10],
-      "range": [55, 455],
+      "domain": [
+        1,
+        10
+      ],
+      "range": [
+        55,
+        455
+      ],
       "zero": false,
       "nice": false
     },
-
     {
       "name": "marketColor",
-
       "type": "ordinal",
-
       "domain": [
         "Greater China",
         "Japan",
@@ -171,7 +171,6 @@
         "South Korea",
         "New Zealand"
       ],
-
       "range": [
         "#1B4D3E",
         "#2A9D8F",
@@ -186,899 +185,813 @@
       ]
     }
   ],
-
   "marks": [
     {
       "type": "rule",
-
       "from": {
         "data": "ranks"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 56
           },
-
           "x2": {
             "value": 765
           },
-
           "y": {
             "scale": "rankY",
             "field": "rank"
           },
-
           "stroke": {
             "value": "#F0F0EC"
           },
-
           "strokeWidth": {
             "value": 1
           }
         }
       }
     },
-
     {
       "type": "rule",
-
       "from": {
         "data": "stages"
       },
-
       "encode": {
         "enter": {
           "x": {
             "field": "x"
           },
-
           "y": {
             "value": 45
           },
-
           "y2": {
             "value": 465
           },
-
           "stroke": {
             "value": "#D7D7D2"
           },
-
           "strokeWidth": {
             "value": 1
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "stages"
       },
-
       "encode": {
         "enter": {
           "x": {
             "field": "x"
           },
-
           "y": {
             "value": 5
           },
-
           "text": {
             "field": "stage"
           },
-
           "align": {
             "value": "center"
           },
-
           "baseline": {
             "value": "bottom"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 12
           },
-
           "fontWeight": {
             "value": "bold"
           },
-
           "fill": {
             "value": "#333333"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "stages"
       },
-
       "encode": {
         "enter": {
           "x": {
             "field": "x"
           },
-
           "y": {
             "value": 22
           },
-
           "text": {
             "field": "subtitle"
           },
-
           "align": {
             "value": "center"
           },
-
           "baseline": {
             "value": "bottom"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fill": {
             "value": "#777777"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "ranks"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 48
           },
-
           "y": {
             "scale": "rankY",
             "field": "rank"
           },
-
           "text": {
             "signal": "'#' + datum.rank"
           },
-
           "align": {
             "value": "right"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fill": {
             "value": "#888888"
           }
         }
       }
     },
-
     {
       "type": "path",
-
       "from": {
         "data": "markets"
       },
-
       "encode": {
         "enter": {
           "fill": {
             "value": null
           },
-
           "strokeCap": {
             "value": "round"
           },
-
           "strokeJoin": {
             "value": "round"
           },
-
           "tooltip": {
             "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
           }
         },
-
         "update": {
           "path": {
             "signal": "'M150,' + scale('rankY', datum.volume_rank) + ' C250,' + scale('rankY', datum.volume_rank) + ' 350,' + scale('rankY', datum.price_rank) + ' 450,' + scale('rankY', datum.price_rank) + ' C550,' + scale('rankY', datum.price_rank) + ' 650,' + scale('rankY', datum.value_rank) + ' 750,' + scale('rankY', datum.value_rank)"
           },
-
           "stroke": {
             "scale": "marketColor",
             "field": "country"
           },
-
           "strokeWidth": {
-            "field": "lineWidth"
+            "signal": "datum.country === hoverMarket ? 5 : datum.lineWidth"
           },
-
           "strokeOpacity": {
-            "field": "lineOpacity"
-          }
-        },
-
-        "hover": {
-          "strokeOpacity": {
-            "value": 1
-          },
-
-          "strokeWidth": {
-            "value": 5
+            "signal": "hoverMarket === null ? datum.lineOpacity : datum.country === hoverMarket ? 1 : 0.08"
           }
         }
       }
     },
-
     {
       "type": "symbol",
-
       "from": {
         "data": "markets"
       },
-
       "encode": {
         "enter": {
           "shape": {
             "value": "circle"
           },
-
           "stroke": {
             "value": "#FFFFFF"
           },
-
           "strokeWidth": {
             "value": 1.5
           },
-
           "tooltip": {
             "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
           }
         },
-
         "update": {
           "x": {
             "value": 150
           },
-
           "y": {
             "scale": "rankY",
             "field": "volume_rank"
           },
-
           "size": {
             "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 105 : 75"
           },
-
           "fill": {
             "scale": "marketColor",
             "field": "country"
           },
-
           "opacity": {
-            "value": 1
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "symbol",
-
       "from": {
         "data": "markets"
       },
-
       "encode": {
         "enter": {
           "shape": {
             "value": "circle"
           },
-
           "stroke": {
             "value": "#FFFFFF"
           },
-
           "strokeWidth": {
             "value": 1.5
           },
-
           "tooltip": {
             "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
           }
         },
-
         "update": {
           "x": {
             "value": 450
           },
-
           "y": {
             "scale": "rankY",
             "field": "price_rank"
           },
-
           "size": {
             "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 105 : 75"
           },
-
           "fill": {
             "scale": "marketColor",
             "field": "country"
           },
-
           "opacity": {
-            "value": 1
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "symbol",
-
       "from": {
         "data": "markets"
       },
-
       "encode": {
         "enter": {
           "shape": {
             "value": "circle"
           },
-
           "stroke": {
             "value": "#FFFFFF"
           },
-
           "strokeWidth": {
             "value": 1.5
           },
-
           "tooltip": {
             "signal": "{'Market': datum.country, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank, 'Value per tonne': 'A$' + format(datum.value_per_tonne, ',') + '/t', 'Value per tonne rank': '#' + datum.price_rank, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank}"
           }
         },
-
         "update": {
           "x": {
             "value": 750
           },
-
           "y": {
             "scale": "rankY",
             "field": "value_rank"
           },
-
           "size": {
             "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' ? 105 : 75"
           },
-
           "fill": {
             "scale": "marketColor",
             "field": "country"
           },
-
           "opacity": {
-            "value": 1
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "markets"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 136
           },
-
           "y": {
             "scale": "rankY",
             "field": "volume_rank"
           },
-
           "text": {
             "field": "country"
           },
-
           "align": {
             "value": "right"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10.5
           }
         },
-
         "update": {
           "fill": {
             "scale": "marketColor",
             "field": "country"
           },
-
           "fontWeight": {
             "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' || datum.country === 'Greater China' || datum.country === 'Japan' ? 'bold' : 'normal'"
+          },
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "markets"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 764
           },
-
           "y": {
             "scale": "rankY",
             "field": "value_rank"
           },
-
           "text": {
             "field": "country"
           },
-
           "align": {
             "value": "left"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10.5
           }
         },
-
         "update": {
           "fill": {
             "scale": "marketColor",
             "field": "country"
           },
-
           "fontWeight": {
             "signal": "datum.country === 'Indonesia' || datum.country === 'Singapore' || datum.country === 'Greater China' || datum.country === 'Japan' ? 'bold' : 'normal'"
+          },
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "japan"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 462
           },
-
           "y": {
             "scale": "rankY",
             "field": "price_rank"
           },
-
           "dy": {
             "value": -14
           },
-
           "text": {
             "signal": "'Japan: #1 by value/tonne (A$' + format(datum.value_per_tonne, ',') + '/t)'"
           },
-
           "align": {
             "value": "left"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontWeight": {
             "value": "bold"
           },
-
           "fill": {
             "value": "#2A9D8F"
           },
-
           "stroke": {
             "value": "#FFFFFF"
           },
-
           "strokeWidth": {
             "value": 3.5
           },
-
           "strokeLinejoin": {
             "value": "round"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "japan"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 462
           },
-
           "y": {
             "scale": "rankY",
             "field": "price_rank"
           },
-
           "dy": {
             "value": -14
           },
-
           "text": {
             "signal": "'Japan: #1 by value/tonne (A$' + format(datum.value_per_tonne, ',') + '/t)'"
           },
-
           "align": {
             "value": "left"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontWeight": {
             "value": "bold"
           },
-
           "fill": {
             "value": "#2A9D8F"
           }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
+          }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "singapore"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 450
           },
-
           "y": {
             "scale": "rankY",
             "field": "price_rank"
           },
-
           "dy": {
             "value": 17
           },
-
           "text": {
             "signal": "'Singapore: Lowest value/tonne (#10, A$' + format(datum.value_per_tonne, ',') + '/t)'"
           },
-
           "align": {
             "value": "center"
           },
-
           "baseline": {
             "value": "top"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontWeight": {
             "value": "bold"
           },
-
           "fill": {
             "value": "#75658A"
           },
-
           "stroke": {
             "value": "#FFFFFF"
           },
-
           "strokeWidth": {
             "value": 3.5
           },
-
           "strokeLinejoin": {
             "value": "round"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "singapore"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 450
           },
-
           "y": {
             "scale": "rankY",
             "field": "price_rank"
           },
-
           "dy": {
             "value": 17
           },
-
           "text": {
             "signal": "'Singapore: Lowest value/tonne (#10, A$' + format(datum.value_per_tonne, ',') + '/t)'"
           },
-
           "align": {
             "value": "center"
           },
-
           "baseline": {
             "value": "top"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontWeight": {
             "value": "bold"
           },
-
           "fill": {
             "value": "#75658A"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "indonesia"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 825
           },
-
           "y": {
             "scale": "rankY",
             "field": "value_rank"
           },
-
           "text": {
             "value": "↑ Rises 2 ranks (A$302m)"
           },
-
           "align": {
             "value": "left"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontWeight": {
             "value": "bold"
           },
-
           "fill": {
             "value": "#D95F02"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "singapore"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 825
           },
-
           "y": {
             "scale": "rankY",
             "field": "value_rank"
           },
-
           "text": {
             "value": "↓ Drops 2 ranks (A$206m)"
           },
-
           "align": {
             "value": "left"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontWeight": {
             "value": "bold"
           },
-
           "fill": {
             "value": "#75658A"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverMarket === null || datum.country === hoverMarket ? 1 : 0.2"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "encode": {
         "enter": {
           "x": {
             "value": 150
           },
-
           "y": {
             "value": 505
           },
-
           "text": {
             "value": "Value per tonne = total export value ÷ export volume."
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontStyle": {
             "value": "italic"
           },
-
           "fill": {
             "value": "#777777"
           }
         }
       }
+    },
+    {
+      "type": "rect",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 98
+          },
+          "x2": {
+            "signal": "width - 30"
+          },
+          "y": {
+            "value": 552
+          },
+          "y2": {
+            "value": 585
+          },
+          "fill": {
+            "value": "#EDF4EF"
+          },
+          "stroke": {
+            "value": "#B7D2BF"
+          },
+          "cornerRadius": {
+            "value": 6
+          }
+        }
+      }
+    },
+    {
+      "name": "context_note",
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 110
+          },
+          "y": {
+            "value": 561
+          },
+          "align": {
+            "value": "left"
+          },
+          "text": {
+            "value": [
+              "Value per tonne averages all dairy products exported to a market; it is not a price for one identical product."
+            ]
+          },
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#355542"
+          },
+          "baseline": {
+            "value": "top"
+          },
+          "lineHeight": {
+            "value": 15
+          }
+        }
+      }
     }
   ],
-
   "config": {
     "background": "white"
-  }
+  },
+  "signals": [
+    {
+      "name": "hoverMarket",
+      "value": null,
+      "on": [
+        {
+          "events": "mouseover[event.item && event.item.datum && event.item.datum.country]",
+          "update": "datum.country"
+        },
+        {
+          "events": "mouseout",
+          "update": "null"
+        }
+      ]
+    }
+  ]
 }

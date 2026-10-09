@@ -1,9 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Fewer Farms, Fewer Cows — Yet More Milk",
-    "subtitle": "Since 1990, dairy farm numbers have fallen by three-quarters, while national milk production is 33% higher.",
+    "subtitle": [
+      "Since 1990, dairy farm numbers have fallen by three-quarters, while national milk production is 33% higher."
+    ],
     "anchor": "start",
     "fontSize": 20,
     "fontWeight": "bold",
@@ -12,19 +13,19 @@
     "subtitleColor": "#666666",
     "offset": 18
   },
-
   "width": 760,
   "height": 420,
-
   "data": {
     "url": "vis02_industry_structural_change_1990_2025.csv"
   },
-
   "encoding": {
     "x": {
       "field": "year",
       "type": "ordinal",
-      "sort": ["1990", "2025"],
+      "sort": [
+        "1990",
+        "2025"
+      ],
       "title": null,
       "axis": {
         "labelAngle": 0,
@@ -35,16 +36,25 @@
         "domain": false
       }
     },
-
     "y": {
       "field": "index",
       "type": "quantitative",
-      "title": "Change since 1990 (1990 = 100)",
+      "title": "Relative to 1990 (1990 = 100)",
       "scale": {
-        "domain": [0, 145]
+        "domain": [
+          0,
+          145
+        ]
       },
       "axis": {
-        "values": [0, 25, 50, 75, 100, 125],
+        "values": [
+          0,
+          25,
+          50,
+          75,
+          100,
+          125
+        ],
         "domain": false,
         "tickSize": 0,
         "grid": true,
@@ -56,7 +66,6 @@
       }
     }
   },
-
   "layer": [
     {
       "transform": [
@@ -64,24 +73,20 @@
           "filter": "datum.metric !== 'Milk production'"
         }
       ],
-
       "mark": {
         "type": "line",
         "strokeWidth": 2.5,
         "color": "#A5A5A5"
       },
-
       "encoding": {
         "detail": {
           "field": "metric"
         },
-
         "order": {
           "field": "year",
           "type": "ordinal",
           "sort": "ascending"
         },
-
         "tooltip": [
           {
             "field": "metric",
@@ -113,31 +118,26 @@
         ]
       }
     },
-
     {
       "transform": [
         {
           "filter": "datum.metric === 'Milk production'"
         }
       ],
-
       "mark": {
         "type": "line",
         "strokeWidth": 4,
         "color": "#2F6B4F"
       },
-
       "encoding": {
         "detail": {
           "field": "metric"
         },
-
         "order": {
           "field": "year",
           "type": "ordinal",
           "sort": "ascending"
         },
-
         "tooltip": [
           {
             "field": "metric",
@@ -169,14 +169,12 @@
         ]
       }
     },
-
     {
       "transform": [
         {
           "filter": "datum.metric !== 'Milk production'"
         }
       ],
-
       "mark": {
         "type": "point",
         "filled": true,
@@ -185,7 +183,6 @@
         "stroke": "#FFFFFF",
         "strokeWidth": 1.5
       },
-
       "encoding": {
         "tooltip": [
           {
@@ -212,14 +209,12 @@
         ]
       }
     },
-
     {
       "transform": [
         {
           "filter": "datum.metric === 'Milk production'"
         }
       ],
-
       "mark": {
         "type": "point",
         "filled": true,
@@ -228,7 +223,6 @@
         "stroke": "#FFFFFF",
         "strokeWidth": 2
       },
-
       "encoding": {
         "tooltip": [
           {
@@ -255,14 +249,12 @@
         ]
       }
     },
-
     {
       "transform": [
         {
           "filter": "datum.year == 1990 && datum.metric === 'Milk production'"
         }
       ],
-
       "mark": {
         "type": "text",
         "align": "center",
@@ -272,14 +264,12 @@
         "fontWeight": "normal",
         "color": "#777777"
       },
-
       "encoding": {
         "text": {
           "value": "All measures = 100"
         }
       }
     },
-
     {
       "transform": [
         {
@@ -290,7 +280,6 @@
           "as": "end_label"
         }
       ],
-
       "mark": {
         "type": "text",
         "align": "left",
@@ -301,14 +290,12 @@
         "fontWeight": "bold",
         "color": "#2F6B4F"
       },
-
       "encoding": {
         "text": {
           "field": "end_label"
         }
       }
     },
-
     {
       "transform": [
         {
@@ -319,7 +306,6 @@
           "as": "end_label"
         }
       ],
-
       "mark": {
         "type": "text",
         "align": "left",
@@ -329,14 +315,12 @@
         "fontWeight": "bold",
         "color": "#666666"
       },
-
       "encoding": {
         "text": {
           "field": "end_label"
         }
       }
     },
-
     {
       "transform": [
         {
@@ -347,7 +331,6 @@
           "as": "end_label"
         }
       ],
-
       "mark": {
         "type": "text",
         "align": "left",
@@ -357,78 +340,101 @@
         "fontWeight": "bold",
         "color": "#666666"
       },
-
       "encoding": {
         "text": {
           "field": "end_label"
         }
       }
     },
-
     {
       "data": {
         "values": [
-          {
-            "year": "2025",
-            "index": 63,
-            "annotation": "76% fewer farms,"
-          }
+          {}
         ]
       },
-
       "mark": {
         "type": "text",
         "align": "left",
-        "baseline": "middle",
-        "dx": 100,
-        "fontSize": 14,
-        "fontWeight": "bold",
-        "color": "#C46A2D"
+        "baseline": "top",
+        "fontSize": 11,
+        "color": "#666666"
       },
-
       "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 475
+        },
         "text": {
-          "field": "annotation"
+          "value": "1990 baseline: 15,396 dairy farms · 1,654,000 dairy cows · 6,262 ML of milk"
         }
       }
     },
-
     {
       "data": {
         "values": [
-          {
-            "year": "2025",
-            "index": 56,
-            "annotation": "but 33% more milk"
-          }
+          {}
         ]
       },
-
+      "mark": {
+        "type": "rect",
+        "fill": "#EDF4EF",
+        "stroke": "#B7D2BF",
+        "strokeWidth": 1,
+        "cornerRadius": 6,
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "x2": {
+          "value": 760
+        },
+        "y": {
+          "value": 510
+        },
+        "y2": {
+          "value": 543
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
       "mark": {
         "type": "text",
         "align": "left",
-        "baseline": "middle",
-        "dx": 100,
-        "fontSize": 14,
-        "fontWeight": "bold",
-        "color": "#C46A2D"
+        "baseline": "top",
+        "fontSize": 11,
+        "lineHeight": 15,
+        "color": "#355542",
+        "interactive": false
       },
-
       "encoding": {
+        "x": {
+          "value": 12
+        },
+        "y": {
+          "value": 519
+        },
         "text": {
-          "field": "annotation"
+          "value": [
+            "Only 1990 and 2025 are compared; the connecting lines do not show changes in intervening years."
+          ]
         }
       }
     }
   ],
-
   "config": {
     "background": "white",
-
     "view": {
       "stroke": null
     },
-
     "axis": {
       "labelFontSize": 12,
       "titleFontSize": 12

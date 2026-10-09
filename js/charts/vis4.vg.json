@@ -1,9 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Where Are Australia’s Highest-Yielding Dairy Cows?",
-    "subtitle": "South Australia recorded the highest milk output per cow in 2024–25, while Queensland recorded the lowest.",
+    "subtitle": [
+      "South Australia recorded the highest milk output per cow in 2024–25, while Queensland recorded the lowest.",
+      "Hover over a state or bar to highlight it in both views."
+    ],
     "anchor": "start",
     "fontSize": 20,
     "fontWeight": "bold",
@@ -12,284 +14,489 @@
     "subtitleColor": "#666666",
     "offset": 18
   },
-
-  "width": 700,
-  "height": 520,
-
-  "projection": {
-    "type": "mercator"
-  },
-
-  "layer": [
-    {
-      "data": {
-        "url": "australia_states.json",
-        "format": {
-          "type": "topojson",
-          "feature": "australia_states"
-        }
-      },
-
-      "mark": {
-        "type": "geoshape",
-        "fill": "#E8E8E8",
-        "stroke": "#FFFFFF",
-        "strokeWidth": 1.5
-      },
-
-      "encoding": {
-        "tooltip": [
-          {
-            "field": "properties.STE_NAME21",
-            "type": "nominal",
-            "title": "State / Territory"
-          }
-        ]
-      }
-    },
-
-    {
-      "data": {
-        "url": "australia_states.json",
-        "format": {
-          "type": "topojson",
-          "feature": "australia_states"
-        }
-      },
-
-      "transform": [
-        {
-          "lookup": "properties.STE_NAME21",
-          "from": {
-            "data": {
-              "url": "vis04_state_milk_yield.csv"
-            },
-            "key": "state",
-            "fields": [
-              "milk_ml",
-              "cows_thousand",
-              "yield_l_per_cow"
-            ]
-          }
-        },
-        {
-          "filter": "isValid(datum.yield_l_per_cow)"
-        }
-      ],
-
-      "mark": {
-        "type": "geoshape",
-        "stroke": "#FFFFFF",
-        "strokeWidth": 1.5
-      },
-
-      "encoding": {
-        "color": {
-          "field": "yield_l_per_cow",
-          "type": "quantitative",
-          "title": "Milk yield (L/cow)",
-
-          "scale": {
-            "domain": [4600, 7400],
-            "range": [
-              "#DCE9DF",
-              "#B7D2BF",
-              "#8DB99C",
-              "#5E9272",
-              "#2F6B4F"
-            ]
-          },
-
-          "legend": {
-            "orient": "right",
-            "titleFontSize": 12,
-            "titleFontWeight": "bold",
-            "labelFontSize": 11,
-            "gradientLength": 200,
-            "gradientThickness": 14,
-            "format": ",.0f"
-          }
-        },
-
-        "tooltip": [
-          {
-            "field": "properties.STE_NAME21",
-            "type": "nominal",
-            "title": "State"
-          },
-          {
-            "field": "yield_l_per_cow",
-            "type": "quantitative",
-            "title": "Milk yield (L/cow)",
-            "format": ",.0f"
-          },
-          {
-            "field": "milk_ml",
-            "type": "quantitative",
-            "title": "Milk production (ML)",
-            "format": ",.0f"
-          },
-          {
-            "field": "cows_thousand",
-            "type": "quantitative",
-            "title": "Dairy cows ('000)",
-            "format": ",.0f"
-          }
-        ]
-      }
-    },
-
-    {
-      "data": {
-        "values": [
-          {
-            "longitude": 134.5,
-            "latitude": -29.3,
-            "label": "Highest"
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": "bold",
-        "color": "#FFFFFF"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
-          {
-            "longitude": 134.5,
-            "latitude": -30.4,
-            "label": "7,359 L/cow"
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 11,
-        "fontWeight": "bold",
-        "color": "#FFFFFF"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
-          {
-            "longitude": 133.5,
-            "latitude": -20.5,
-            "label": "NT"
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 11,
-        "fontWeight": "bold",
-        "color": "#888888"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
-          {
-            "longitude": 133.5,
-            "latitude": -21.6,
-            "label": "No data"
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 10,
-        "color": "#999999"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
-      }
-    }
-  ],
-
   "config": {
     "background": "white",
-
     "view": {
       "stroke": null
     },
-
     "legend": {
       "labelColor": "#555555",
       "titleColor": "#333333",
       "padding": 10
     }
-  }
+  },
+  "hconcat": [
+    {
+      "width": 560,
+      "height": 460,
+      "projection": {
+        "type": "mercator"
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "australia_states.json",
+            "format": {
+              "type": "topojson",
+              "feature": "australia_states"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "#E8E8E8",
+            "stroke": "#FFFFFF",
+            "strokeWidth": 1.5
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "properties.STE_NAME21",
+                "type": "nominal",
+                "title": "State / Territory"
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "url": "australia_states.json",
+            "format": {
+              "type": "topojson",
+              "feature": "australia_states"
+            }
+          },
+          "transform": [
+            {
+              "lookup": "properties.STE_NAME21",
+              "from": {
+                "data": {
+                  "url": "vis04_state_milk_yield.csv"
+                },
+                "key": "state",
+                "fields": [
+                  "milk_ml",
+                  "cows_thousand",
+                  "yield_l_per_cow"
+                ]
+              }
+            },
+            {
+              "filter": "isValid(datum.yield_l_per_cow)"
+            },
+            {
+              "calculate": "datum.properties.STE_NAME21",
+              "as": "state"
+            }
+          ],
+          "mark": {
+            "type": "geoshape",
+            "stroke": "#FFFFFF",
+            "strokeWidth": 1.5
+          },
+          "encoding": {
+            "color": {
+              "field": "yield_l_per_cow",
+              "type": "quantitative",
+              "title": "Milk yield (L/cow)",
+              "scale": {
+                "domain": [
+                  4600,
+                  7400
+                ],
+                "range": [
+                  "#DCE9DF",
+                  "#B7D2BF",
+                  "#8DB99C",
+                  "#5E9272",
+                  "#2F6B4F"
+                ]
+              },
+              "legend": {
+                "orient": "bottom",
+                "title": "Milk yield (litres per cow)",
+                "gradientLength": 230,
+                "format": ",.0f"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "properties.STE_NAME21",
+                "type": "nominal",
+                "title": "State"
+              },
+              {
+                "field": "yield_l_per_cow",
+                "type": "quantitative",
+                "title": "Milk yield (L/cow)",
+                "format": ",.0f"
+              },
+              {
+                "field": "milk_ml",
+                "type": "quantitative",
+                "title": "Milk production (ML)",
+                "format": ",.0f"
+              },
+              {
+                "field": "cows_thousand",
+                "type": "quantitative",
+                "title": "Dairy cows (thousands)",
+                "format": ",.0f"
+              }
+            ],
+            "stroke": {
+              "condition": {
+                "param": "hoverState",
+                "empty": false,
+                "value": "#222222"
+              },
+              "value": "#FFFFFF"
+            },
+            "strokeWidth": {
+              "condition": {
+                "param": "hoverState",
+                "empty": false,
+                "value": 3
+              },
+              "value": 1.5
+            }
+          },
+          "name": "yield_map"
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "longitude": 134.5,
+                "latitude": -29.3,
+                "label": "Highest"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "baseline": "middle",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "color": "#FFFFFF",
+            "interactive": false
+          },
+          "encoding": {
+            "longitude": {
+              "field": "longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "latitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "longitude": 134.5,
+                "latitude": -30.4,
+                "label": "7,359 L/cow"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "baseline": "middle",
+            "fontSize": 11,
+            "fontWeight": "bold",
+            "color": "#FFFFFF",
+            "interactive": false
+          },
+          "encoding": {
+            "longitude": {
+              "field": "longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "latitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "longitude": 133.5,
+                "latitude": -20.5,
+                "label": "Northern Territory"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "baseline": "middle",
+            "fontSize": 11,
+            "fontWeight": "bold",
+            "color": "#888888",
+            "interactive": false
+          },
+          "encoding": {
+            "longitude": {
+              "field": "longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "latitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "longitude": 133.5,
+                "latitude": -21.6,
+                "label": "No data"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "baseline": "middle",
+            "fontSize": 10,
+            "color": "#999999",
+            "interactive": false
+          },
+          "encoding": {
+            "longitude": {
+              "field": "longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "latitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {}
+            ]
+          },
+          "mark": {
+            "type": "rect",
+            "fill": "#EDF4EF",
+            "stroke": "#B7D2BF",
+            "strokeWidth": 1,
+            "cornerRadius": 6,
+            "interactive": false
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "x2": {
+              "value": 560
+            },
+            "y": {
+              "value": 480
+            },
+            "y2": {
+              "value": 528
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {}
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "top",
+            "fontSize": 11,
+            "lineHeight": 15,
+            "color": "#355542",
+            "interactive": false
+          },
+          "encoding": {
+            "x": {
+              "value": 12
+            },
+            "y": {
+              "value": 489
+            },
+            "text": {
+              "value": [
+                "Yield is state milk production divided by state cow numbers, rather than an average of",
+                "individual farm yields."
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 310,
+      "height": 350,
+      "title": {
+        "text": "Milk yield by state",
+        "anchor": "start",
+        "fontSize": 15
+      },
+      "data": {
+        "url": "vis04_state_milk_yield.csv"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "yield_l_per_cow",
+            "order": "descending"
+          },
+          "axis": {
+            "title": null,
+            "labelLimit": 150,
+            "domain": false,
+            "ticks": false
+          }
+        },
+        "x": {
+          "field": "yield_l_per_cow",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              8000
+            ]
+          },
+          "axis": {
+            "title": "Litres per cow",
+            "format": ",.0f",
+            "tickCount": 4,
+            "domain": false
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "yield_l_per_cow",
+            "type": "quantitative",
+            "title": "Milk yield (litres per cow)",
+            "format": ",.0f"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "name": "yield_bars",
+          "mark": {
+            "type": "bar",
+            "cornerRadiusEnd": 3
+          },
+          "encoding": {
+            "color": {
+              "field": "yield_l_per_cow",
+              "type": "quantitative",
+              "title": "Milk yield (L/cow)",
+              "scale": {
+                "domain": [
+                  4600,
+                  7400
+                ],
+                "range": [
+                  "#DCE9DF",
+                  "#B7D2BF",
+                  "#8DB99C",
+                  "#5E9272",
+                  "#2F6B4F"
+                ]
+              },
+              "legend": {
+                "orient": "bottom",
+                "title": "Milk yield (litres per cow)",
+                "gradientLength": 230,
+                "format": ",.0f"
+              }
+            },
+            "opacity": {
+              "condition": {
+                "param": "hoverState",
+                "value": 1
+              },
+              "value": 0.35
+            },
+            "stroke": {
+              "condition": {
+                "param": "hoverState",
+                "empty": false,
+                "value": "#222222"
+              },
+              "value": null
+            },
+            "strokeWidth": {
+              "value": 2
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 5,
+            "fontSize": 11,
+            "interactive": false
+          },
+          "encoding": {
+            "text": {
+              "field": "yield_l_per_cow",
+              "type": "quantitative",
+              "format": ",.0f"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "spacing": 25,
+  "params": [
+    {
+      "name": "hoverState",
+      "select": {
+        "type": "point",
+        "fields": [
+          "state"
+        ],
+        "on": "mouseover",
+        "clear": "mouseout",
+        "toggle": false
+      },
+      "views": [
+        "yield_map",
+        "yield_bars"
+      ]
+    }
+  ]
 }

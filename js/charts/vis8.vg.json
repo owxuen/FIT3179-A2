@@ -1,24 +1,25 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 920,
-  "height": 280,
-
+  "width": 850,
+  "height": 240,
   "title": {
-    "text": "Australia’s Taste for Dairy Is Changing",
-    "subtitle": "Drinking milk consumption has steadily declined since 2010–11, while yoghurt consumption has generally moved upward.",
+    "text": "Australia\u2019s Taste for Dairy Is Changing",
+    "subtitle": [
+      "Colour shows change in per-capita consumption from 2010\u201311. Hover to compare a year across products.",
+      "*The yoghurt category expanded in 2014\u201315, affecting comparisons with earlier years."
+    ],
     "anchor": "start",
     "fontSize": 20,
     "fontWeight": "bold",
     "subtitleFontSize": 13,
     "subtitleFontWeight": "normal",
     "subtitleColor": "#666666",
+    "subtitlePadding": 4,
     "offset": 22
   },
-
   "data": {
     "url": "vis08_dairy_consumption.csv"
   },
-
   "transform": [
     {
       "calculate": "format(datum.consumption, '.1f') + ' ' + datum.unit",
@@ -29,50 +30,43 @@
       "as": "change_display"
     }
   ],
-
   "layer": [
     {
+      "params": [
+        {
+          "name": "hoverYear",
+          "select": {
+            "type": "point",
+            "fields": [
+              "year"
+            ],
+            "on": "mouseover",
+            "clear": "mouseout",
+            "toggle": false
+          }
+        }
+      ],
       "mark": {
         "type": "rect",
         "cornerRadius": 2,
-        "stroke": "#FFFFFF",
+        "stroke": "white",
         "strokeWidth": 2
       },
-
       "encoding": {
         "x": {
           "field": "year",
           "type": "ordinal",
-          "sort": [
-            "2010-11",
-            "2011-12",
-            "2012-13",
-            "2013-14",
-            "2014-15",
-            "2015-16",
-            "2016-17",
-            "2017-18",
-            "2018-19",
-            "2019-20",
-            "2020-21",
-            "2021-22",
-            "2022-23",
-            "2023-24",
-            "2024-25"
-          ],
+          "sort": "ascending",
           "axis": {
             "title": null,
             "orient": "top",
             "labelAngle": -45,
-            "labelAlign": "right",
-            "labelFontSize": 10,
-            "labelColor": "#555555",
-            "labelPadding": 12,
-            "ticks": false,
-            "domain": false
+            "labelExpr": "replace(datum.label, '-', '\u2013')",
+            "labelPadding": 10,
+            "domain": false,
+            "ticks": false
           }
         },
-
         "y": {
           "field": "product",
           "type": "nominal",
@@ -86,18 +80,33 @@
             "title": null,
             "labelFontSize": 12,
             "labelFontWeight": "bold",
-            "labelColor": "#555555",
-            "labelPadding": 14,
-            "ticks": false,
-            "domain": false
+            "labelPadding": 12,
+            "domain": false,
+            "ticks": false
           }
         },
-
         "color": {
           "field": "change_pct",
           "type": "quantitative",
           "scale": {
             "domain": [
+              -20,
+              45
+            ],
+            "domainMid": 0,
+            "range": [
+              "#75658A",
+              "#F4F4F2",
+              "#2F6B4F"
+            ],
+            "clamp": true
+          },
+          "legend": {
+            "title": "Change from 2010\u201311",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 300,
+            "values": [
               -20,
               -10,
               0,
@@ -106,41 +115,16 @@
               30,
               45
             ],
-            "range": [
-              "#75658A",
-              "#AA8FA3",
-              "#F4F4F2",
-              "#B9C9B9",
-              "#7FA087",
-              "#557E63",
-              "#2F6B4F"
-            ],
-            "clamp": true
-          },
-          "legend": {
-            "title": "Change from 2010–11",
-            "orient": "right",
-            "offset": 170,
-            "gradientLength": 200,
-            "gradientThickness": 13,
-            "titleFontSize": 11,
-            "titleFontWeight": "bold",
-            "titleColor": "#444444",
-            "labelFontSize": 10,
-            "labelColor": "#666666",
-            "values": [
-              -20,
-              -10,
-              0,
-              10,
-              20,
-              30,
-              40
-            ],
-            "labelExpr": "datum.value > 0 ? '+' + datum.value + '%' : datum.value + '%'"
+            "labelExpr": "datum.value === -20 ? '\u2264\u221220%' : datum.value === 45 ? '\u2265+45%' : datum.value > 0 ? '+' + datum.value + '%' : datum.value + '%'"
           }
         },
-
+        "opacity": {
+          "condition": {
+            "param": "hoverYear",
+            "value": 1
+          },
+          "value": 0.3
+        },
         "tooltip": [
           {
             "field": "product",
@@ -150,7 +134,7 @@
           {
             "field": "year",
             "type": "ordinal",
-            "title": "Year"
+            "title": "Financial year"
           },
           {
             "field": "consumption_display",
@@ -160,25 +144,33 @@
           {
             "field": "change_display",
             "type": "nominal",
-            "title": "Change from 2010–11"
+            "title": "Change from 2010\u201311"
           }
         ]
       }
     },
-
     {
       "mark": {
         "type": "text",
-        "fontSize": 9,
-        "fontWeight": "bold"
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "interactive": false
       },
-
       "encoding": {
         "x": {
           "field": "year",
-          "type": "ordinal"
+          "type": "ordinal",
+          "sort": "ascending",
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelAngle": -45,
+            "labelExpr": "replace(datum.label, '-', '\u2013')",
+            "labelPadding": 10,
+            "domain": false,
+            "ticks": false
+          }
         },
-
         "y": {
           "field": "product",
           "type": "nominal",
@@ -187,33 +179,93 @@
             "Cheese",
             "Butter & blends",
             "Yoghurt"
-          ]
+          ],
+          "axis": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": "bold",
+            "labelPadding": 12,
+            "domain": false,
+            "ticks": false
+          }
         },
-
         "text": {
           "field": "change_display",
           "type": "nominal"
         },
-
         "color": {
-          "condition": [
-            {
-              "test": "datum.change_pct >= 20 || datum.change_pct <= -15",
-              "value": "#FFFFFF"
-            }
-          ],
-          "value": "#3A3A3A"
+          "condition": {
+            "test": "datum.change_pct <= -12 || datum.change_pct >= 27",
+            "value": "#FFFFFF"
+          },
+          "value": "#333333"
+        },
+        "opacity": {
+          "condition": {
+            "param": "hoverYear",
+            "value": 1
+          },
+          "value": 0.3
         }
       }
     },
-
+    {
+      "transform": [
+        {
+          "filter": {
+            "param": "hoverYear",
+            "empty": false
+          }
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "filled": false,
+        "stroke": "#333333",
+        "strokeWidth": 1.5,
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "sort": "ascending",
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelAngle": -45,
+            "labelExpr": "replace(datum.label, '-', '\u2013')",
+            "labelPadding": 10,
+            "domain": false,
+            "ticks": false
+          }
+        },
+        "y": {
+          "field": "product",
+          "type": "nominal",
+          "sort": [
+            "Milk",
+            "Cheese",
+            "Butter & blends",
+            "Yoghurt"
+          ],
+          "axis": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": "bold",
+            "labelPadding": 12,
+            "domain": false,
+            "ticks": false
+          }
+        }
+      }
+    },
     {
       "transform": [
         {
           "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
         }
       ],
-
       "mark": {
         "type": "rect",
         "filled": false,
@@ -222,15 +274,24 @@
         "strokeDash": [
           5,
           4
-        ]
+        ],
+        "interactive": false
       },
-
       "encoding": {
         "x": {
           "field": "year",
-          "type": "ordinal"
+          "type": "ordinal",
+          "sort": "ascending",
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelAngle": -45,
+            "labelExpr": "replace(datum.label, '-', '\u2013')",
+            "labelPadding": 10,
+            "domain": false,
+            "ticks": false
+          }
         },
-
         "y": {
           "field": "product",
           "type": "nominal",
@@ -239,35 +300,50 @@
             "Cheese",
             "Butter & blends",
             "Yoghurt"
-          ]
+          ],
+          "axis": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": "bold",
+            "labelPadding": 12,
+            "domain": false,
+            "ticks": false
+          }
         }
       }
     },
-
     {
       "transform": [
         {
           "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
         }
       ],
-
       "mark": {
         "type": "text",
-        "align": "left",
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "color": "#C46A2D",
+        "interactive": false,
+        "align": "right",
         "baseline": "top",
-        "dx": -70,
-        "dy": 40,
-        "fontSize": 10,
-        "fontWeight": "bold",
-        "color": "#C46A2D"
+        "dx": 23,
+        "dy": -25
       },
-
       "encoding": {
         "x": {
           "field": "year",
-          "type": "ordinal"
+          "type": "ordinal",
+          "sort": "ascending",
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelAngle": -45,
+            "labelExpr": "replace(datum.label, '-', '\u2013')",
+            "labelPadding": 10,
+            "domain": false,
+            "ticks": false
+          }
         },
-
         "y": {
           "field": "product",
           "type": "nominal",
@@ -276,140 +352,35 @@
             "Cheese",
             "Butter & blends",
             "Yoghurt"
-          ]
+          ],
+          "axis": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": "bold",
+            "labelPadding": 12,
+            "domain": false,
+            "ticks": false
+          }
         },
-
         "text": {
-          "value": "Yoghurt category expanded*"
-        }
-      }
-    },
-
-    {
-      "transform": [
-        {
-          "filter": "datum.year === '2024-25' && (datum.product === 'Milk' || datum.product === 'Yoghurt')"
-        }
-      ],
-
-      "mark": {
-        "type": "rect",
-        "filled": false,
-        "stroke": "#C46A2D",
-        "strokeWidth": 2.5
-      },
-
-      "encoding": {
-        "x": {
-          "field": "year",
-          "type": "ordinal"
-        },
-
-        "y": {
-          "field": "product",
-          "type": "nominal",
-          "sort": [
-            "Milk",
-            "Cheese",
-            "Butter & blends",
-            "Yoghurt"
-          ]
-        }
-      }
-    },
-
-    {
-      "transform": [
-        {
-          "filter": "datum.year === '2024-25' && datum.product === 'Milk'"
-        }
-      ],
-
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "dx": 46,
-        "fontSize": 11,
-        "fontWeight": "bold",
-        "color": "#C46A2D"
-      },
-
-      "encoding": {
-        "x": {
-          "field": "year",
-          "type": "ordinal"
-        },
-
-        "y": {
-          "field": "product",
-          "type": "nominal",
-          "sort": [
-            "Milk",
-            "Cheese",
-            "Butter & blends",
-            "Yoghurt"
-          ]
-        },
-
-        "text": {
-          "value": "−18.2% since 2010–11"
-        }
-      }
-    },
-
-    {
-      "transform": [
-        {
-          "filter": "datum.year === '2024-25' && datum.product === 'Yoghurt'"
-        }
-      ],
-
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "dx": 46,
-        "fontSize": 11,
-        "fontWeight": "bold",
-        "color": "#C46A2D"
-      },
-
-      "encoding": {
-        "x": {
-          "field": "year",
-          "type": "ordinal"
-        },
-
-        "y": {
-          "field": "product",
-          "type": "nominal",
-          "sort": [
-            "Milk",
-            "Cheese",
-            "Butter & blends",
-            "Yoghurt"
-          ]
-        },
-
-        "text": {
-          "value": "+45.2%* since 2010–11"
+          "value": "*"
         }
       }
     }
   ],
-
   "config": {
     "background": "white",
-
     "view": {
       "stroke": null
     },
-
+    "font": "Arial",
     "axis": {
-      "grid": false
+      "grid": false,
+      "labelColor": "#555555"
     },
-
-    "font": "Arial"
+    "legend": {
+      "labelColor": "#555555",
+      "titleColor": "#444444"
+    }
   }
 }

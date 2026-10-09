@@ -1,23 +1,82 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Where Has Milk Production Grown — and Declined?",
-    "subtitle": "Tasmania was the only state to grow, while Victoria recorded the largest absolute decline in milk production.",
+    "subtitle": [
+      "Choose a starting year to compare each state's milk production with 2024–25."
+    ],
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13,
     "subtitleColor": "#666666",
     "offset": 16
   },
-
+  "params": [
+    {
+      "name": "startYear",
+      "value": "2006-07",
+      "bind": {
+        "input": "select",
+        "name": "Compare 2024–25 with: ",
+        "options": [
+          "2006-07",
+          "2007-08",
+          "2008-09",
+          "2009-10",
+          "2010-11",
+          "2011-12",
+          "2012-13",
+          "2013-14",
+          "2014-15",
+          "2015-16",
+          "2016-17",
+          "2017-18",
+          "2018-19",
+          "2019-20",
+          "2020-21",
+          "2021-22",
+          "2022-23",
+          "2023-24"
+        ],
+        "labels": [
+          "2006–07",
+          "2007–08",
+          "2008–09",
+          "2009–10",
+          "2010–11",
+          "2011–12",
+          "2012–13",
+          "2013–14",
+          "2014–15",
+          "2015–16",
+          "2016–17",
+          "2017–18",
+          "2018–19",
+          "2019–20",
+          "2020–21",
+          "2021–22",
+          "2022–23",
+          "2023–24"
+        ]
+      }
+    }
+  ],
+  "config": {
+    "background": "white",
+    "view": {
+      "stroke": null
+    },
+    "legend": {
+      "labelColor": "#555555",
+      "titleColor": "#333333",
+      "padding": 10
+    }
+  },
   "width": 700,
   "height": 520,
-
   "projection": {
     "type": "mercator"
   },
-
   "layer": [
     {
       "data": {
@@ -27,7 +86,6 @@
           "feature": "australia_states"
         }
       },
-
       "mark": {
         "type": "geoshape",
         "fill": "#F2F2F2",
@@ -35,70 +93,23 @@
         "strokeWidth": 1.5
       }
     },
-
     {
-      "data": {
-        "values": [
-          {
-            "state": "Western Australia",
-            "state_code": "WA",
-            "longitude": 121.5,
-            "latitude": -25.5,
-            "production_2006_07": 349,
-            "production_2024_25": 331,
-            "change_pct": -5.2
-          },
-          {
-            "state": "South Australia",
-            "state_code": "SA",
-            "longitude": 135.5,
-            "latitude": -30.0,
-            "production_2006_07": 655,
-            "production_2024_25": 471,
-            "change_pct": -28.1
-          },
-          {
-            "state": "Queensland",
-            "state_code": "QLD",
-            "longitude": 145.0,
-            "latitude": -23.5,
-            "production_2006_07": 537,
-            "production_2024_25": 275,
-            "change_pct": -48.8
-          },
-          {
-            "state": "New South Wales",
-            "state_code": "NSW",
-            "longitude": 147.0,
-            "latitude": -32.5,
-            "production_2006_07": 1104,
-            "production_2024_25": 1071,
-            "change_pct": -3.0
-          },
-          {
-            "state": "Victoria",
-            "state_code": "VIC",
-            "longitude": 144.5,
-            "latitude": -37.0,
-            "production_2006_07": 6297,
-            "production_2024_25": 5266,
-            "change_pct": -16.4
-          },
-          {
-            "state": "Tasmania",
-            "state_code": "TAS",
-            "longitude": 146.5,
-            "latitude": -42.0,
-            "production_2006_07": 641,
-            "production_2024_25": 901,
-            "change_pct": 40.6
-          }
-        ]
-      },
-
       "transform": [
         {
-          "calculate": "datum.production_2024_25 - datum.production_2006_07",
+          "filter": "datum.year === startYear || datum.year === '2024-25'"
+        },
+        {
+          "pivot": "year",
+          "value": "production",
+          "groupby": [
+            "state",
+            "state_code",
+            "longitude",
+            "latitude"
+          ]
+        },
+        {
+          "calculate": "datum['2024-25'] - datum[startYear]",
           "as": "change_ml"
         },
         {
@@ -106,39 +117,51 @@
           "as": "change_magnitude"
         },
         {
-          "calculate": "datum.change_ml > 0 ? 'Growth' : 'Decline'",
+          "calculate": "datum.change_ml > 0 ? 'Growth' : datum.change_ml < 0 ? 'Decline' : 'No change'",
           "as": "direction"
+        },
+        {
+          "calculate": "(datum.change_ml / datum[startYear]) * 100",
+          "as": "change_pct"
+        },
+        {
+          "calculate": "replace(startYear, '-', '–')",
+          "as": "start_year_label"
+        },
+        {
+          "calculate": "datum[startYear]",
+          "as": "start_production"
         }
       ],
-
       "mark": {
         "type": "circle",
         "opacity": 0.85,
         "stroke": "#FFFFFF",
         "strokeWidth": 2
       },
-
       "encoding": {
         "longitude": {
           "field": "longitude",
           "type": "quantitative"
         },
-
         "latitude": {
           "field": "latitude",
           "type": "quantitative"
         },
-
         "size": {
           "field": "change_magnitude",
           "type": "quantitative",
           "title": "Absolute change (ML)",
-
           "scale": {
-            "domain": [0, 1050],
-            "range": [80, 3000]
+            "domain": [
+              0,
+              1200
+            ],
+            "range": [
+              80,
+              3000
+            ]
           },
-
           "legend": {
             "orient": "right",
             "title": "Absolute change (ML)",
@@ -146,26 +169,29 @@
             "titleFontWeight": "bold",
             "labelFontSize": 11,
             "format": ",.0f",
-            "values": [250, 500, 1000]
+            "values": [
+              250,
+              500,
+              1000
+            ]
           }
         },
-
         "color": {
           "field": "direction",
           "type": "nominal",
           "title": "Direction",
-
           "scale": {
             "domain": [
               "Growth",
-              "Decline"
+              "Decline",
+              "No change"
             ],
             "range": [
               "#2F6B4F",
-              "#6F6F6F"
+              "#6F6F6F",
+              "#BDBDBD"
             ]
           },
-
           "legend": {
             "orient": "right",
             "titleFontSize": 12,
@@ -174,7 +200,6 @@
             "symbolSize": 120
           }
         },
-
         "tooltip": [
           {
             "field": "state",
@@ -182,13 +207,18 @@
             "title": "State"
           },
           {
-            "field": "production_2006_07",
+            "field": "start_year_label",
+            "type": "nominal",
+            "title": "Starting year"
+          },
+          {
+            "field": "start_production",
             "type": "quantitative",
-            "title": "2006–07 production (ML)",
+            "title": "Starting production (ML)",
             "format": ",.0f"
           },
           {
-            "field": "production_2024_25",
+            "field": "2024-25",
             "type": "quantitative",
             "title": "2024–25 production (ML)",
             "format": ",.0f"
@@ -206,240 +236,982 @@
             "format": "+.1f"
           }
         ]
-      }
-    },
-
-    {
+      },
       "data": {
         "values": [
           {
-            "longitude": 144.5,
-            "latitude": -37.0,
-            "label": "-1,031 ML"
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "dx": -40,
-        "dy": -10,
-        "align": "right",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": "bold",
-        "color": "#6F6F6F"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2006-07",
+            "production": 349
+          },
           {
-            "longitude": 144.5,
-            "latitude": -37.0,
-            "label": "largest absolute decline"
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "dx": -40,
-        "dy": 8,
-        "align": "right",
-        "baseline": "middle",
-        "fontSize": 10,
-        "color": "#6F6F6F"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2007-08",
+            "production": 319
+          },
           {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2008-09",
+            "production": 340
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2009-10",
+            "production": 359
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2010-11",
+            "production": 372
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2011-12",
+            "production": 349
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2012-13",
+            "production": 349
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2013-14",
+            "production": 342
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2014-15",
+            "production": 367
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2015-16",
+            "production": 392
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2016-17",
+            "production": 385
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2017-18",
+            "production": 385
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2018-19",
+            "production": 374
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2019-20",
+            "production": 364
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2020-21",
+            "production": 362
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2021-22",
+            "production": 341
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2022-23",
+            "production": 338
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2023-24",
+            "production": 344
+          },
+          {
+            "state": "Western Australia",
+            "state_code": "WA",
+            "longitude": 121.5,
+            "latitude": -25.5,
+            "year": "2024-25",
+            "production": 331
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2006-07",
+            "production": 655
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2007-08",
+            "production": 606
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2008-09",
+            "production": 628
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2009-10",
+            "production": 605
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2010-11",
+            "production": 572
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2011-12",
+            "production": 575
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2012-13",
+            "production": 542
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2013-14",
+            "production": 525
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2014-15",
+            "production": 530
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2015-16",
+            "production": 538
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2016-17",
+            "production": 497
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2017-18",
+            "production": 505
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2018-19",
+            "production": 497
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2019-20",
+            "production": 489
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2020-21",
+            "production": 500
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2021-22",
+            "production": 490
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2022-23",
+            "production": 472
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2023-24",
+            "production": 479
+          },
+          {
+            "state": "South Australia",
+            "state_code": "SA",
+            "longitude": 135.5,
+            "latitude": -30.0,
+            "year": "2024-25",
+            "production": 471
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
             "longitude": 145.0,
             "latitude": -23.5,
-            "label": "-48.8%"
-          }
-        ]
-      },
-
-      "mark": {
-        "type": "text",
-        "dx": 32,
-        "dy": -10,
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": "bold",
-        "color": "#6F6F6F"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
-      }
-    },
-
-    {
-      "data": {
-        "values": [
+            "year": "2006-07",
+            "production": 537
+          },
           {
+            "state": "Queensland",
+            "state_code": "QLD",
             "longitude": 145.0,
             "latitude": -23.5,
-            "label": "largest percentage decline"
+            "year": "2007-08",
+            "production": 486
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2008-09",
+            "production": 513
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2009-10",
+            "production": 530
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2010-11",
+            "production": 487
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2011-12",
+            "production": 491
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2012-13",
+            "production": 465
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2013-14",
+            "production": 446
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2014-15",
+            "production": 422
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2015-16",
+            "production": 421
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2016-17",
+            "production": 425
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2017-18",
+            "production": 399
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2018-19",
+            "production": 359
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2019-20",
+            "production": 315
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2020-21",
+            "production": 309
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2021-22",
+            "production": 299
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2022-23",
+            "production": 279
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2023-24",
+            "production": 282
+          },
+          {
+            "state": "Queensland",
+            "state_code": "QLD",
+            "longitude": 145.0,
+            "latitude": -23.5,
+            "year": "2024-25",
+            "production": 275
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2006-07",
+            "production": 1104
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2007-08",
+            "production": 1048
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2008-09",
+            "production": 1064
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2009-10",
+            "production": 1099
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2010-11",
+            "production": 1087
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2011-12",
+            "production": 1136
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2012-13",
+            "production": 1137
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2013-14",
+            "production": 1124
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2014-15",
+            "production": 1184
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2015-16",
+            "production": 1198
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2016-17",
+            "production": 1141
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2017-18",
+            "production": 1144
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2018-19",
+            "production": 1094
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2019-20",
+            "production": 1054
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2020-21",
+            "production": 1075
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2021-22",
+            "production": 1072
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2022-23",
+            "production": 990
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2023-24",
+            "production": 1040
+          },
+          {
+            "state": "New South Wales",
+            "state_code": "NSW",
+            "longitude": 147.0,
+            "latitude": -32.5,
+            "year": "2024-25",
+            "production": 1071
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2006-07",
+            "production": 6297
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2007-08",
+            "production": 6102
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2008-09",
+            "production": 6135
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2009-10",
+            "production": 5813
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2010-11",
+            "production": 5936
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2011-12",
+            "production": 6246
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2012-13",
+            "production": 6076
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2013-14",
+            "production": 6174
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2014-15",
+            "production": 6411
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2015-16",
+            "production": 6249
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2016-17",
+            "production": 5732
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2017-18",
+            "production": 5979
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2018-19",
+            "production": 5576
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2019-20",
+            "production": 5625
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2020-21",
+            "production": 5651
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2021-22",
+            "production": 5465
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2022-23",
+            "production": 5141
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2023-24",
+            "production": 5296
+          },
+          {
+            "state": "Victoria",
+            "state_code": "VIC",
+            "longitude": 144.5,
+            "latitude": -37.0,
+            "year": "2024-25",
+            "production": 5266
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2006-07",
+            "production": 641
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2007-08",
+            "production": 661
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2008-09",
+            "production": 709
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2009-10",
+            "production": 677
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2010-11",
+            "production": 726
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2011-12",
+            "production": 792
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2012-13",
+            "production": 765
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2013-14",
+            "production": 810
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2014-15",
+            "production": 891
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2015-16",
+            "production": 883
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2016-17",
+            "production": 836
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2017-18",
+            "production": 913
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2018-19",
+            "production": 910
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2019-20",
+            "production": 950
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2020-21",
+            "production": 961
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2021-22",
+            "production": 887
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2022-23",
+            "production": 906
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2023-24",
+            "production": 934
+          },
+          {
+            "state": "Tasmania",
+            "state_code": "TAS",
+            "longitude": 146.5,
+            "latitude": -42.0,
+            "year": "2024-25",
+            "production": 901
           }
         ]
-      },
-
-      "mark": {
-        "type": "text",
-        "dx": 32,
-        "dy": 8,
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 10,
-        "color": "#6F6F6F"
-      },
-
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label"
-        }
       }
     },
-
     {
       "data": {
         "values": [
-          {
-            "longitude": 146.5,
-            "latitude": -42.0,
-            "label": "+260 ML"
-          }
+          {}
         ]
       },
-
       "mark": {
-        "type": "text",
-        "dx": 32,
-        "dy": -4,
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": "bold",
-        "color": "#2F6B4F"
+        "type": "rect",
+        "fill": "#EDF4EF",
+        "stroke": "#B7D2BF",
+        "strokeWidth": 1,
+        "cornerRadius": 6,
+        "interactive": false
       },
-
       "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
+        "x": {
+          "value": 0
         },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
+        "x2": {
+          "value": 700
         },
-        "text": {
-          "field": "label"
+        "y": {
+          "value": 540
+        },
+        "y2": {
+          "value": 588
         }
       }
     },
-
     {
       "data": {
         "values": [
-          {
-            "longitude": 146.5,
-            "latitude": -42.0,
-            "label": "only state to grow"
-          }
+          {}
         ]
       },
-
       "mark": {
         "type": "text",
-        "dx": 32,
-        "dy": 14,
         "align": "left",
-        "baseline": "middle",
-        "fontSize": 10,
-        "color": "#2F6B4F"
+        "baseline": "top",
+        "fontSize": 11,
+        "lineHeight": 15,
+        "color": "#355542",
+        "interactive": false
       },
-
       "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
+        "x": {
+          "value": 12
         },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
+        "y": {
+          "value": 549
         },
         "text": {
-          "field": "label"
+          "value": [
+            "Bubble area shows change in ML, not percentage change; a large producer can have a large bubble but a modest",
+            "percentage shift."
+          ]
         }
       }
     }
-  ],
-
-  "config": {
-    "background": "white",
-
-    "view": {
-      "stroke": null
-    },
-
-    "legend": {
-      "labelColor": "#555555",
-      "titleColor": "#333333",
-      "padding": 10
-    }
-  }
+  ]
 }

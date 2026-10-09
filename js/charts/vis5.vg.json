@@ -1,18 +1,14 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-
   "width": 920,
   "height": 430,
-
   "padding": {
     "top": 85,
     "left": 35,
     "right": 40,
     "bottom": 30
   },
-
   "autosize": "none",
-
   "title": {
     "text": "Victoria Dominates Australia’s Milk Pool",
     "subtitle": "Almost two-thirds of Australia’s milk was produced in Victoria in 2024–25.",
@@ -28,12 +24,10 @@
     "subtitleColor": "#666666",
     "offset": 22
   },
-
   "data": [
     {
       "name": "states",
       "url": "vis05_state_production_share.csv",
-
       "format": {
         "type": "csv",
         "parse": {
@@ -41,7 +35,6 @@
           "share_percent": "number"
         }
       },
-
       "transform": [
         {
           "type": "formula",
@@ -55,10 +48,8 @@
         }
       ]
     },
-
     {
       "name": "waffle",
-
       "transform": [
         {
           "type": "sequence",
@@ -92,14 +83,22 @@
           "expr": "datum.state === 'Victoria' ? 5266 : datum.state === 'New South Wales' ? 1071 : datum.state === 'Tasmania' ? 901 : datum.state === 'South Australia' ? 471 : datum.state === 'Western Australia' ? 331 : 275"
         }
       ]
+    },
+    {
+      "name": "selected_state",
+      "source": "states",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.state === displayState"
+        }
+      ]
     }
   ],
-
   "scales": [
     {
       "name": "stateColor",
       "type": "ordinal",
-
       "domain": [
         "Victoria",
         "New South Wales",
@@ -108,7 +107,6 @@
         "Western Australia",
         "Queensland"
       ],
-
       "range": [
         "#1B4D3E",
         "#3B7A57",
@@ -119,424 +117,403 @@
       ]
     }
   ],
-
   "marks": [
     {
       "type": "rect",
-
       "from": {
         "data": "waffle"
       },
-
       "encode": {
         "enter": {
           "x": {
             "signal": "datum.column * 32"
           },
-
           "y": {
             "signal": "15 + datum.row * 32"
           },
-
           "width": {
             "value": 27
           },
-
           "height": {
             "value": 27
           },
-
           "cornerRadius": {
             "value": 3.5
           },
-
           "stroke": {
             "value": "#FFFFFF"
           },
-
           "strokeWidth": {
             "value": 1.5
           },
-
           "tooltip": {
             "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"
           }
         },
-
         "update": {
           "fill": {
             "scale": "stateColor",
             "field": "state"
           },
-
           "opacity": {
-            "value": 1
-          }
-        },
-
-        "hover": {
-          "stroke": {
-            "value": "#222222"
+            "signal": "hoverState === null || datum.state === hoverState ? 1 : 0.25"
           },
-
+          "stroke": {
+            "signal": "datum.state === hoverState ? '#222222' : '#FFFFFF'"
+          },
           "strokeWidth": {
-            "value": 2
+            "signal": "datum.state === hoverState ? 2 : 1.5"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "encode": {
         "enter": {
           "x": {
             "value": 0
           },
-
           "y": {
             "value": 350
           },
-
           "text": {
             "value": "Each square ≈ 1% of national milk production"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10
           },
-
           "fontStyle": {
             "value": "italic"
           },
-
           "fill": {
             "value": "#777777"
           }
-        }
+        },
+        "update": {}
       }
     },
-
     {
       "type": "text",
-
       "encode": {
         "enter": {
           "x": {
             "value": 390
           },
-
           "y": {
             "value": 30
           },
-
-          "text": {
-            "value": "VICTORIA"
-          },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 12
           },
-
           "fontWeight": {
             "value": "bold"
+          }
+        },
+        "update": {
+          "text": {
+            "signal": "upper(datum.state)"
           },
-
           "fill": {
-            "value": "#1B4D3E"
+            "scale": "stateColor",
+            "field": "state"
           }
         }
-      }
+      },
+      "from": {
+        "data": "selected_state"
+      },
+      "interactive": false
     },
-
     {
       "type": "text",
-
       "encode": {
         "enter": {
           "x": {
             "value": 390
           },
-
           "y": {
             "value": 70
           },
-
-          "text": {
-            "value": "63.3%"
-          },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 36
           },
-
           "fontWeight": {
             "value": "bold"
+          }
+        },
+        "update": {
+          "text": {
+            "signal": "format(datum.share_percent, '.1f') + '%'"
           },
-
           "fill": {
-            "value": "#1B4D3E"
+            "scale": "stateColor",
+            "field": "state"
           }
         }
-      }
+      },
+      "from": {
+        "data": "selected_state"
+      },
+      "interactive": false
     },
-
     {
       "type": "text",
-
       "encode": {
         "enter": {
           "x": {
             "value": 390
           },
-
           "y": {
             "value": 98
           },
-
-          "text": {
-            "value": "5,266 million litres produced in 2024–25"
-          },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 11
           },
-
           "fill": {
             "value": "#555555"
           }
+        },
+        "update": {
+          "text": {
+            "signal": "format(datum.milk_ml, ',') + ' million litres produced in 2024–25'"
+          }
         }
-      }
+      },
+      "from": {
+        "data": "selected_state"
+      },
+      "interactive": false
     },
-
     {
       "type": "rule",
-
       "encode": {
         "enter": {
           "x": {
             "value": 390
           },
-
           "x2": {
             "value": 790
           },
-
           "y": {
             "value": 122
           },
-
           "stroke": {
             "value": "#E1E1DD"
           },
-
           "strokeWidth": {
             "value": 1
           }
-        }
+        },
+        "update": {}
       }
     },
-
     {
       "type": "symbol",
-
       "from": {
         "data": "states"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 398
           },
-
           "y": {
             "signal": "150 + (datum.state_order - 1) * 38"
           },
-
           "shape": {
             "value": "square"
           },
-
           "size": {
             "value": 125
           },
-
           "fill": {
             "scale": "stateColor",
             "field": "state"
           },
-
           "stroke": {
             "value": "#FFFFFF"
           },
-
           "strokeWidth": {
             "value": 1
+          },
+          "tooltip": {
+            "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverState === null || datum.state === hoverState ? 1 : 0.25"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "states"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 418
           },
-
           "y": {
             "signal": "150 + (datum.state_order - 1) * 38"
           },
-
           "text": {
             "field": "state"
           },
-
           "align": {
             "value": "left"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 11.5
           },
-
           "fontWeight": {
             "signal": "datum.state === 'Victoria' ? 'bold' : 'normal'"
           },
-
           "fill": {
             "signal": "datum.state === 'Victoria' ? '#1B4D3E' : '#333333'"
+          },
+          "tooltip": {
+            "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverState === null || datum.state === hoverState ? 1 : 0.25"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "states"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 700
           },
-
           "y": {
             "signal": "150 + (datum.state_order - 1) * 38"
           },
-
           "text": {
             "signal": "format(datum.share_percent, '.1f') + '%'"
           },
-
           "align": {
             "value": "right"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 11
           },
-
           "fontWeight": {
             "signal": "datum.state === 'Victoria' ? 'bold' : 'normal'"
           },
-
           "fill": {
             "signal": "datum.state === 'Victoria' ? '#1B4D3E' : '#444444'"
+          },
+          "tooltip": {
+            "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverState === null || datum.state === hoverState ? 1 : 0.25"
           }
         }
       }
     },
-
     {
       "type": "text",
-
       "from": {
         "data": "states"
       },
-
       "encode": {
         "enter": {
           "x": {
             "value": 790
           },
-
           "y": {
             "signal": "150 + (datum.state_order - 1) * 38"
           },
-
           "text": {
             "signal": "format(datum.milk_ml, ',') + ' ML'"
           },
-
           "align": {
             "value": "right"
           },
-
           "baseline": {
             "value": "middle"
           },
-
           "font": {
             "value": "Arial"
           },
-
           "fontSize": {
             "value": 10.5
           },
-
           "fill": {
             "value": "#666666"
+          },
+          "tooltip": {
+            "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverState === null || datum.state === hoverState ? 1 : 0.25"
           }
         }
       }
     }
   ],
-
   "config": {
     "background": "white"
-  }
+  },
+  "signals": [
+    {
+      "name": "hoverState",
+      "value": null,
+      "on": [
+        {
+          "events": "mouseover[event.item && event.item.datum && event.item.datum.state]",
+          "update": "datum.state"
+        },
+        {
+          "events": "mouseout",
+          "update": "null"
+        }
+      ]
+    },
+    {
+      "name": "displayState",
+      "update": "hoverState === null ? 'Victoria' : hoverState"
+    }
+  ]
 }

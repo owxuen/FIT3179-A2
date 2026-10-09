@@ -13,13 +13,18 @@
   },
   "width": 760,
   "height": 380,
-
   "layer": [
     {
       "data": {
         "values": [
-          {"year": "1990", "x": 190},
-          {"year": "2025", "x": 570}
+          {
+            "year": "1990",
+            "x": 190
+          },
+          {
+            "year": "2025",
+            "x": 570
+          }
         ]
       },
       "mark": {
@@ -29,19 +34,44 @@
         "color": "#222222"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"value": 35},
-        "text": {"field": "year"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "value": 35
+        },
+        "text": {
+          "field": "year"
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"x": 190, "y": 88},
-          {"x": 530, "y": 88},
-          {"x": 570, "y": 88},
-          {"x": 610, "y": 88}
+          {
+            "x": 190,
+            "y": 88
+          },
+          {
+            "x": 530,
+            "y": 88
+          },
+          {
+            "x": 570,
+            "y": 88
+          },
+          {
+            "x": 610,
+            "y": 88
+          }
         ]
       },
       "mark": {
@@ -52,16 +82,43 @@
         "color": "#2F6B4F"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"field": "y", "type": "quantitative", "axis": null, "scale": {"domain": [380, 0]}}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              380,
+              0
+            ]
+          }
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"year": "1990", "x": 190, "label": "113 cows"},
-          {"year": "2025", "x": 570, "label": "324 cows"}
+          {
+            "year": "1990",
+            "x": 190,
+            "label": "113 cows"
+          },
+          {
+            "year": "2025",
+            "x": 570,
+            "label": "324 cows"
+          }
         ]
       },
       "mark": {
@@ -71,17 +128,36 @@
         "color": "#2F6B4F"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"value": 130},
-        "text": {"field": "label"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "value": 130
+        },
+        "text": {
+          "field": "label"
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"x": 190, "label": "cows per farm"},
-          {"x": 570, "label": "cows per farm"}
+          {
+            "x": 190,
+            "label": "cows per farm"
+          },
+          {
+            "x": 570,
+            "label": "cows per farm"
+          }
         ]
       },
       "mark": {
@@ -90,16 +166,33 @@
         "color": "#666666"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"value": 155},
-        "text": {"field": "label"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "value": 155
+        },
+        "text": {
+          "field": "label"
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"x": 380, "y": 120, "text": "2.9×"}
+          {
+            "x": 380,
+            "y": 120,
+            "text": "2.9×"
+          }
         ]
       },
       "mark": {
@@ -109,15 +202,41 @@
         "color": "#2F6B4F"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"field": "y", "type": "quantitative", "axis": null, "scale": {"domain": [380, 0]}},
-        "text": {"field": "text"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              380,
+              0
+            ]
+          }
+        },
+        "text": {
+          "field": "text"
+        }
       }
     },
     {
       "data": {
         "values": [
-          {"x": 380, "y": 145, "text": "as many cows"}
+          {
+            "x": 380,
+            "y": 145,
+            "text": "as many cows"
+          }
         ]
       },
       "mark": {
@@ -126,15 +245,41 @@
         "color": "#666666"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"field": "y", "type": "quantitative", "axis": null, "scale": {"domain": [380, 0]}},
-        "text": {"field": "text"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              380,
+              0
+            ]
+          }
+        },
+        "text": {
+          "field": "text"
+        }
       }
     },
     {
       "data": {
         "values": [
-          {"x": 380, "y": 182, "text": "→"}
+          {
+            "x": 380,
+            "y": 182,
+            "text": "→"
+          }
         ]
       },
       "mark": {
@@ -143,21 +288,60 @@
         "color": "#999999"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"field": "y", "type": "quantitative", "axis": null, "scale": {"domain": [380, 0]}},
-        "text": {"field": "text"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              380,
+              0
+            ]
+          }
+        },
+        "text": {
+          "field": "text"
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"x": 190, "y": 235},
-          {"x": 514, "y": 235},
-          {"x": 542, "y": 235},
-          {"x": 570, "y": 235},
-          {"x": 598, "y": 235},
-          {"x": 626, "y": 235}
+          {
+            "x": 190,
+            "y": 235
+          },
+          {
+            "x": 514,
+            "y": 235
+          },
+          {
+            "x": 542,
+            "y": 235
+          },
+          {
+            "x": 570,
+            "y": 235
+          },
+          {
+            "x": 598,
+            "y": 235
+          },
+          {
+            "x": 626,
+            "y": 235
+          }
         ]
       },
       "mark": {
@@ -168,16 +352,43 @@
         "color": "#C46A2D"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"field": "y", "type": "quantitative", "axis": null, "scale": {"domain": [380, 0]}}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              380,
+              0
+            ]
+          }
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"year": "1990", "x": 190, "label": "426,869 L"},
-          {"year": "2025", "x": 570, "label": "2,042,992 L"}
+          {
+            "year": "1990",
+            "x": 190,
+            "label": "426,869 L"
+          },
+          {
+            "year": "2025",
+            "x": 570,
+            "label": "2,042,992 L"
+          }
         ]
       },
       "mark": {
@@ -187,17 +398,36 @@
         "color": "#C46A2D"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"value": 280},
-        "text": {"field": "label"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "value": 280
+        },
+        "text": {
+          "field": "label"
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"x": 190, "label": "milk produced per farm"},
-          {"x": 570, "label": "milk produced per farm"}
+          {
+            "x": 190,
+            "label": "milk produced per farm"
+          },
+          {
+            "x": 570,
+            "label": "milk produced per farm"
+          }
         ]
       },
       "mark": {
@@ -206,16 +436,33 @@
         "color": "#666666"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"value": 305},
-        "text": {"field": "label"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "value": 305
+        },
+        "text": {
+          "field": "label"
+        }
       }
     },
-
     {
       "data": {
         "values": [
-          {"x": 380, "y": 248, "text": "4.8×"}
+          {
+            "x": 380,
+            "y": 248,
+            "text": "4.8×"
+          }
         ]
       },
       "mark": {
@@ -225,15 +472,41 @@
         "color": "#C46A2D"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"field": "y", "type": "quantitative", "axis": null, "scale": {"domain": [380, 0]}},
-        "text": {"field": "text"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              380,
+              0
+            ]
+          }
+        },
+        "text": {
+          "field": "text"
+        }
       }
     },
     {
       "data": {
         "values": [
-          {"x": 380, "y": 273, "text": "as much milk"}
+          {
+            "x": 380,
+            "y": 273,
+            "text": "as much milk"
+          }
         ]
       },
       "mark": {
@@ -242,15 +515,121 @@
         "color": "#666666"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative", "axis": null, "scale": {"domain": [0, 760]}},
-        "y": {"field": "y", "type": "quantitative", "axis": null, "scale": {"domain": [380, 0]}},
-        "text": {"field": "text"}
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              760
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              380,
+              0
+            ]
+          }
+        },
+        "text": {
+          "field": "text"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "fontSize": 10,
+        "color": "#666666",
+        "lineHeight": 15
+      },
+      "encoding": {
+        "x": {
+          "value": 380
+        },
+        "y": {
+          "value": 340
+        },
+        "text": {
+          "value": "Icons show approximate ratios; labels give values and growth multiples."
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "rect",
+        "fill": "#EDF4EF",
+        "stroke": "#B7D2BF",
+        "strokeWidth": 1,
+        "cornerRadius": 6,
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "x2": {
+          "value": 760
+        },
+        "y": {
+          "value": 360
+        },
+        "y2": {
+          "value": 393
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "lineHeight": 15,
+        "color": "#355542",
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "value": 12
+        },
+        "y": {
+          "value": 369
+        },
+        "text": {
+          "value": [
+            "These farm averages imply about 67% more milk per cow; herd growth alone does not explain output growth."
+          ]
+        }
       }
     }
   ],
-
   "config": {
     "background": "white",
-    "view": {"stroke": null}
+    "view": {
+      "stroke": null
+    }
   }
 }

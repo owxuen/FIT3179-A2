@@ -2,9 +2,13 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "width": 920,
   "height": 580,
-  "padding": {"top": 75, "left": 20, "right": 25, "bottom": 35},
+  "padding": {
+    "top": 75,
+    "left": 20,
+    "right": 25,
+    "bottom": 110
+  },
   "autosize": "none",
-
   "title": {
     "text": "Where Does Australia’s Dairy Go?",
     "subtitle": "Australia’s top 10 dairy export markets are concentrated across Asia, led by Greater China and Japan (2024–25).",
@@ -17,25 +21,46 @@
     "subtitleColor": "#666666",
     "offset": 22
   },
-
   "signals": [
     {
       "name": "metric",
       "value": "Value",
       "bind": {
         "input": "select",
-        "options": ["Value", "Volume"],
-        "labels": ["Export value (A$m)", "Export volume (tonnes)"],
+        "options": [
+          "Value",
+          "Volume"
+        ],
+        "labels": [
+          "Export value (A$m)",
+          "Export volume (tonnes)"
+        ],
         "name": "Select Metric: "
       }
+    },
+    {
+      "name": "hoverCountry",
+      "value": null,
+      "on": [
+        {
+          "events": "mouseover[event.item && event.item.datum && (event.item.mark.name === 'export_routes' || event.item.mark.name === 'export_destinations' || event.item.mark.name === 'destination_names' || event.item.mark.name === 'destination_values')]",
+          "update": "datum.country"
+        },
+        {
+          "events": "mouseout",
+          "update": "null"
+        }
+      ]
     }
   ],
-
   "data": [
     {
       "name": "world",
       "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
-      "format": {"type": "topojson", "feature": "countries"}
+      "format": {
+        "type": "topojson",
+        "feature": "countries"
+      }
     },
     {
       "name": "destinations",
@@ -64,33 +89,40 @@
         },
         {
           "type": "formula",
-          "as": "lblAlign",
-          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? 'right' : 'left'"
+          "as": "labelX",
+          "expr": "indexof(['Greater China', 'South Korea', 'Thailand', 'Malaysia', 'Singapore'], datum.country) >= 0 ? 25 : 750"
         },
         {
           "type": "formula",
-          "as": "lblDx",
-          "expr": "datum.country === 'Malaysia' || datum.country === 'Singapore' || datum.country === 'Thailand' || datum.country === 'Greater China' || datum.country === 'South Korea' ? -11 : 11"
-        },
-        {
-          "type": "formula",
-          "as": "lblDy",
-          "expr": "datum.country === 'Singapore' ? 12 : datum.country === 'Malaysia' ? -10 : datum.country === 'Indonesia' ? 8 : datum.country === 'Vietnam' ? -12 : -5"
+          "as": "labelY",
+          "expr": "datum.country === 'Greater China' ? 90 : datum.country === 'South Korea' ? 145 : datum.country === 'Thailand' ? 215 : datum.country === 'Malaysia' ? 285 : datum.country === 'Singapore' ? 345 : datum.country === 'Japan' ? 75 : datum.country === 'Vietnam' ? 200 : datum.country === 'Philippines' ? 265 : datum.country === 'Indonesia' ? 345 : 505"
         }
       ]
     },
     {
       "name": "australia",
       "values": [
-        {"country": "Australia", "longitude": 134.0, "latitude": -24.5}
+        {
+          "country": "Australia",
+          "longitude": 134.0,
+          "latitude": -24.5
+        }
       ]
     },
     {
       "name": "flows",
       "source": "destinations",
       "transform": [
-        {"type": "formula", "as": "originLon", "expr": "134.0"},
-        {"type": "formula", "as": "originLat", "expr": "-24.5"},
+        {
+          "type": "formula",
+          "as": "originLon",
+          "expr": "134.0"
+        },
+        {
+          "type": "formula",
+          "as": "originLat",
+          "expr": "-24.5"
+        },
         {
           "type": "formula",
           "as": "midLon",
@@ -104,68 +136,125 @@
       ]
     }
   ],
-
   "projections": [
     {
       "name": "projection",
       "type": "mercator",
-      "center": [142, -5],
+      "center": [
+        142,
+        -5
+      ],
       "scale": 310,
-      "translate": [460, 290],
-      "clipExtent": [[0, 0], [920, 580]]
+      "translate": [
+        460,
+        290
+      ],
+      "clipExtent": [
+        [
+          0,
+          0
+        ],
+        [
+          920,
+          580
+        ]
+      ]
     }
   ],
-
   "scales": [
     {
       "name": "flowWidth",
       "type": "sqrt",
-      "domain": [0, 1100],
-      "range": [1.5, 11]
+      "domain": [
+        0,
+        1100
+      ],
+      "range": [
+        1.5,
+        11
+      ]
     },
     {
       "name": "flowWidthVol",
       "type": "sqrt",
-      "domain": [0, 160000],
-      "range": [1.5, 11]
+      "domain": [
+        0,
+        160000
+      ],
+      "range": [
+        1.5,
+        11
+      ]
     },
     {
       "name": "pointSize",
       "type": "sqrt",
-      "domain": [0, 1100],
-      "range": [40, 250]
+      "domain": [
+        0,
+        1100
+      ],
+      "range": [
+        40,
+        250
+      ]
     },
     {
       "name": "pointSizeVol",
       "type": "sqrt",
-      "domain": [0, 160000],
-      "range": [40, 250]
+      "domain": [
+        0,
+        160000
+      ],
+      "range": [
+        40,
+        250
+      ]
     }
   ],
-
   "marks": [
     {
       "type": "shape",
       "clip": true,
-      "from": {"data": "world"},
+      "from": {
+        "data": "world"
+      },
       "encode": {
         "enter": {
-          "fill": {"value": "#ECECE8"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 0.8}
+          "fill": {
+            "value": "#ECECE8"
+          },
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+          "strokeWidth": {
+            "value": 0.8
+          }
         }
       },
-      "transform": [{"type": "geoshape", "projection": "projection"}]
+      "transform": [
+        {
+          "type": "geoshape",
+          "projection": "projection"
+        }
+      ]
     },
     {
       "type": "path",
       "clip": true,
-      "from": {"data": "flows"},
+      "from": {
+        "data": "flows"
+      },
       "encode": {
         "enter": {
-          "stroke": {"value": "#2F6B4F"},
-          "strokeCap": {"value": "round"},
-          "fill": {"value": null}
+          "stroke": {
+            "value": "#2F6B4F"
+          },
+          "strokeCap": {
+            "value": "round"
+          },
+          "fill": {
+            "value": null
+          }
         },
         "update": {
           "path": {
@@ -174,201 +263,523 @@
           "strokeWidth": {
             "signal": "metric === 'Value' ? scale('flowWidth', datum.value_aud_m) : scale('flowWidthVol', datum.volume_tonnes)"
           },
-          "strokeOpacity": {"value": 0.38},
-          "tooltip": {"field": "tooltipText"}
-        },
-        "hover": {
-          "strokeOpacity": {"value": 0.95}
+          "strokeOpacity": {
+            "signal": "hoverCountry === null ? 0.38 : datum.country === hoverCountry ? 0.95 : 0.06"
+          },
+          "tooltip": {
+            "field": "tooltipText"
+          }
+        }
+      },
+      "name": "export_routes"
+    },
+    {
+      "name": "destination_leaders",
+      "type": "path",
+      "interactive": false,
+      "from": {
+        "data": "destinations"
+      },
+      "encode": {
+        "update": {
+          "path": {
+            "signal": "'M' + scale('projection', [datum.longitude, datum.latitude])[0] + ',' + scale('projection', [datum.longitude, datum.latitude])[1] + ' L' + (datum.labelX < 100 ? 200 : 710) + ',' + datum.labelY + ' L' + (datum.labelX < 100 ? 175 : 738) + ',' + datum.labelY"
+          },
+          "fill": {
+            "value": null
+          },
+          "stroke": {
+            "value": "#888888"
+          },
+          "strokeWidth": {
+            "value": 0.8
+          },
+          "strokeDash": {
+            "value": [
+              3,
+              3
+            ]
+          },
+          "strokeLinejoin": {
+            "value": "round"
+          },
+          "opacity": {
+            "signal": "hoverCountry === null || datum.country === hoverCountry ? 0.65 : 0.12"
+          }
         }
       }
     },
     {
       "type": "symbol",
-      "from": {"data": "destinations"},
+      "from": {
+        "data": "destinations"
+      },
       "encode": {
         "enter": {
-          "shape": {"value": "circle"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 1.5},
-          "tooltip": {"field": "tooltipText"}
+          "shape": {
+            "value": "circle"
+          },
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+          "strokeWidth": {
+            "value": 1.5
+          },
+          "tooltip": {
+            "field": "tooltipText"
+          }
         },
         "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
+          "x": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[0]"
+          },
+          "y": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[1]"
+          },
           "fill": {
             "signal": "datum.country === 'Greater China' ? '#C46A2D' : '#2F6B4F'"
           },
           "size": {
             "signal": "metric === 'Value' ? scale('pointSize', datum.value_aud_m) : scale('pointSizeVol', datum.volume_tonnes)"
           },
-          "opacity": {"value": 0.95}
-        },
-        "hover": {
-          "stroke": {"value": "#111111"},
-          "strokeWidth": {"value": 2.5}
+          "opacity": {
+            "signal": "hoverCountry === null || datum.country === hoverCountry ? 0.95 : 0.2"
+          },
+          "stroke": {
+            "signal": "datum.country === hoverCountry ? '#111111' : '#FFFFFF'"
+          },
+          "strokeWidth": {
+            "signal": "datum.country === hoverCountry ? 2.5 : 1.5"
+          }
         }
-      }
+      },
+      "name": "export_destinations"
     },
     {
       "type": "symbol",
-      "from": {"data": "australia"},
+      "from": {
+        "data": "australia"
+      },
       "encode": {
         "enter": {
-          "shape": {"value": "circle"},
-          "fill": {"value": "#1D3557"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 2.5},
-          "size": {"value": 180}
+          "shape": {
+            "value": "circle"
+          },
+          "fill": {
+            "value": "#1D3557"
+          },
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+          "strokeWidth": {
+            "value": 2.5
+          },
+          "size": {
+            "value": 180
+          }
         },
         "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+          "x": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[0]"
+          },
+          "y": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[1]"
+          }
         }
       }
     },
     {
       "type": "text",
-      "from": {"data": "australia"},
+      "from": {
+        "data": "australia"
+      },
       "encode": {
         "enter": {
-          "text": {"value": "AUSTRALIA (Origin)"},
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 11},
-          "fontWeight": {"value": "bold"},
-          "fill": {"value": "#1D3557"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 3.5},
-          "strokeLinejoin": {"value": "round"},
-          "dx": {"value": 12},
-          "dy": {"value": 4}
+          "text": {
+            "value": "AUSTRALIA (Origin)"
+          },
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#1D3557"
+          },
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+          "strokeWidth": {
+            "value": 3.5
+          },
+          "strokeLinejoin": {
+            "value": "round"
+          },
+          "dx": {
+            "value": 12
+          },
+          "dy": {
+            "value": 4
+          }
         },
         "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+          "x": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[0]"
+          },
+          "y": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[1]"
+          }
         }
       }
     },
     {
       "type": "text",
-      "from": {"data": "australia"},
+      "from": {
+        "data": "australia"
+      },
       "encode": {
         "enter": {
-          "text": {"value": "AUSTRALIA (Origin)"},
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 11},
-          "fontWeight": {"value": "bold"},
-          "fill": {"value": "#1D3557"},
-          "dx": {"value": 12},
-          "dy": {"value": 4}
+          "text": {
+            "value": "AUSTRALIA (Origin)"
+          },
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#1D3557"
+          },
+          "dx": {
+            "value": 12
+          },
+          "dy": {
+            "value": 4
+          }
         },
         "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"}
+          "x": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[0]"
+          },
+          "y": {
+            "signal": "scale('projection', [datum.longitude, datum.latitude])[1]"
+          }
         }
       }
     },
     {
       "type": "text",
-      "from": {"data": "destinations"},
+      "from": {
+        "data": "destinations"
+      },
       "encode": {
         "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 10.5},
-          "fontWeight": {"value": "bold"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 3.5},
-          "strokeLinejoin": {"value": "round"},
-          "fill": {"value": "#FFFFFF"}
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 10.5
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+          "strokeWidth": {
+            "value": 3.5
+          },
+          "strokeLinejoin": {
+            "value": "round"
+          },
+          "fill": {
+            "value": "#FFFFFF"
+          }
         },
         "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy - 6"},
-          "text": {"field": "country"}
+          "x": {
+            "field": "labelX"
+          },
+          "y": {
+            "field": "labelY"
+          },
+          "align": {
+            "value": "left"
+          },
+          "dx": {
+            "value": 0
+          },
+          "dy": {
+            "value": -6
+          },
+          "text": {
+            "field": "country"
+          },
+          "opacity": {
+            "signal": "hoverCountry === null || datum.country === hoverCountry ? 0.95 : 0.2"
+          }
+        }
+      },
+      "interactive": false
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "destinations"
+      },
+      "encode": {
+        "enter": {
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 10.5
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#1A1A1A"
+          },
+          "tooltip": {
+            "field": "tooltipText"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "labelX"
+          },
+          "y": {
+            "field": "labelY"
+          },
+          "align": {
+            "value": "left"
+          },
+          "dx": {
+            "value": 0
+          },
+          "dy": {
+            "value": -6
+          },
+          "text": {
+            "field": "country"
+          },
+          "opacity": {
+            "signal": "hoverCountry === null || datum.country === hoverCountry ? 0.95 : 0.2"
+          }
+        }
+      },
+      "name": "destination_names"
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "destinations"
+      },
+      "encode": {
+        "enter": {
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 9.5
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "stroke": {
+            "value": "#FFFFFF"
+          },
+          "strokeWidth": {
+            "value": 3.5
+          },
+          "strokeLinejoin": {
+            "value": "round"
+          },
+          "fill": {
+            "value": "#FFFFFF"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "labelX"
+          },
+          "y": {
+            "field": "labelY"
+          },
+          "align": {
+            "value": "left"
+          },
+          "dx": {
+            "value": 0
+          },
+          "dy": {
+            "value": 8
+          },
+          "text": {
+            "field": "displayValue"
+          },
+          "opacity": {
+            "signal": "hoverCountry === null || datum.country === hoverCountry ? 0.95 : 0.2"
+          }
+        }
+      },
+      "interactive": false
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "destinations"
+      },
+      "encode": {
+        "enter": {
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 9.5
+          },
+          "fill": {
+            "value": "#555555"
+          },
+          "tooltip": {
+            "field": "tooltipText"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "labelX"
+          },
+          "y": {
+            "field": "labelY"
+          },
+          "align": {
+            "value": "left"
+          },
+          "dx": {
+            "value": 0
+          },
+          "dy": {
+            "value": 8
+          },
+          "text": {
+            "field": "displayValue"
+          },
+          "opacity": {
+            "signal": "hoverCountry === null || datum.country === hoverCountry ? 0.95 : 0.2"
+          }
+        }
+      },
+      "name": "destination_values"
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "width / 2"
+          },
+          "y": {
+            "signal": "height + 30"
+          },
+          "text": {
+            "value": "Flow width and bubble size show the selected metric. Hover over a route or destination to highlight it."
+          },
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 10
+          },
+          "fontStyle": {
+            "value": "italic"
+          },
+          "fill": {
+            "value": "#777777"
+          },
+          "align": {
+            "value": "center"
+          }
+        }
+      },
+      "interactive": false
+    },
+    {
+      "type": "rect",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 98
+          },
+          "x2": {
+            "signal": "width - 30"
+          },
+          "y": {
+            "value": 623
+          },
+          "y2": {
+            "value": 656
+          },
+          "fill": {
+            "value": "#EDF4EF"
+          },
+          "stroke": {
+            "value": "#B7D2BF"
+          },
+          "cornerRadius": {
+            "value": 6
+          }
         }
       }
     },
     {
+      "name": "context_note",
       "type": "text",
-      "from": {"data": "destinations"},
+      "interactive": false,
       "encode": {
         "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 10.5},
-          "fontWeight": {"value": "bold"},
-          "fill": {"value": "#1A1A1A"},
-          "tooltip": {"field": "tooltipText"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy - 6"},
-          "text": {"field": "country"}
-        }
-      }
-    },
-    {
-      "type": "text",
-      "from": {"data": "destinations"},
-      "encode": {
-        "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 9.5},
-          "fontWeight": {"value": "bold"},
-          "stroke": {"value": "#FFFFFF"},
-          "strokeWidth": {"value": 3.5},
-          "strokeLinejoin": {"value": "round"},
-          "fill": {"value": "#FFFFFF"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy + 8"},
-          "text": {"field": "displayValue"}
-        }
-      }
-    },
-    {
-      "type": "text",
-      "from": {"data": "destinations"},
-      "encode": {
-        "enter": {
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 9.5},
-          "fill": {"value": "#555555"}
-        },
-        "update": {
-          "x": {"signal": "scale('projection', [datum.longitude, datum.latitude])[0]"},
-          "y": {"signal": "scale('projection', [datum.longitude, datum.latitude])[1]"},
-          "align": {"field": "lblAlign"},
-          "dx": {"field": "lblDx"},
-          "dy": {"signal": "datum.lblDy + 8"},
-          "text": {"field": "displayValue"}
-        }
-      }
-    },
-    {
-      "type": "text",
-      "encode": {
-        "enter": {
-          "x": {"value": 80},
-          "y": {"value": 545},
-          "text": {"value": "Flow width and bubble size represent the selected export metric."},
-          "font": {"value": "Arial"},
-          "fontSize": {"value": 10},
-          "fontStyle": {"value": "italic"},
-          "fill": {"value": "#777777"}
+          "x": {
+            "value": 110
+          },
+          "y": {
+            "value": 632
+          },
+          "align": {
+            "value": "left"
+          },
+          "text": {
+            "value": [
+              "Routes illustrate origin and destination; their curves do not represent actual shipping paths."
+            ]
+          },
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#355542"
+          },
+          "baseline": {
+            "value": "top"
+          },
+          "lineHeight": {
+            "value": 15
+          }
         }
       }
     }
   ],
-
   "config": {
     "background": "white"
   }

@@ -1,18 +1,20 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "width": 880,
+  "width": 1120,
   "height": 550,
   "padding": {
     "top": 7,
-    "left": -50,
+    "left": 20,
     "right": 20,
     "bottom": 30
   },
   "autosize": "pad",
-
   "title": {
     "text": "What Does Australia Export — and Who Buys It?",
-    "subtitle": "Australia exported A$3.8 billion of dairy products in 2024–25, with Asian markets dominating demand.",
+    "subtitle": [
+      "Australia exported A$3.8 billion of dairy products in 2024–25, with Asian markets dominating demand.",
+      "Hover over a product, region, or flow to trace its export connections."
+    ],
     "anchor": "start",
     "frame": "group",
     "fontSize": 20,
@@ -22,7 +24,6 @@
     "subtitleColor": "#666666",
     "offset": 15
   },
-
   "signals": [
     {
       "name": "nodeWidth",
@@ -30,71 +31,83 @@
     },
     {
       "name": "leftX",
-      "value": 110
+      "value": 270
     },
     {
       "name": "rightX",
-      "value": 710
+      "value": 850
+    },
+    {
+      "name": "hoverConnection",
+      "value": null,
+      "on": [
+        {
+          "events": "mouseover[event.item && event.item.datum && event.item.mark.name && indexof(event.item.mark.name, 'linked_') === 0]",
+          "update": "event.item.mark.name === 'linked_flows' ? {product: datum.product, region: datum.region} : indexof(event.item.mark.name, 'linked_products') === 0 ? {product: datum.name, region: null} : {product: null, region: datum.name}"
+        },
+        {
+          "events": "mouseout",
+          "update": "null"
+        }
+      ]
     }
   ],
-
   "data": [
     {
       "name": "flows",
       "values": [
         {
-          "product": "Butter/AMF",
-          "region": "SE Asia",
+          "product": "Butter / anhydrous milk fat",
+          "region": "Southeast Asia",
           "value": 85,
           "sy": 24,
           "ty": 25
         },
         {
-          "product": "Butter/AMF",
+          "product": "Butter / anhydrous milk fat",
           "region": "Other Asia",
           "value": 74,
           "sy": 33,
           "ty": 175
         },
         {
-          "product": "Butter/AMF",
+          "product": "Butter / anhydrous milk fat",
           "region": "Europe",
           "value": 16,
           "sy": 39,
           "ty": 345
         },
         {
-          "product": "Butter/AMF",
+          "product": "Butter / anhydrous milk fat",
           "region": "Middle East",
           "value": 5,
           "sy": 41,
           "ty": 375
         },
         {
-          "product": "Butter/AMF",
+          "product": "Butter / anhydrous milk fat",
           "region": "Africa",
           "value": 4,
           "sy": 42,
           "ty": 410
         },
         {
-          "product": "Butter/AMF",
+          "product": "Butter / anhydrous milk fat",
           "region": "Americas",
           "value": 24,
           "sy": 44,
           "ty": 430
         },
         {
-          "product": "Butter/AMF",
+          "product": "Butter / anhydrous milk fat",
           "region": "Other",
           "value": 7,
           "sy": 47,
           "ty": 465
         },
-
         {
           "product": "Cheese",
-          "region": "SE Asia",
+          "region": "Southeast Asia",
           "value": 344,
           "sy": 115,
           "ty": 55
@@ -141,10 +154,9 @@
           "sy": 197,
           "ty": 470
         },
-
         {
           "product": "Milk",
-          "region": "SE Asia",
+          "region": "Southeast Asia",
           "value": 124,
           "sy": 235,
           "ty": 82
@@ -177,89 +189,86 @@
           "sy": 258,
           "ty": 475
         },
-
         {
-          "product": "SMP",
-          "region": "SE Asia",
+          "product": "Skim milk powder",
+          "region": "Southeast Asia",
           "value": 478,
           "sy": 305,
           "ty": 115
         },
         {
-          "product": "SMP",
+          "product": "Skim milk powder",
           "region": "Other Asia",
           "value": 197,
           "sy": 340,
           "ty": 305
         },
         {
-          "product": "SMP",
+          "product": "Skim milk powder",
           "region": "Middle East",
           "value": 71,
           "sy": 355,
           "ty": 390
         },
         {
-          "product": "SMP",
+          "product": "Skim milk powder",
           "region": "Africa",
           "value": 2,
           "sy": 360,
           "ty": 418
         },
         {
-          "product": "SMP",
+          "product": "Skim milk powder",
           "region": "Other",
           "value": 22,
           "sy": 362,
           "ty": 480
         },
-
         {
-          "product": "WMP",
-          "region": "SE Asia",
+          "product": "Whole milk powder",
+          "region": "Southeast Asia",
           "value": 181,
           "sy": 405,
           "ty": 145
         },
         {
-          "product": "WMP",
+          "product": "Whole milk powder",
           "region": "Other Asia",
           "value": 399,
           "sy": 435,
           "ty": 335
         },
         {
-          "product": "WMP",
+          "product": "Whole milk powder",
           "region": "Middle East",
           "value": 39,
           "sy": 445,
           "ty": 395
         },
         {
-          "product": "WMP",
+          "product": "Whole milk powder",
           "region": "Africa",
           "value": 2,
           "sy": 447,
           "ty": 420
         },
         {
-          "product": "WMP",
+          "product": "Whole milk powder",
           "region": "Americas",
           "value": 24,
           "sy": 449,
           "ty": 437
         },
         {
-          "product": "WMP",
+          "product": "Whole milk powder",
           "region": "Other",
           "value": 5,
           "sy": 452,
           "ty": 485
         },
-
         {
           "product": "Other",
-          "region": "SE Asia",
+          "region": "Southeast Asia",
           "value": 174,
           "sy": 485,
           "ty": 160
@@ -300,7 +309,6 @@
           "ty": 500
         }
       ],
-
       "transform": [
         {
           "type": "formula",
@@ -311,15 +319,19 @@
           "type": "formula",
           "as": "tooltipText",
           "expr": "datum.product + ' → ' + datum.region + ': A$' + format(datum.value, ',') + 'm'"
+        },
+        {
+          "type": "formula",
+          "as": "connectionKey",
+          "expr": "datum.product + '|' + datum.region"
         }
       ]
     },
-
     {
       "name": "products",
       "values": [
         {
-          "name": "Butter/AMF",
+          "name": "Butter / anhydrous milk fat",
           "value": 215,
           "y": 20,
           "h": 26
@@ -337,13 +349,13 @@
           "h": 36
         },
         {
-          "name": "SMP",
+          "name": "Skim milk powder",
           "value": 770,
           "y": 280,
           "h": 85
         },
         {
-          "name": "WMP",
+          "name": "Whole milk powder",
           "value": 650,
           "y": 385,
           "h": 72
@@ -354,14 +366,14 @@
           "y": 476,
           "h": 60
         }
-      ]
+      ],
+      "transform": []
     },
-
     {
       "name": "regions",
       "values": [
         {
-          "name": "SE Asia",
+          "name": "Southeast Asia",
           "value": 1386,
           "y": 20,
           "h": 150
@@ -402,20 +414,20 @@
           "y": 500,
           "h": 26
         }
-      ]
+      ],
+      "transform": []
     }
   ],
-
   "scales": [
     {
       "name": "productColor",
       "type": "ordinal",
       "domain": [
-        "Butter/AMF",
+        "Butter / anhydrous milk fat",
         "Cheese",
         "Milk",
-        "SMP",
-        "WMP",
+        "Skim milk powder",
+        "Whole milk powder",
         "Other"
       ],
       "range": [
@@ -428,7 +440,6 @@
       ]
     }
   ],
-
   "marks": [
     {
       "type": "text",
@@ -458,7 +469,6 @@
         }
       }
     },
-
     {
       "type": "text",
       "encode": {
@@ -487,7 +497,6 @@
         }
       }
     },
-
     {
       "type": "path",
       "from": {
@@ -499,9 +508,6 @@
             "scale": "productColor",
             "field": "product"
           },
-          "strokeOpacity": {
-            "value": 0.42
-          },
           "strokeWidth": {
             "field": "strokeWidth"
           },
@@ -509,21 +515,17 @@
             "field": "tooltipText"
           }
         },
-
         "update": {
           "path": {
             "signal": "'M' + (leftX + nodeWidth) + ',' + datum.sy + ' C' + ((leftX + rightX) / 2) + ',' + datum.sy + ' ' + ((leftX + rightX) / 2) + ',' + datum.ty + ' ' + rightX + ',' + datum.ty"
-          }
-        },
-
-        "hover": {
+          },
           "strokeOpacity": {
-            "value": 0.95
+            "signal": "hoverConnection === null ? 0.42 : (hoverConnection.product === null || datum.product === hoverConnection.product) && (hoverConnection.region === null || datum.region === hoverConnection.region) ? 0.95 : 0.06"
           }
         }
-      }
+      },
+      "name": "linked_flows"
     },
-
     {
       "type": "rect",
       "from": {
@@ -553,10 +555,15 @@
           "tooltip": {
             "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
           }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverConnection === null || (hoverConnection.product !== null ? datum.name === hoverConnection.product : indata('flows', 'connectionKey', datum.name + '|' + hoverConnection.region)) ? 1 : 0.25"
+          }
         }
-      }
+      },
+      "name": "linked_products_3"
     },
-
     {
       "type": "text",
       "from": {
@@ -587,11 +594,19 @@
           },
           "fill": {
             "value": "#333333"
+          },
+          "tooltip": {
+            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverConnection === null || (hoverConnection.product !== null ? datum.name === hoverConnection.product : indata('flows', 'connectionKey', datum.name + '|' + hoverConnection.region)) ? 1 : 0.25"
           }
         }
-      }
+      },
+      "name": "linked_products_4"
     },
-
     {
       "type": "text",
       "from": {
@@ -619,11 +634,19 @@
           },
           "fill": {
             "value": "#777777"
+          },
+          "tooltip": {
+            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverConnection === null || (hoverConnection.product !== null ? datum.name === hoverConnection.product : indata('flows', 'connectionKey', datum.name + '|' + hoverConnection.region)) ? 1 : 0.25"
           }
         }
-      }
+      },
+      "name": "linked_products_5"
     },
-
     {
       "type": "rect",
       "from": {
@@ -652,10 +675,15 @@
           "tooltip": {
             "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
           }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverConnection === null || (hoverConnection.region !== null ? datum.name === hoverConnection.region : indata('flows', 'connectionKey', hoverConnection.product + '|' + datum.name)) ? 1 : 0.25"
+          }
         }
-      }
+      },
+      "name": "linked_regions_6"
     },
-
     {
       "type": "text",
       "from": {
@@ -686,11 +714,19 @@
           },
           "fill": {
             "value": "#333333"
+          },
+          "tooltip": {
+            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverConnection === null || (hoverConnection.region !== null ? datum.name === hoverConnection.region : indata('flows', 'connectionKey', hoverConnection.product + '|' + datum.name)) ? 1 : 0.25"
           }
         }
-      }
+      },
+      "name": "linked_regions_7"
     },
-
     {
       "type": "text",
       "from": {
@@ -718,12 +754,20 @@
           },
           "fill": {
             "value": "#777777"
+          },
+          "tooltip": {
+            "signal": "datum.name + ': A$' + format(datum.value, ',') + 'm'"
+          }
+        },
+        "update": {
+          "opacity": {
+            "signal": "hoverConnection === null || (hoverConnection.region !== null ? datum.name === hoverConnection.region : indata('flows', 'connectionKey', hoverConnection.product + '|' + datum.name)) ? 1 : 0.25"
           }
         }
-      }
+      },
+      "name": "linked_regions_8"
     }
   ],
-
   "config": {
     "background": "white"
   }

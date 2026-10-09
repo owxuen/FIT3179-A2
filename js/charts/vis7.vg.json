@@ -1,9 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Milk Production Follows a Seasonal Rhythm",
-    "subtitle": "Across five seasons, milk production consistently rises through spring before declining toward winter.",
+    "subtitle": [
+      "Across five seasons, milk production consistently rises through spring before declining toward winter.",
+      "Hover over a segment to compare the same month across all five seasons."
+    ],
     "anchor": "start",
     "fontSize": 20,
     "fontWeight": "bold",
@@ -12,14 +14,11 @@
     "subtitleColor": "#666666",
     "offset": 18
   },
-
   "width": 650,
   "height": 650,
-
   "data": {
     "url": "vis07_monthly_seasonality.csv"
   },
-
   "transform": [
     {
       "calculate": "datum.season === '2020-21' ? 0 : datum.season === '2021-22' ? 1 : datum.season === '2022-23' ? 2 : datum.season === '2023-24' ? 3 : 4",
@@ -42,7 +41,6 @@
       "as": "outer_radius"
     }
   ],
-
   "layer": [
     {
       "mark": {
@@ -50,34 +48,31 @@
         "stroke": "#FFFFFF",
         "strokeWidth": 2
       },
-
       "encoding": {
         "theta": {
           "field": "start_angle",
           "type": "quantitative",
           "scale": null
         },
-
         "theta2": {
           "field": "end_angle"
         },
-
         "radius": {
           "field": "outer_radius",
           "type": "quantitative",
           "scale": null
         },
-
         "radius2": {
           "field": "inner_radius"
         },
-
         "color": {
           "field": "milk_production_ml",
           "type": "quantitative",
-
           "scale": {
-            "domain": [550, 1000],
+            "domain": [
+              550,
+              1000
+            ],
             "range": [
               "#EDF4EF",
               "#C7DDCE",
@@ -86,7 +81,6 @@
               "#2F6B4F"
             ]
           },
-
           "legend": {
             "title": "Milk production (ML)",
             "orient": "right",
@@ -99,7 +93,6 @@
             "labelColor": "#666666"
           }
         },
-
         "tooltip": [
           {
             "field": "season",
@@ -117,47 +110,69 @@
             "title": "Milk production (ML)",
             "format": ",.0f"
           }
-        ]
-      }
+        ],
+        "opacity": {
+          "condition": {
+            "param": "hoverMonth",
+            "value": 1
+          },
+          "value": 0.25
+        }
+      },
+      "params": [
+        {
+          "name": "hoverMonth",
+          "select": {
+            "type": "point",
+            "fields": [
+              "month"
+            ],
+            "on": "mouseover[event.item && event.item.datum && event.item.datum.season]",
+            "clear": "mouseout",
+            "toggle": false
+          }
+        }
+      ]
     },
-
     {
       "transform": [
         {
           "filter": "datum.season === '2024-25' && datum.month === 'Oct'"
         }
       ],
-
       "mark": {
         "type": "arc",
         "fillOpacity": 0,
         "stroke": "#C46A2D",
-        "strokeWidth": 4
+        "strokeWidth": 4,
+        "interactive": false
       },
-
       "encoding": {
         "theta": {
           "field": "start_angle",
           "type": "quantitative",
           "scale": null
         },
-
         "theta2": {
           "field": "end_angle"
         },
-
         "radius": {
           "field": "outer_radius",
           "type": "quantitative",
           "scale": null
         },
-
         "radius2": {
           "field": "inner_radius"
+        },
+        "opacity": {
+          "condition": {
+            "param": "hoverMonth",
+            "value": 1
+          },
+          "value": 0.25
         }
       }
     },
-
     {
       "data": {
         "values": [
@@ -211,14 +226,12 @@
           }
         ]
       },
-
       "transform": [
         {
           "calculate": "(datum.month_order - 0.5) / 12 * 6.28318530718",
           "as": "label_angle"
         }
       ],
-
       "mark": {
         "type": "text",
         "radius": 295,
@@ -226,20 +239,17 @@
         "fontWeight": "bold",
         "color": "#555555"
       },
-
       "encoding": {
         "theta": {
           "field": "label_angle",
           "type": "quantitative",
           "scale": null
         },
-
         "text": {
           "field": "month"
         }
       }
     },
-
     {
       "data": {
         "values": [
@@ -265,7 +275,6 @@
           }
         ]
       },
-
       "mark": {
         "type": "text",
         "fontSize": 10,
@@ -273,26 +282,22 @@
         "color": "#666666",
         "align": "left"
       },
-
       "encoding": {
         "theta": {
           "field": "angle",
           "type": "quantitative",
           "scale": null
         },
-
         "radius": {
           "field": "radius_value",
           "type": "quantitative",
           "scale": null
         },
-
         "text": {
           "field": "label"
         }
       }
     },
-
     {
       "data": {
         "values": [
@@ -303,7 +308,6 @@
           }
         ]
       },
-
       "mark": {
         "type": "text",
         "fontSize": 10,
@@ -311,26 +315,22 @@
         "color": "#2F6B4F",
         "align": "left"
       },
-
       "encoding": {
         "theta": {
           "field": "angle",
           "type": "quantitative",
           "scale": null
         },
-
         "radius": {
           "field": "radius_value",
           "type": "quantitative",
           "scale": null
         },
-
         "text": {
           "field": "label"
         }
       }
     },
-
     {
       "data": {
         "values": [
@@ -341,7 +341,6 @@
           }
         ]
       },
-
       "mark": {
         "type": "text",
         "fontSize": 12,
@@ -351,26 +350,22 @@
         "baseline": "middle",
         "dx": 8
       },
-
       "encoding": {
         "theta": {
           "field": "angle",
           "type": "quantitative",
           "scale": null
         },
-
         "radius": {
           "field": "radius_value",
           "type": "quantitative",
           "scale": null
         },
-
         "text": {
           "field": "label"
         }
       }
     },
-
     {
       "data": {
         "values": [
@@ -381,7 +376,6 @@
           }
         ]
       },
-
       "mark": {
         "type": "text",
         "fontSize": 10,
@@ -392,34 +386,87 @@
         "dx": 8,
         "dy": 17
       },
-
       "encoding": {
         "theta": {
           "field": "angle",
           "type": "quantitative",
           "scale": null
         },
-
         "radius": {
           "field": "radius_value",
           "type": "quantitative",
           "scale": null
         },
-
         "text": {
           "field": "label"
         }
       }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "rect",
+        "fill": "#EDF4EF",
+        "stroke": "#B7D2BF",
+        "strokeWidth": 1,
+        "cornerRadius": 6,
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "x2": {
+          "value": 650
+        },
+        "y": {
+          "value": 670
+        },
+        "y2": {
+          "value": 718
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "lineHeight": 15,
+        "color": "#355542",
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "value": 12
+        },
+        "y": {
+          "value": 679
+        },
+        "text": {
+          "value": [
+            "Monthly totals are not adjusted for the number of days in each month; February has fewer production",
+            "days."
+          ]
+        }
+      }
     }
   ],
-
   "config": {
     "background": "white",
-
     "view": {
       "stroke": null
     },
-
     "font": "Arial"
   }
 }
