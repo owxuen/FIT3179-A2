@@ -143,9 +143,12 @@ async function renderChart(number) {
       heading.className = number === 2 || number === 3 ? 'paired-chart-heading' : 'aligned-chart-heading';
       const title = document.createElement('h3');
       title.textContent = Array.isArray(spec.title.text) ? spec.title.text.join(' ') : spec.title.text;
-      const subtitle = document.createElement('p');
-      subtitle.textContent = Array.isArray(spec.title.subtitle) ? spec.title.subtitle.join(' ') : spec.title.subtitle;
-      heading.append(title, subtitle);
+      heading.append(title);
+      if (spec.title.subtitle) {
+        const subtitle = document.createElement('p');
+        subtitle.textContent = Array.isArray(spec.title.subtitle) ? spec.title.subtitle.join(' ') : spec.title.subtitle;
+        heading.append(subtitle);
+      }
       host.insertAdjacentElement('beforebegin', heading);
       delete spec.title;
     }
