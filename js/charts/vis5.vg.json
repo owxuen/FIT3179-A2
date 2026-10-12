@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "width": 920,
-  "height": 430,
+  "height": 360,
   "padding": {
     "top": 85,
     "left": 35,
@@ -109,11 +109,11 @@
       ],
       "range": [
         "#1B4D3E",
-        "#3B7A57",
-        "#5E9B77",
-        "#86B899",
-        "#AECDB9",
-        "#CCDED2"
+        "#457B9D",
+        "#75658A",
+        "#C4773B",
+        "#2A9D8F",
+        "#B39A50"
       ]
     }
   ],

@@ -85,7 +85,7 @@
         {
           "type": "formula",
           "as": "tooltipText",
-          "expr": "datum.country + '\\nExport value: A$' + format(datum.value_aud_m, ',') + 'm (Rank #' + datum.value_rank + ')\\nExport volume: ' + format(datum.volume_tonnes, ',') + ' tonnes (Rank #' + datum.volume_rank + ')'"
+          "expr": "{'Destination': datum.country, 'Export value': 'A$' + format(datum.value_aud_m, ',') + 'm', 'Value rank': '#' + datum.value_rank, 'Export volume': format(datum.volume_tonnes, ',') + ' tonnes', 'Volume rank': '#' + datum.volume_rank}"
         },
         {
           "type": "formula",
@@ -209,6 +209,34 @@
         40,
         250
       ]
+    },
+    {
+      "name": "marketColor",
+      "type": "ordinal",
+      "domain": [
+        "Greater China",
+        "Japan",
+        "Malaysia",
+        "Singapore",
+        "Indonesia",
+        "Thailand",
+        "Vietnam",
+        "Philippines",
+        "South Korea",
+        "New Zealand"
+      ],
+      "range": [
+        "#1B4D3E",
+        "#2A9D8F",
+        "#457B9D",
+        "#75658A",
+        "#D95F02",
+        "#E9C46A",
+        "#52B788",
+        "#F4A261",
+        "#3D5A80",
+        "#8D99AE"
+      ]
     }
   ],
   "marks": [
@@ -247,7 +275,8 @@
       "encode": {
         "enter": {
           "stroke": {
-            "value": "#2F6B4F"
+            "scale": "marketColor",
+            "field": "country"
           },
           "strokeCap": {
             "value": "round"
@@ -337,7 +366,8 @@
             "signal": "scale('projection', [datum.longitude, datum.latitude])[1]"
           },
           "fill": {
-            "signal": "datum.country === 'Greater China' ? '#C46A2D' : '#2F6B4F'"
+            "scale": "marketColor",
+            "field": "country"
           },
           "size": {
             "signal": "metric === 'Value' ? scale('pointSize', datum.value_aud_m) : scale('pointSizeVol', datum.volume_tonnes)"
@@ -546,9 +576,6 @@
           "fontWeight": {
             "value": "bold"
           },
-          "fill": {
-            "value": "#1A1A1A"
-          },
           "tooltip": {
             "field": "tooltipText"
           }
@@ -574,6 +601,10 @@
           },
           "opacity": {
             "signal": "hoverCountry === null || datum.country === hoverCountry ? 0.95 : 0.2"
+          },
+          "fill": {
+            "scale": "marketColor",
+            "field": "country"
           }
         }
       },

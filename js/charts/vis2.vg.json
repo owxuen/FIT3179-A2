@@ -252,27 +252,6 @@
     {
       "transform": [
         {
-          "filter": "datum.year == 1990 && datum.metric === 'Milk production'"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "align": "center",
-        "baseline": "bottom",
-        "dy": -14,
-        "fontSize": 11,
-        "fontWeight": "normal",
-        "color": "#777777"
-      },
-      "encoding": {
-        "text": {
-          "value": "All measures = 100"
-        }
-      }
-    },
-    {
-      "transform": [
-        {
           "filter": "datum.year == 2025 && datum.metric === 'Milk production'"
         },
         {
