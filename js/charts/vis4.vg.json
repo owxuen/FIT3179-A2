@@ -247,9 +247,12 @@
       "data": {
         "values": [
           {
-            "longitude": 133.5,
-            "latitude": -20.5,
-            "label": "Northern Territory"
+            "longitude": 133.4,
+            "latitude": -19.8,
+            "label": [
+              "Northern",
+              "Territory"
+            ]
           }
         ]
       },
@@ -260,7 +263,8 @@
         "fontSize": 11,
         "fontWeight": "bold",
         "color": "#888888",
-        "interactive": false
+        "interactive": false,
+        "lineHeight": 14
       },
       "encoding": {
         "longitude": {
@@ -280,8 +284,8 @@
       "data": {
         "values": [
           {
-            "longitude": 133.5,
-            "latitude": -21.6,
+            "longitude": 133.4,
+            "latitude": -22.1,
             "label": "No data"
           }
         ]
