@@ -63,7 +63,7 @@ async function renderChart(number) {
   const host = document.getElementById(`vis${number}`);
   try {
     const url = new URL(`js/charts/vis${number}.vg.json`, document.baseURI);
-    const response = await fetch(url);
+    const response = await fetch(url, {cache: 'no-cache'});
     if (!response.ok) throw new Error(`Chart specification returned ${response.status}`);
     const spec = await response.json();
     resolveDataURLs(spec, url);
