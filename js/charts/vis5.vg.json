@@ -128,7 +128,7 @@
             "signal": "datum.column * 22"
           },
           "y": {
-            "signal": "15 + datum.row * 22"
+            "signal": "53 + datum.row * 22"
           },
           "width": {
             "value": 19
@@ -174,7 +174,7 @@
             "value": 0
           },
           "y": {
-            "value": 255
+            "value": 293
           },
           "text": {
             "value": [
