@@ -407,6 +407,37 @@
           ]
         }
       }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "lineHeight": 15,
+        "color": "#8B542E",
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "value": 8
+        },
+        "y": {
+          "value": 251
+        },
+        "text": {
+          "value": [
+            "≈69% more milk per cow",
+            "implied by the national totals"
+          ]
+        }
+      }
     }
   ],
   "config": {

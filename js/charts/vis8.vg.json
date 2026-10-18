@@ -4,10 +4,7 @@
   "height": 240,
   "title": {
     "text": "Australia\u2019s Taste for Dairy Is Changing",
-    "subtitle": [
-      "Colour shows change in per-capita consumption from 2010\u201311. Hover to compare a year across products.",
-      "*The yoghurt category expanded in 2014\u201315, affecting comparisons with earlier years."
-    ],
+    "subtitle": "Colour shows changes in consumption per person since 2010\u201311.",
     "anchor": "start",
     "fontSize": 20,
     "fontWeight": "bold",
@@ -102,10 +99,13 @@
             "clamp": true
           },
           "legend": {
-            "title": "Change from 2010\u201311",
-            "orient": "bottom",
-            "direction": "horizontal",
-            "gradientLength": 300,
+            "title": [
+              "Change from",
+              "2010\u201311"
+            ],
+            "orient": "right",
+            "direction": "vertical",
+            "gradientLength": 220,
             "values": [
               -20,
               -10,
@@ -115,7 +115,8 @@
               30,
               45
             ],
-            "labelExpr": "datum.value === -20 ? '\u2264\u221220%' : datum.value === 45 ? '\u2265+45%' : datum.value > 0 ? '+' + datum.value + '%' : datum.value + '%'"
+            "labelExpr": "datum.value === -20 ? '\u2264\u221220%' : datum.value === 45 ? '\u2265+45%' : datum.value > 0 ? '+' + datum.value + '%' : datum.value + '%'",
+            "offset": 18
           }
         },
         "opacity": {
@@ -364,6 +365,64 @@
         },
         "text": {
           "value": "*"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "color": "#C46A2D",
+        "strokeWidth": 1.5,
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "sort": "ascending"
+        },
+        "y": {
+          "value": 240
+        },
+        "y2": {
+          "value": 258
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year === '2014-15' && datum.product === 'Yoghurt'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "lineHeight": 16,
+        "color": "#8B542E",
+        "align": "center",
+        "baseline": "top",
+        "interactive": false
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "sort": "ascending"
+        },
+        "y": {
+          "value": 266
+        },
+        "text": {
+          "value": [
+            "* Yoghurt category expanded in 2014\u201315.",
+            "Comparisons with earlier years are affected."
+          ]
         }
       }
     }

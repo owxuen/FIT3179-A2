@@ -30,6 +30,42 @@ async function inlineLocalData(value, origin) {
   }
   await Promise.all(Object.values(value).map(child => inlineLocalData(child, origin)));
 }
+// Emphasise a few subjects, dates and figures without changing the wording.
+const emphasisPattern = /(A\$[\d,]+(?:\.\d+)?(?:\s+(?:million|billion))?|[+−]?\d[\d,]*(?:\.\d+)?(?:%|×|\s+(?:million|billion|ML|tonnes|litres))|(?:19|20)\d{2}(?:[–-]\d{2})?|national milk production|milk output per cow|output per cow|milk production|cow numbers|farm numbers|survey averages|farm businesses|herd size|milk output per farm|seasonal calendar|industry scale|different units|export volumes?|export values?|value per tonne|overseas sales value|consumption per person|domestic consumption|dairy industry|far fewer farms|larger herds|recent production|products sold|percentage declines|absolute losses|\b100\b|baseline|South Australia|New South Wales|Western Australia|Greater China|Queensland|Victoria|Tasmania|Indonesia|Singapore|Japan|July–June|yoghurt category)/gi;
+function emphasizeText(element, text, limit = 5) {
+  const matches = Array.from(text.matchAll(emphasisPattern));
+  const kind = match => /^(?:19|20)\d{2}(?:[–-]\d{2})?$/.test(match[0]) ? 'period' : /\d/.test(match[0]) ? 'value' : 'subject';
+  const chosen = [];
+  const seen = new Set();
+  const take = (type, maximum) => {
+    let count = 0;
+    for (const match of matches) {
+      const key = match[0].toLowerCase();
+      if (kind(match) !== type || seen.has(key) || count >= maximum || chosen.length >= limit) continue;
+      chosen.push(match); seen.add(key); count++;
+    }
+  };
+  take('value', 3); take('subject', 1); take('period', 1);
+  let offset = 0;
+  for (const match of chosen.sort((a, b) => a.index - b.index)) {
+    element.append(document.createTextNode(text.slice(offset, match.index)));
+    const strong = document.createElement('strong');
+    strong.className = 'emphasis-' + kind(match);
+    strong.textContent = match[0];
+    element.append(strong);
+    offset = match.index + match[0].length;
+  }
+  element.append(document.createTextNode(text.slice(offset)));
+}
+function emphasizePageParagraphs() {
+  document.querySelectorAll('main p:not(.chart-status)').forEach(paragraph => {
+    // Source links and existing metadata emphasis retain their original markup.
+    if (paragraph.childElementCount) return;
+    const text = paragraph.textContent;
+    paragraph.replaceChildren();
+    emphasizeText(paragraph, text);
+  });
+}
 // Present explanatory notes consistently in HTML, outside the scaled chart.
 function extractNotes(spec) {
   const notes = [];
@@ -96,6 +132,34 @@ async function renderChart(number) {
     perceptualScales(spec);
     spec.config = {...spec.config, font: 'DM Sans', axis: {...spec.config?.axis, labelFontSize: 12, titleFontSize: 13, gridColor: '#E9ECE7', gridOpacity: 0.65}, legend: {...spec.config?.legend, labelFontSize: 12, titleFontSize: 13}};
     const notes = extractNotes(spec);
+    if (number === 5) {
+      const intro = host.parentElement.querySelector('.chart-intro');
+      const context = intro && intro.querySelector('p');
+      if (context) notes.push(context.textContent);
+      if (intro) intro.remove();
+    }
+
+    if (number === 6) {
+      // Keep computed annotation text available for the live HTML sidebar.
+      for (const layer of spec.layer) {
+        if (layer.encoding?.text?.field === 'comparison_note') {
+          layer.mark.opacity = 0;
+          layer.encoding.x = {value: 0};
+          layer.encoding.y = {value: 0};
+        }
+      }
+      // The map's legends share the page's right-hand text column.
+      for (const layer of spec.layer) {
+        if (layer.encoding?.size) layer.encoding.size.legend = null;
+        if (layer.encoding?.color) layer.encoding.color.legend = null;
+      }
+    }
+    if (number === 7) {
+      for (const layer of spec.layer) {
+        if (layer.encoding?.color?.field === 'milk_production_ml') layer.encoding.color.legend = null;
+      }
+      spec.layer = spec.layer.filter(layer => layer.encoding?.text?.value !== 'October 2024: 945 ML — the 2024–25 peak');
+    }
     if (number === 10 || number === 11) spec.padding.top = 10;
     if (number === 11) {
       spec.height = 515;
@@ -116,7 +180,7 @@ async function renderChart(number) {
       }
       spec.layer = spec.layer.filter(layer => {
         const text = layer.encoding?.text?.value;
-        if (typeof text === 'string' && (text.startsWith('1990 baseline:') || text.startsWith('Icons show approximate ratios;'))) {
+        if (typeof text === 'string' && (text.startsWith('1990 baseline:') || text.startsWith('Icons show approximate ratios;') || text.startsWith('These farm averages imply about 67% more milk per cow;'))) {
           notes.unshift(text);
           return false;
         }
@@ -146,9 +210,16 @@ async function renderChart(number) {
       heading.append(title);
       if (spec.title.subtitle) {
         const subtitle = document.createElement('p');
-        subtitle.textContent = Array.isArray(spec.title.subtitle) ? spec.title.subtitle.join(' ') : spec.title.subtitle;
+        emphasizeText(subtitle, Array.isArray(spec.title.subtitle) ? spec.title.subtitle.join(' ') : spec.title.subtitle);
         heading.append(subtitle);
       }
+      const intro = host.parentElement.querySelector('.chart-intro');
+      const context = intro && intro.querySelector('p');
+      if (context) {
+        context.classList.add('chart-context');
+        heading.append(context);
+      }
+      if (intro) intro.remove();
       host.insertAdjacentElement('beforebegin', heading);
       delete spec.title;
     }
@@ -172,6 +243,52 @@ async function renderChart(number) {
       svg.setAttribute('role', 'img');
       svg.setAttribute('aria-label', accessibleTitle);
     }
+    let mapSidebar;
+    if (number === 6) {
+      const layout = document.createElement('div');
+      layout.className = 'map-two-column';
+      host.insertAdjacentElement('beforebegin', layout);
+      layout.append(host);
+      mapSidebar = document.createElement('div');
+      mapSidebar.className = 'map-sidebar';
+      const legends = document.createElement('div');
+      legends.className = 'map-legends';
+      legends.innerHTML = '<div class="map-legend"><strong>Direction</strong><span><i style="background:#009E60"></i>Growth</span><span><i style="background:#6F6F6F"></i>Decline</span><span><i style="background:#BDBDBD"></i>No change</span></div><div class="map-legend"><strong>Absolute change (ML)</strong><span><i class="size-key" style="width:23px;height:23px"></i>250</span><span><i class="size-key" style="width:32px;height:32px"></i>500</span><span><i class="size-key" style="width:45px;height:45px"></i>1,000</span></div>';
+      mapSidebar.append(legends);
+      const comparisons = document.createElement('div');
+      comparisons.className = 'map-comparisons';
+      comparisons.setAttribute('aria-live', 'polite');
+      mapSidebar.append(comparisons);
+      const updateComparisons = () => {
+        const labels = [];
+        const walk = item => {
+          if (typeof item.text === 'string' && /^(Largest loss in litres:|Smallest rise in litres:|Largest percentage fall:|Smallest percentage rise:)/.test(item.text)) labels.push(item.text);
+          if (item.items) item.items.forEach(walk);
+        };
+        walk(result.view.scenegraph().root);
+        comparisons.replaceChildren();
+        [...new Set(labels)].forEach(text => {
+          const paragraph = document.createElement('p');
+          paragraph.textContent = text;
+          comparisons.append(paragraph);
+        });
+      };
+      updateComparisons();
+      result.view.addSignalListener('startYear', () => result.view.runAfter(updateComparisons));
+      const bindings = host.querySelector('.vega-bindings');
+      if (bindings) mapSidebar.append(bindings);
+      layout.append(mapSidebar);
+    }
+    if (number === 7) {
+      const layout = document.createElement('div');
+      layout.className = 'map-two-column seasonal-layout';
+      host.insertAdjacentElement('beforebegin', layout);
+      layout.append(host);
+      const sidebar = document.createElement('div');
+      sidebar.className = 'seasonal-sidebar';
+      sidebar.innerHTML = '<div class="seasonal-legend" aria-label="Milk production colour scale: 550 to 1,000 million litres"><strong>Milk production (ML)</strong><div class="seasonal-scale"><div class="seasonal-gradient"></div><div class="seasonal-ticks"><span>1,000</span><span>800</span><span>600</span><span>550</span></div></div></div><p class="seasonal-peak"><strong>October 2024: 945 ML</strong><br>The 2024–25 peak, highlighted on the outer ring.</p>';
+      layout.append(sidebar);
+    }
     if (notes.length) {
       const group = document.createElement('div');
       group.className = 'annotation-group';
@@ -179,10 +296,11 @@ async function renderChart(number) {
       notes.slice().reverse().forEach(text => {
         const note = document.createElement('aside');
         note.className = 'annotation-note';
-        note.textContent = text;
+        emphasizeText(note, text, 2);
         group.append(note);
       });
-      host.insertAdjacentElement('afterend', group);
+      if (mapSidebar) mapSidebar.append(group);
+      else host.insertAdjacentElement('afterend', group);
     }
     host.setAttribute('aria-busy', 'false');
     return result;
@@ -197,5 +315,6 @@ async function renderChart(number) {
   }
 }
 window.addEventListener('DOMContentLoaded', () => {
+  emphasizePageParagraphs();
   window.chartResults = Promise.all(Array.from({length: 11}, (_, i) => renderChart(i + 1)));
 });

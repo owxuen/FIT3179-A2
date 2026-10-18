@@ -10,11 +10,8 @@
   },
   "autosize": "none",
   "title": {
-    "text": "More Tonnes Don’t Always Mean More Value",
-    "subtitle": [
-      "Similar export volumes can produce very different economic value across Australia’s dairy markets (2024–25).",
-      "Hover over a market line, dot, or label to trace its rankings across all three measures."
-    ],
+    "text": "More Tonnes Don\u2019t Always Mean More Value",
+    "subtitle": "Similar export volumes yield different values across dairy markets (2024\u201325).",
     "anchor": "start",
     "frame": "group",
     "font": "Arial",
@@ -808,7 +805,7 @@
             "field": "value_rank"
           },
           "text": {
-            "value": "↑ Rises 2 ranks (A$302m)"
+            "value": "\u2191 Rises 2 ranks (A$302m)"
           },
           "align": {
             "value": "left"
@@ -851,7 +848,7 @@
             "field": "value_rank"
           },
           "text": {
-            "value": "↓ Drops 2 ranks (A$206m)"
+            "value": "\u2193 Drops 2 ranks (A$206m)"
           },
           "align": {
             "value": "left"
@@ -884,13 +881,13 @@
       "encode": {
         "enter": {
           "x": {
-            "value": 150
+            "value": 0
           },
           "y": {
             "value": 505
           },
           "text": {
-            "value": "Value per tonne = total export value ÷ export volume."
+            "value": "Value per tonne = total export value \u00f7 export volume."
           },
           "font": {
             "value": "Arial"
@@ -903,6 +900,9 @@
           },
           "fill": {
             "value": "#777777"
+          },
+          "align": {
+            "value": "left"
           }
         }
       }

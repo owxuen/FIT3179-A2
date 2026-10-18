@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Fewer Farms, But Much Bigger Farms",
-    "subtitle": "Since 1990, the average surveyed dairy farm has nearly tripled its herd size while milk output per farm has grown almost fivefold.",
+    "subtitle": "Since 1990, surveyed farms have nearly tripled herd size and increased milk output almost fivefold.",
     "anchor": "start",
     "fontSize": 20,
     "fontWeight": "bold",
@@ -191,7 +191,7 @@
           {
             "x": 380,
             "y": 120,
-            "text": "2.9×"
+            "text": "2.9\u00d7"
           }
         ]
       },
@@ -276,42 +276,26 @@
       "data": {
         "values": [
           {
-            "x": 380,
-            "y": 182,
-            "text": "→"
+            "x": 380
           }
         ]
       },
       "mark": {
         "type": "text",
-        "fontSize": 30,
-        "color": "#999999"
+        "align": "left",
+        "fontSize": 11,
+        "color": "#355542",
+        "interactive": false
       },
       "encoding": {
         "x": {
-          "field": "x",
-          "type": "quantitative",
-          "axis": null,
-          "scale": {
-            "domain": [
-              0,
-              760
-            ]
-          }
+          "value": 0
         },
         "y": {
-          "field": "y",
-          "type": "quantitative",
-          "axis": null,
-          "scale": {
-            "domain": [
-              380,
-              0
-            ]
-          }
+          "value": 355
         },
         "text": {
-          "field": "text"
+          "value": "These farm averages imply about 67% more milk per cow; herd growth alone does not explain output growth."
         }
       }
     },
@@ -461,7 +445,7 @@
           {
             "x": 380,
             "y": 215,
-            "text": "4.8×"
+            "text": "4.8\u00d7"
           }
         ]
       },
@@ -564,64 +548,6 @@
         },
         "text": {
           "value": "Icons show approximate ratios; labels give values and growth multiples."
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {}
-        ]
-      },
-      "mark": {
-        "type": "rect",
-        "fill": "#EDF4EF",
-        "stroke": "#B7D2BF",
-        "strokeWidth": 1,
-        "cornerRadius": 6,
-        "interactive": false
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "x2": {
-          "value": 760
-        },
-        "y": {
-          "value": 360
-        },
-        "y2": {
-          "value": 393
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {}
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "top",
-        "fontSize": 11,
-        "lineHeight": 15,
-        "color": "#355542",
-        "interactive": false
-      },
-      "encoding": {
-        "x": {
-          "value": 12
-        },
-        "y": {
-          "value": 369
-        },
-        "text": {
-          "value": [
-            "These farm averages imply about 67% more milk per cow; herd growth alone does not explain output growth."
-          ]
         }
       }
     }

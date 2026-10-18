@@ -430,12 +430,12 @@
         "Other"
       ],
       "range": [
-        "#E9C46A",
-        "#264653",
-        "#457B9D",
-        "#2A9D8F",
-        "#8AB17D",
-        "#9E9E9E"
+        "#C99A2E",
+        "#A84936",
+        "#A78D71",
+        "#CF7D87",
+        "#7B3F58",
+        "#929292"
       ]
     }
   ],
@@ -765,6 +765,45 @@
         }
       },
       "name": "linked_regions_8"
+    },
+    {
+      "name": "powder_comparison",
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 0
+          },
+          "y": {
+            "value": 365
+          },
+          "text": {
+            "value": [
+              "Milk powders together earn",
+              "≈37% of product export value"
+            ]
+          },
+          "align": {
+            "value": "left"
+          },
+          "baseline": {
+            "value": "top"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "lineHeight": {
+            "value": 15
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#8B542E"
+          }
+        }
+      }
     }
   ],
   "config": {

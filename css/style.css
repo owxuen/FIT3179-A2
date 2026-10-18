@@ -1,4 +1,4 @@
-:root{--page:#f6f4ed;--ink:#26372f;--muted:#56635a;--green:#397455;--edge:24px;--gap:20px}
+:root{--page:#f6f4ed;--ink:#26372f;--muted:#56635a;--green:#397455;--edge:24px;--gap:20px;--text-hero:clamp(36px,4.6vw,60px);--text-section:clamp(26px,2.8vw,34px);--text-chart:22px;--text-insight:18px;--text-body:15px;--text-support:14px;--text-note:13px;--text-meta:12px;--text-label:11px}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--page);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.6}
@@ -9,24 +9,24 @@ a{color:#275e48;text-underline-offset:4px}a:hover{color:#9b542b}
 .brand{text-decoration:none;font-weight:700;letter-spacing:2px}
 .hero{padding:32px 0 24px}
 .eyebrow,.chart-number,.insight-label{font-weight:700;text-transform:uppercase;color:#59705f;letter-spacing:1.3px}
-.eyebrow{font-size:12px}
-h1,h2{font-family:"Libre Baskerville",Georgia,serif;line-height:1.2;letter-spacing:-1.3px}
-.hero h1{font-size:clamp(36px,4.6vw,58px);margin:12px 0 18px}
-.hero-copy{font-size:16px;margin:0;max-width:65ch}
+.eyebrow{font-size:var(--text-label)}
+h1,h2{font-family:"Libre Baskerville",Georgia,serif;line-height:1.2;letter-spacing:-0.7px;font-weight:700;text-wrap:balance}
+.hero h1{font-size:var(--text-hero);letter-spacing:-1.2px;margin:0 0 16px}
+.hero-copy{font-size:17px;line-height:1.65;color:var(--muted);margin:0;max-width:48ch}
 .chapter-nav{display:flex;flex-wrap:wrap;gap:12px 24px;padding:14px 0;border-block:1px solid #d7ddd3}
 .chapter-nav a{font-size:13px;text-decoration:none;font-weight:600}
 .story-section{padding-top:32px;scroll-margin-top:24px}
 .section-header{padding:20px var(--edge);border:1px solid #d7ddd3;border-radius:8px;margin-bottom:var(--gap)}
-.section-header h2,.story-conclusion h2{font-size:clamp(25px,3vw,34px);margin:8px 0 10px}
-.section-header p{font-size:15px;margin:0;color:var(--muted);max-width:65ch}
-#industry .section-header{background:#f2e6df}#production .section-header{background:#f2edda}#demand .section-header{background:#e6eee3}#global .section-header{background:#e3edf0}
+.section-header h2,.story-conclusion h2{font-size:var(--text-section);margin:8px 0 12px}
+.section-header p{font-size:var(--text-body);margin:0;color:var(--muted);max-width:48ch}
+#industry .section-header{background:#EFF3E9}#production .section-header{background:#E7EEE4}#demand .section-header{background:#e6eee3}#global .section-header{background:#e3edf0}
 .chart-card{background:white;border:1px solid #e8ebe4;border-radius:8px;padding:20px var(--edge);margin-bottom:var(--gap);min-width:0}
 .chart-intro{border-bottom:1px solid #eef0eb;padding-bottom:12px;margin-bottom:16px}
-.chart-number{font-size:10px}
-.chart-intro p{font-size:14px;margin:6px 0 0;color:var(--muted);max-width:65ch}
+.chart-number{font-size:var(--text-label);line-height:1.3}
+.chart-intro p{font-size:var(--text-support);margin:6px 0 0;color:var(--muted);max-width:48ch}
 .paired-chart-heading,.aligned-chart-heading{margin:0 0 16px;text-align:left}
-.paired-chart-heading h3,.aligned-chart-heading h3{font-family:"DM Sans",sans-serif;font-size:20px;line-height:1.25;font-weight:700;color:#222;margin:0 0 6px}
-.paired-chart-heading p,.aligned-chart-heading p{font-size:13px;line-height:1.6;color:#666;margin:0;max-width:65ch}
+.paired-chart-heading h3,.aligned-chart-heading h3{font-family:"DM Sans",sans-serif;font-size:var(--text-chart);line-height:1.3;font-weight:700;letter-spacing:-0.25px;color:var(--ink);margin:0 0 8px;text-wrap:balance}
+.paired-chart-heading p,.aligned-chart-heading p{font-size:var(--text-support);line-height:1.6;color:var(--muted);margin:0;max-width:48ch}
 .chart-row{display:grid;gap:var(--gap);margin-bottom:var(--gap)}
 .comparison-row,.production-comparison{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto auto auto}
 .chart-row .chart-card{margin-bottom:0}
@@ -41,19 +41,19 @@ h1,h2{font-family:"Libre Baskerville",Georgia,serif;line-height:1.2;letter-spaci
 .vega-bindings{font:13px "DM Sans",sans-serif;margin:12px 0 0}
 .vega-bindings select{font:inherit;margin:0 8px;padding:7px 10px;border:1px solid #b7cbbd;border-radius:5px;background:#f6faf6}
 .annotation-group{display:grid;gap:12px;margin-top:12px;align-self:start}
-.annotation-note{display:block;width:100%;padding:10px 14px;margin:0;background:#edf4ef;border:1px solid #b7d2bf;border-radius:6px;color:#355542;font-size:13px;line-height:1.55;text-align:left}
+.annotation-note{display:block;width:100%;padding:10px 14px;margin:0;background:#edf4ef;border:1px solid #b7d2bf;border-radius:6px;color:#355542;font-size:var(--text-note);line-height:1.6;font-weight:400;text-align:left}
 #vis7{width:100%;max-width:850px;margin-inline:auto}
 .chart-status{font-size:13px;color:#667368;padding:24px}
 .chart-error{border-left:3px solid #9b542b;background:#fff7f0;padding:14px}
 .section-insight{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--gap) + 2 * var(--edge));align-items:start;margin:20px 0 0;padding:16px var(--edge);background:#edf4ef;border:1px solid #d7ddd3;box-shadow:inset 3px 0 var(--green);border-radius:4px}
-.insight-label{grid-column:1;font-size:11px;color:var(--green)}
-.section-insight h3{grid-column:1;font-size:18px;line-height:1.35;margin:6px 0 0}
-.section-insight p{grid-column:2;grid-row:1 / span 2;font-size:14px;line-height:1.6;margin:0;color:var(--muted);max-width:65ch}
+.insight-label{grid-column:1;font-size:var(--text-label);color:var(--green)}
+.section-insight h3{grid-column:1;font-size:var(--text-insight);font-weight:600;line-height:1.4;margin:6px 0 0}
+.section-insight p{grid-column:2;grid-row:1 / span 2;font-size:var(--text-body);line-height:1.6;margin:0;color:var(--muted);max-width:48ch}
 .story-conclusion{margin-top:24px;padding:20px var(--edge);background:#e6eee3;border:1px solid #d7ddd3;border-radius:8px}
 .story-conclusion h2{margin:0 0 12px}
-.story-conclusion p{font-size:15px;color:var(--muted);margin:0 0 12px;max-width:65ch}
+.story-conclusion p{font-size:var(--text-body);color:var(--muted);margin:0 0 12px;max-width:48ch}
 .story-conclusion p:last-child{margin-bottom:0}
-.metadata{border-top:1px solid #cbd5ca;padding:20px 0 30px;margin-top:24px;font-size:12px;color:var(--muted)}
+.metadata{border-top:1px solid #cbd5ca;padding:20px 0 30px;margin-top:24px;font-size:var(--text-meta);color:var(--muted)}
 .metadata p{margin:8px 0}.metadata .author{font-weight:700;color:var(--ink)}.metadata .author span{font-weight:400;color:var(--muted)}
 #vg-tooltip-element{font-family:"DM Sans",sans-serif;font-size:13px;line-height:1.5}#vg-tooltip-element td.key{color:var(--muted)}
 .skip-link{position:absolute;top:-100px;left:20px;background:white;padding:10px;z-index:10}.skip-link:focus{top:10px}
@@ -61,3 +61,123 @@ a:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #b2
 @media(max-width:1000px){.comparison-row,.production-comparison{grid-template-columns:1fr;grid-template-rows:none}.comparison-row .chart-card,.production-comparison .chart-card{display:block;grid-row:auto}}
 @media(max-width:700px){:root{--edge:16px}.masthead,main{padding-inline:18px}.masthead::after{left:18px;right:18px}.hero{padding-top:30px}.chart-card{padding:16px var(--edge)}.section-header{padding:16px}.section-insight{display:block}.section-insight h3{margin-bottom:8px}.metadata .author span{display:block}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Values take precedence over keys in the tooltip hierarchy. */
+#vg-tooltip-element td.value{font-weight:600;color:var(--ink)}
+
+/* Feedback review: use the right column for supporting prose. */
+.section-header{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--gap) + 2 * var(--edge));align-items:start}
+.section-header .eyebrow{grid-column:1}
+.section-header h2{grid-column:1;margin-bottom:0}
+.section-header p{grid-column:2;grid-row:1 / span 2}
+.story-section > .chart-card > .chart-intro{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--gap) + 2 * var(--edge));align-items:start}
+.story-section > .chart-card > .chart-intro p{grid-column:2;margin-top:0}
+.story-conclusion{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--gap) + 2 * var(--edge));align-items:start}
+.story-conclusion h2{margin-bottom:0}
+.annotation-note{max-width:52ch}
+.chart-row .annotation-note{max-width:none}
+@media(max-width:1000px){.section-header,.story-conclusion,.story-section > .chart-card > .chart-intro,.story-section > .chart-card > .aligned-chart-heading{display:block}.section-header h2,.story-conclusion h2{margin-bottom:12px}.story-section > .chart-card > .chart-intro p{margin-top:6px}.story-section > .chart-card > .aligned-chart-heading h3{margin-bottom:8px}}
+
+/* Cream, sage and forest green support the agricultural story. */
+#industry .section-header,#demand .section-header{background:#eff3e9}
+#production .section-header,#global .section-header{background:#e7eee4}
+.hero h1{width:fit-content;max-width:100%;margin-inline:auto;text-align:left}
+.hero-copy{margin-inline:auto;text-align:left}
+.chapter-nav{justify-content:center}
+.chapter-nav a{text-align:left}
+.section-header p{grid-row:2;align-self:center}
+.section-header h2{align-self:center}
+.aligned-chart-heading,.paired-chart-heading{display:block}
+.aligned-chart-heading h3,.paired-chart-heading h3{margin-bottom:8px}
+.aligned-chart-heading p,.paired-chart-heading p{margin:0;text-align:left}
+main p strong,.annotation-note strong{font-weight:700}
+.emphasis-subject{color:#275E48}
+.emphasis-value{color:#94552E}
+.emphasis-period{color:#26372F}
+/* Method notes stay quiet; analytical callouts live beside the data. */
+.annotation-note{padding:8px 0 0;background:transparent;border:0;border-top:1px solid #e1e7dd;border-radius:0;color:#56635a}
+@media(max-width:1000px){.section-header p{margin-top:12px}}
+/* Keep the radial legend's title clear of the export button. */
+#vis7 > details{top:-24px}
+.section-header{row-gap:8px}
+.section-header h2{margin:0;align-self:center}
+@media(max-width:1000px){.section-header h2{margin:8px 0 12px}}
+
+/* Full-width charts use the same text column as their figure introductions. */
+@media(min-width:1001px){
+  .story-section > .chart-card > .aligned-chart-heading > h3,
+  .story-section > .chart-card > .aligned-chart-heading > p{
+    max-width:calc((100% - (var(--gap) + 2 * var(--edge))) / 2);
+  }
+}
+
+/* APA references: hanging indents and readable, wrapping source URLs. */
+.metadata .data-references{max-width:85ch;margin-block:16px}
+.metadata .reference{padding-left:2em;text-indent:-2em;line-height:2;margin-block:10px;overflow-wrap:anywhere}
+
+.hero-copy{max-width:100%;width:fit-content}
+
+/* Give each chapter an equal share of the navigation width. */
+.chapter-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 20px}
+.chapter-nav a{text-align:center}
+@media(max-width:700px){.chapter-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Supporting context accompanies the subtitle rather than a figure-number row. */
+.comparison-row,.production-comparison{grid-template-rows:auto auto auto}
+.comparison-row .chart-card,.production-comparison .chart-card{grid-row:span 3}
+.aligned-chart-heading .chart-context,.paired-chart-heading .chart-context{margin-top:8px}
+@media(min-width:1001px){
+  .story-section > .chart-card > .aligned-chart-heading{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--gap) + 2 * var(--edge));align-items:start}
+  .story-section > .chart-card > .aligned-chart-heading > h3{grid-column:1;grid-row:1;max-width:100%}
+  .story-section > .chart-card > .aligned-chart-heading > p{grid-column:1;grid-row:2;max-width:100%}
+  .story-section > .chart-card > .aligned-chart-heading > .chart-context{grid-column:2;grid-row:2;margin-top:0}
+}
+@media(max-width:1000px){.comparison-row,.production-comparison{grid-template-rows:none}.comparison-row .chart-card,.production-comparison .chart-card{grid-row:auto}}
+
+/* Frame the supporting chart context consistently. */
+.aligned-chart-heading .chart-context,.paired-chart-heading .chart-context{
+  border:1px solid #d7ddd3;
+  border-radius:6px;
+  padding:10px 14px;
+  background:#f7f9f5;
+}
+
+/* Keep the large overview charts compact without crowding their labels. */
+#vis6{max-width:920px;margin-inline:auto}
+#vis7{max-width:760px}
+
+/* The map and supporting information follow the shared two-column grid. */
+.map-two-column{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--gap) + 2 * var(--edge));align-items:start}
+#vis6{max-width:100%;margin:0}
+.map-sidebar{min-width:0}
+.map-legends{display:flex;flex-wrap:wrap;gap:24px 40px}
+.map-legend{display:grid;gap:8px;font-size:13px;color:var(--muted);align-content:start}
+.map-legend strong{color:var(--ink)}
+.map-legend span{display:flex;align-items:center;gap:12px;min-height:20px}
+.map-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;flex:none}
+.map-legend .size-key{background:#6F6F6F}
+.map-sidebar .vega-bindings{margin-top:24px}
+.map-sidebar .annotation-group{margin-top:20px}
+@media(max-width:1000px){.map-two-column{grid-template-columns:1fr;gap:20px}}
+
+/* Seasonal chart shares the same column edges as the map and headings. */
+#vis7{max-width:100%;margin:0}
+#vis7 > details{top:0}
+.seasonal-sidebar{font-size:var(--text-support);color:var(--muted)}
+.seasonal-legend > strong{color:var(--ink)}
+.seasonal-scale{display:flex;gap:10px;margin-top:10px;height:180px}
+.seasonal-gradient{width:16px;background:linear-gradient(to top in lab,#EDF4EF,#C7DDCE,#91B79F,#5C8F70,#2F6B4F)}
+.seasonal-ticks{position:relative;width:60px;font-size:12px}
+.seasonal-ticks span{position:absolute;left:0;transform:translateY(-50%)}
+.seasonal-ticks span:nth-child(1){top:0}
+.seasonal-ticks span:nth-child(2){top:44.444%}
+.seasonal-ticks span:nth-child(3){top:88.889%}
+.seasonal-ticks span:nth-child(4){top:100%}
+.seasonal-peak{margin:24px 0 0;padding-top:12px;border-top:1px solid #e1e7dd;max-width:36ch}
+.seasonal-peak strong{color:#A85B27}
+
+/* Centre the seasonal legend and annotation beside the radial chart. */
+.seasonal-layout > .seasonal-sidebar{align-self:center}
+
+.map-comparisons{margin-top:20px;color:#355542;font-size:14px;font-weight:700;line-height:1.6}
+.map-comparisons p{margin:0 0 8px}

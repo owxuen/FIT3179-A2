@@ -44,3 +44,33 @@ These are design principles requiring contextual judgement, rather than a guaran
 - Moved vis3's milk multiplier/caption above the large values. Darkened shared export-market colours in vis10 and vis11.
 - All 11 charts rendered offline after edits; browser tooltip content was observed. A subsequent download test timed out and disconnected browser control, so SVG/PNG downloads were not confirmed in this pass. Local checks at 1024px and 960px confirmed no horizontal overflow; the two-column rows stack at 960px. All 11 charts loaded without chart-error messages. PNG download was clicked, but the browser tool did not report a completed download; exports remain unconfirmed.
 - These edits are local and require committing and pushing to update GitHub Pages.
+
+## Peer-feedback changes — 15 October 2026
+
+- Figure 1 now uses a zero-based vertical axis (0–10,500 million litres). Its earlier baseline was 7,900.
+- Prose is limited to approximately 48 characters per line; typical word counts depend on word length and viewport. This targets the 7–10 word guideline without inserting rigid line breaks.
+- Wide chapter and chart headers place supporting prose in the right column, balancing the former left-heavy text. These headers stack below 1000px.
+- Product ribbons use warm colours; export markets use a separate cool palette shared between vis10 and vis11. Labels and highlighting remain important for distinguishing ten market categories.
+- Vis7 displays full month names in labels and tooltips, retaining short codes only internally for selection/filter logic. The October peak note moves below the rings to avoid the longer October label.
+- Vis10 adds an ocean sphere and 20-degree graticule below land and flows, all clipped through the existing map projection.
+- All 11 charts render in the offline check. A text-bounds check identified and resolved the full October label colliding with its peak callout. Browser review was unavailable due to a browser-service connection failure, so exact paragraph word counts and responsive appearance are not yet visually verified.
+
+## Requested refinements — 18 October 2026
+
+- Centred the hero subtitle block and chapter-navigation group, retaining left-aligned text.
+- Matched section description and title vertical centres. Chart subtitles sit below their chart titles again.
+- Restored vis1's 7,900–10,050 ML axis and added a visible baseline disclosure inside the plot.
+- Added selective paragraph emphasis: figures in warm brown, subjects in forest green, and dates in bold dark text. Source links and metadata markup are preserved.
+- Vis10 now uses one forest-green hue for routes, destination symbols and country labels. Its ocean and graticule remain subdued reference layers.
+- Vis11 restores the varied market palette used before the all-cool revision. It has no identical colour values in common with the warm Sankey product palette.
+- New in-chart findings: implied national milk-per-cow growth (vis2, about 69%); implied surveyed-farm milk-per-cow growth (vis3, about 67%); changing absolute/percentage-loss comparisons (vis6); February's shorter production period (vis7); combined powder exports (vis9, about 37% of product value). These ratios describe different populations and should not be equated.
+- Converted separate methodological annotation boxes into quieter caption text. Four section insight panels remain.
+- Retained green as an agricultural theme, using a consistent cream/sage/forest palette rather than changing chapter hues.
+- Offline SVG rendering passed for all 11 charts. Vis6 comparative notes were verified for 2006–07, 2014–15 and 2023–24. Local browser inspection confirmed the hero/nav arrangement, in-chart callouts, restored subtitles and single-colour flow map.
+- Final local checks: no horizontal overflow at 1024px or 768px; all four desktop section title/description centres matched exactly; 11 loaded chart SVGs and no chart errors. Responsive columns stacked at 768px.
+
+## Colour adjustment — 18 October 2026
+
+At the author’s request, removed orange/rust/red accents, including milk pictograms, peak outlines, in-chart findings, highlighted prose values, focus outlines and market colours. Dark blue now highlights findings; country categories use green/blue/teal with Singapore in muted purple, while Sankey products use a separate violet/grey palette. Direct labels and hover highlighting remain essential; this change is not a substitute for colour-vision simulation.
+
+The author subsequently preferred the preceding palette. Restored the original accents and categorical palettes while retaining the 18 October alignment, emphasis, single-colour flow map and annotation changes.

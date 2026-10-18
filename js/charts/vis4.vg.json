@@ -1,11 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "Where Are Australia’s Highest-Yielding Dairy Cows?",
-    "subtitle": [
-      "South Australia recorded the highest milk output per cow in 2024–25, while Queensland recorded the lowest.",
-      "Hover over a state to see its milk yield, production and dairy cow numbers."
-    ],
+    "text": "Where Are Australia\u2019s Highest-Yielding Dairy Cows?",
+    "subtitle": "South Australia had the highest milk output per cow in 2024\u201325; Queensland had the lowest.",
     "anchor": "start",
     "fontSize": 20,
     "fontWeight": "bold",
