@@ -27,7 +27,7 @@
   "data": [
     {
       "name": "markets",
-      "url": "vis11_export_market_ranks.csv",
+      "url": "../../data/vis11_export_market_ranks.csv",
       "format": {
         "type": "csv",
         "parse": {

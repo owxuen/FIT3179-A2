@@ -10,7 +10,7 @@
     "offset": 18
   },
   "data": {
-    "url": "vis01_australia_milk_production_2006_2025.csv"
+    "url": "../../data/vis01_australia_milk_production_2006_2025.csv"
   },
   "config": {
     "background": "white",

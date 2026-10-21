@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "Fewer Farms, Fewer Cows — Yet More Milk",
+    "text": "Fewer Farms, Fewer Cows \u2014 Yet More Milk",
     "subtitle": [
       "Since 1990, dairy farm numbers have fallen by three-quarters, while national milk production is 33% higher."
     ],
@@ -16,7 +16,7 @@
   "width": 760,
   "height": 420,
   "data": {
-    "url": "vis02_industry_structural_change_1990_2025.csv"
+    "url": "../../data/vis02_industry_structural_change_1990_2025.csv"
   },
   "encoding": {
     "x": {
@@ -346,7 +346,7 @@
           "value": 475
         },
         "text": {
-          "value": "1990 baseline: 15,396 dairy farms · 1,654,000 dairy cows · 6,262 ML of milk"
+          "value": "1990 baseline: 15,396 dairy farms \u00b7 1,654,000 dairy cows \u00b7 6,262 ML of milk"
         }
       }
     },
@@ -433,7 +433,7 @@
         },
         "text": {
           "value": [
-            "≈69% more milk per cow",
+            "\u224869% more milk per cow",
             "implied by the national totals"
           ]
         }

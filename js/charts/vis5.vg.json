@@ -10,7 +10,7 @@
   },
   "autosize": "none",
   "title": {
-    "text": "Victoria Dominates Australia’s Milk Pool",
+    "text": "Victoria Dominates Australia\u2019s Milk Pool",
     "anchor": "start",
     "frame": "group",
     "font": "Arial",
@@ -26,7 +26,7 @@
   "data": [
     {
       "name": "states",
-      "url": "vis05_state_production_share.csv",
+      "url": "../../data/vis05_state_production_share.csv",
       "format": {
         "type": "csv",
         "parse": {
@@ -178,7 +178,7 @@
           },
           "text": {
             "value": [
-              "Each square ≈ 1% of",
+              "Each square \u2248 1% of",
               "national milk production"
             ]
           },
@@ -293,7 +293,7 @@
         },
         "update": {
           "text": {
-            "signal": "format(datum.milk_ml, ',') + ' ML in 2024–25'"
+            "signal": "format(datum.milk_ml, ',') + ' ML in 2024\u201325'"
           }
         }
       },

@@ -64,7 +64,7 @@
     },
     {
       "name": "destinations",
-      "url": "vis10_export_destinations.csv",
+      "url": "../../data/vis10_export_destinations.csv",
       "format": {
         "type": "csv",
         "parse": {

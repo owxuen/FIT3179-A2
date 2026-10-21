@@ -15,7 +15,7 @@
     "offset": 22
   },
   "data": {
-    "url": "vis08_dairy_consumption.csv"
+    "url": "../../data/vis08_dairy_consumption.csv"
   },
   "transform": [
     {

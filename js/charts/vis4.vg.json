@@ -82,7 +82,7 @@
           "lookup": "properties.STE_NAME21",
           "from": {
             "data": {
-              "url": "vis04_state_milk_yield.csv"
+              "url": "../../data/vis04_state_milk_yield.csv"
             },
             "key": "state",
             "fields": [
