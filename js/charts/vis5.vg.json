@@ -107,12 +107,12 @@
         "Queensland"
       ],
       "range": [
-        "#1B4D3E",
-        "#457B9D",
-        "#75658A",
-        "#C4773B",
-        "#2A9D8F",
-        "#B39A50"
+        "#B74E79",
+        "#5B6F9C",
+        "#8B6D3F",
+        "#577F72",
+        "#9A5E47",
+        "#6D5A87"
       ]
     }
   ],
@@ -397,7 +397,7 @@
             "signal": "datum.state === 'Victoria' ? 'bold' : 'normal'"
           },
           "fill": {
-            "signal": "datum.state === 'Victoria' ? '#1B4D3E' : '#333333'"
+            "signal": "datum.state === 'Victoria' ? '#B74E79' : '#333333'"
           },
           "tooltip": {
             "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"
@@ -442,7 +442,7 @@
             "signal": "datum.state === 'Victoria' ? 'bold' : 'normal'"
           },
           "fill": {
-            "signal": "datum.state === 'Victoria' ? '#1B4D3E' : '#444444'"
+            "signal": "datum.state === 'Victoria' ? '#B74E79' : '#444444'"
           },
           "tooltip": {
             "signal": "{'State': datum.state, 'Share of Australian milk': format(datum.share_percent, '.1f') + '%', 'Production': format(datum.milk_ml, ',') + ' ML'}"

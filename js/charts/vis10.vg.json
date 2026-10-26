@@ -246,7 +246,7 @@
         "New Zealand"
       ],
       "range": [
-        "#2F6B4F"
+        "#52616B"
       ]
     }
   ],
@@ -345,8 +345,7 @@
       "encode": {
         "enter": {
           "stroke": {
-            "scale": "marketColor",
-            "field": "country"
+            "value": "#52616B"
           },
           "strokeCap": {
             "value": "round"
@@ -388,7 +387,8 @@
             "value": null
           },
           "stroke": {
-            "value": "#2F6B4F"
+            "scale": "marketColor",
+            "field": "country"
           },
           "strokeWidth": {
             "value": 0.8

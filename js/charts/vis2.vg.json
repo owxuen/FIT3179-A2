@@ -75,10 +75,24 @@
       ],
       "mark": {
         "type": "line",
-        "strokeWidth": 2.5,
-        "color": "#A5A5A5"
+        "strokeWidth": 2.5
       },
       "encoding": {
+        "color": {
+          "field": "metric",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Dairy cows",
+              "Dairy farms"
+            ],
+            "range": [
+              "#A5A5A5",
+              "#A5A5A5"
+            ]
+          },
+          "legend": null
+        },
         "detail": {
           "field": "metric"
         },
@@ -127,7 +141,7 @@
       "mark": {
         "type": "line",
         "strokeWidth": 4,
-        "color": "#2F6B4F"
+        "color": "#943F5E"
       },
       "encoding": {
         "detail": {
@@ -179,11 +193,25 @@
         "type": "point",
         "filled": true,
         "size": 90,
-        "color": "#A5A5A5",
         "stroke": "#FFFFFF",
         "strokeWidth": 1.5
       },
       "encoding": {
+        "color": {
+          "field": "metric",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Dairy cows",
+              "Dairy farms"
+            ],
+            "range": [
+              "#A5A5A5",
+              "#A5A5A5"
+            ]
+          },
+          "legend": null
+        },
         "tooltip": [
           {
             "field": "metric",
@@ -219,7 +247,7 @@
         "type": "point",
         "filled": true,
         "size": 130,
-        "color": "#2F6B4F",
+        "color": "#943F5E",
         "stroke": "#FFFFFF",
         "strokeWidth": 2
       },
@@ -267,7 +295,7 @@
         "dy": -2,
         "fontSize": 13,
         "fontWeight": "bold",
-        "color": "#2F6B4F"
+        "color": "#943F5E"
       },
       "encoding": {
         "text": {
@@ -292,7 +320,7 @@
         "dx": 15,
         "fontSize": 13,
         "fontWeight": "bold",
-        "color": "#666666"
+        "color": "#A5A5A5"
       },
       "encoding": {
         "text": {
@@ -317,7 +345,7 @@
         "dx": 15,
         "fontSize": 13,
         "fontWeight": "bold",
-        "color": "#666666"
+        "color": "#A5A5A5"
       },
       "encoding": {
         "text": {

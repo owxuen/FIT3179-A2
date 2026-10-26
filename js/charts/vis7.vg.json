@@ -75,11 +75,11 @@
               1000
             ],
             "range": [
-              "#EDF4EF",
-              "#C7DDCE",
-              "#91B79F",
-              "#5C8F70",
-              "#2F6B4F"
+              "#FFF3D6",
+              "#F9D58A",
+              "#E9AD4E",
+              "#C77C23",
+              "#8C4B15"
             ]
           },
           "legend": {
@@ -144,7 +144,7 @@
       "mark": {
         "type": "arc",
         "fillOpacity": 0,
-        "stroke": "#C46A2D",
+        "stroke": "#354E75",
         "strokeWidth": 4,
         "interactive": false
       },
@@ -313,7 +313,7 @@
         "type": "text",
         "fontSize": 10,
         "fontWeight": "bold",
-        "color": "#2F6B4F",
+        "color": "#8C4B15",
         "align": "left"
       },
       "encoding": {
@@ -342,7 +342,7 @@
         "type": "text",
         "fontSize": 12,
         "fontWeight": "bold",
-        "color": "#A85B27",
+        "color": "#354E75",
         "align": "center",
         "interactive": false
       },
